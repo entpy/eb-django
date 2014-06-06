@@ -1,11 +1,11 @@
 from django.shortcuts import render
 
-def home(request):
+def index(request):
     """
         index view
     """
 
-    """ test only, plz remove
+    """ test only, remove plz
         testo = ""
         for i in range(0,10):
             testo += str(i) + "-"
@@ -18,24 +18,23 @@ def home(request):
     """
     return render(request, 'website/index.html')
 
-def chi_siamo(request):
-    return render(request, 'website/chi_siamo.html')
+def about_us(request):
+    return render(request, 'website/about_us.html')
 
-def i_nostri_lavori(request):
-    return render(request, 'website/i_nostri_lavori.html')
+def our_works(request):
+    return render(request, 'website/our_works.html')
 
-def contatti(request):
-    return render(request, 'website/contatti.html')
+def contacts(request):
+    return render(request, 'website/contacts.html')
 
-def luce_pulsata(request):
-    return render(request, 'website/luce_pulsata.html')
+def pulsed_light(request):
+    return render(request, 'website/pulsed_light.html')
 
-def sbiancamento_dentale(request):
-    return render(request, 'website/sbiancamento_dentale.html')
+def dental_whitening(request):
+    return render(request, 'website/dental_whitening.html')
 
-def le_nostre_offerte(request):
-    return render(request, 'website/le_nostre_offerte.html')
+def our_offers(request):
+    return render(request, 'website/our_offers.html')
 
-def ricevi_offerte(request):
-    return HttpResponse("ricevi offerte")
-    #return render(request, 'website/ricevi_offerte.html')
+def get_offers(request):
+    return render(request, 'website/get_offers.html')
