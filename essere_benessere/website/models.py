@@ -1,3 +1,11 @@
+"""
+Simple E/R scheme
+=================
+
+        1-N         1-N
+Account -> Campaign <- Promotion
+"""
+
 from django.db import models
 
 class Account(models.Model):
