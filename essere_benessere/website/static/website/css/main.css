@@ -1,0 +1,7 @@
+/* main css to loading custom CSS */
+
+@import url(small_css.css) screen and (max-width: 470px); /* small screen css layout */
+
+@import url(big_css.css) screen and (min-width: 471px); /* big screen css layout */
+
+@import url(fix_css.css) screen and (min-width: 471px) and (max-width: 885px); /* medium screen css layout fix  */
