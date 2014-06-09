@@ -53,87 +53,93 @@
 		{# TODO: implements google analytics here #}
 		{% endblock head %}
 	</head>
-	<header>
-		<div class="header page">
-			<div class="page_wrapper">
-				<div class="logo_container"><img src="{% static "website/img/logo.png" %}" alt="Essere & Benessere"></div>
-				<div class="nav_container">
-					<nav>
-						<ul class="navigation_desktop">
-							<li><a href="#"><span class="nav_element">Chi siamo</span></a></li>
-							<li><a href="#"><span class="nav_element">Servizi</span></a></li>
-							<li><a href="#"><span class="nav_element">Luce pulsata</span></a></li>
-							<li><a href="#"><span class="nav_element">Sbiancamento dentale</span></a></li>
-							<li><a href="#"><span class="nav_element">Contatti</span></a></li>
-							<li><a href="#"><span class="nav_element">Le nostre offerte</span></a></li>
-						</ul>
-						{# implements here navigation mobile #}
-					</nav>
-				</div>
-			</div>
-		</div>
-	</header>
-
-	<section>
-		{% block content_start %}
-			<div class="content page">
+	<body>
+		<header>
+			<div class="header page">
 				<div class="page_wrapper">
-		{% endblock content_start %}
-		{% block main_content %}
-		{# put main content here #}
-		{% endblock main_content %}
-		{% block content_end %}
+					<div class="logo_container"><img src="{% static "website/img/logo.png" %}" alt="Essere & Benessere"></div>
+					<div class="nav_container">
+						<nav>
+							<ul class="navigation_desktop">
+								<li><a href="#"><span class="nav_element">Chi siamo</span></a></li>
+								<li><a href="#"><span class="nav_element">Servizi</span></a></li>
+								<li><a href="#"><span class="nav_element">Luce pulsata</span></a></li>
+								<li><a href="#"><span class="nav_element">Sbiancamento dentale</span></a></li>
+								<li><a href="#"><span class="nav_element">Contatti</span></a></li>
+								<li><a href="#"><span class="nav_element">Le nostre offerte</span></a></li>
+							</ul>
+							{# implements here navigation mobile #}
+						</nav>
+					</div>
 				</div>
 			</div>
-		{% endblock content_end %}
-	</section>
+		</header>
 
-	<footer>
-		<div class="footer page">
-			<div class="page_wrapper">
-				<div class="footer_container">
-					<div class="footer_container_wrapper">
-						<div class="footer_block font_color1">
-							<div>
-								<img src="{% static "website/img/footer_separator.png" %}" alt="Essere & Benessere">
-							</div>
-							<div class="footer_caption">Contatti</div>
-							<div class="footer_data_container">
-								<div class="image">
-									<img src="{% static "website/img/email_image.png" %}" alt="Essere & Benessere">
+		<section>
+			{% block content_start %}
+				<div class="content page">
+					<div class="page_wrapper">
+			{% endblock content_start %}
+			{% block main_content %}
+			{# put main content here #}
+			{% endblock main_content %}
+			{% block content_end %}
+					</div>
+				</div>
+			{% endblock content_end %}
+		</section>
+
+		<footer>
+			<div class="footer page">
+				<div class="page_wrapper">
+					<div class="footer_container">
+						<div class="footer_container_wrapper">
+							<div class="footer_block font_color1">
+								<div>
+									<img src="{% static "website/img/footer_separator.png" %}" alt="Essere & Benessere">
 								</div>
-								<div class="data">email@email.com</div>
-							</div>
-							<div class="footer_data_container">
-								<div class="image">
-									<img src="{% static "website/img/mobile_image.png" %}" alt="Essere & Benessere">
-								</div>
-								<div class="data">011.985.71.00</div>
-							</div>
-						</div>
-						<div class="footer_block font_color1">
-							<div>
-								<img src="{% static "website/img/footer_separator.png" %}" alt="Essere & Benessere">
-							</div>
-							<div class="footer_caption">Contatti</div>
-							<div class="footer_data_social">
-								<div class="footer_data_social_wrapper">
-									<div>
-										<a href="#"><img src="{% static "website/img/fb_icon.png" %}" alt="pagina Facebook"></a>
+								<div class="footer_caption">Contatti</div>
+								<div class="footer_data_container">
+									<div class="image">
+										<img src="{% static "website/img/email_image.png" %}" alt="Essere & Benessere">
 									</div>
-									<div>
-										<a href="#"><img src="{% static "website/img/google_icon.png" %}" alt="pagina Google+"></a>
+									<div class="data">email@email.com</div>
+								</div>
+								<div class="footer_data_container">
+									<div class="image">
+										<img src="{% static "website/img/mobile_image.png" %}" alt="Essere & Benessere">
+									</div>
+									<div class="data">011.985.71.00</div>
+								</div>
+							</div>
+							<div class="footer_block font_color1">
+								<div>
+									<img src="{% static "website/img/footer_separator.png" %}" alt="Essere & Benessere">
+								</div>
+								<div class="footer_caption">Contatti</div>
+								<div class="footer_data_social">
+									<div class="footer_data_social_wrapper">
+										<div>
+											<a href="#"><img src="{% static "website/img/fb_icon.png" %}" alt="pagina Facebook"></a>
+										</div>
+										<div>
+											<a href="#"><img src="{% static "website/img/google_icon.png" %}" alt="pagina Google+"></a>
+										</div>
 									</div>
 								</div>
 							</div>
 						</div>
 					</div>
-				</div>
-				<div class="copyright_container font_color1">
-					<span>Essere &amp; Benessere, Via Bainotti 2a, Volvera (TO) | P.IVA 1111111111 | 2014 Powered By Entpy Software</span>
+					<div class="copyright_container font_color1">
+						<span>Essere &amp; Benessere, Via Bainotti 2a, Volvera (TO) | P.IVA 1111111111 | 2014 Powered By Entpy Software</span>
+					</div>
 				</div>
 			</div>
-		</div>
-	</footer>
+		</footer>
+		<!-- javascript loading -->
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+		{#<script src="{% static "website/js/jquery.easing.1.3.js" %}"></script>
+		<script src="{% static "website/js/jquery.animate-enhanced.min.js" %}"></script>
+		<script src="{% static "website/js/superslider/jquery.superslides.js" %}"></script>#}
+	</body>
 </html>
-

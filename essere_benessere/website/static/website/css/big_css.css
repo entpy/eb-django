@@ -9,7 +9,7 @@
 /* header style }}} */
 
 /* footer style {{{ */
-.footer .footer_container { float: none; margin: 1.875em; auto 0; padding: 1.25em; width: 47em; }
+.footer .footer_container { float: none; margin: 1.875em auto 0; padding: 1.25em; width: 47em; }
 .footer .footer_container .footer_container_wrapper { display: inline-block; }
 .footer .footer_container .footer_container_wrapper .footer_block { float: left; margin: 0 2.375em; text-align: center; }
 .footer .footer_container .footer_container_wrapper .footer_block > div { clear: both; float: left; width: 100%; }
