@@ -45,7 +45,7 @@
 
 		<!-- javascript loading -->
 		<!--[if lt IE 9]>
-			<script src="js/html5shiv.js"></script>
+			<script src="{% static "website/js/html5shiv.js" %}"></script>
 		<![endif]-->
 		<script src="{% static "website/js/modernizr.custom.19502.js" %}"></script>
 
@@ -75,11 +75,17 @@
 	</header>
 
 	<section>
-		<div class="page">
-			<div class="page_wrapper">
-				Yo!
+		{% block content_start %}
+			<div class="content page">
+				<div class="page_wrapper">
+		{% endblock content_start %}
+		{% block main_content %}
+		{# put main content here #}
+		{% endblock main_content %}
+		{% block content_end %}
+				</div>
 			</div>
-		</div>
+		{% endblock content_end %}
 	</section>
 
 	<footer>

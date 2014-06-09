@@ -57,6 +57,7 @@ WSGI_APPLICATION = 'essere_benessere.wsgi.application'
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
 
 # postgreSQL
+"""
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -67,9 +68,8 @@ DATABASES = {
         'PORT': '5432',
     }
 }
-
-# MySQL
 """
+# MySQL
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -80,7 +80,6 @@ DATABASES = {
         'PORT': '3306',
     }
 }
-"""
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
