@@ -1,4 +1,5 @@
 {% extends "website/inc/base.html" %}
+{% load staticfiles %}
 
 {% block title %}
 <title>Index</title>
@@ -7,6 +8,18 @@
 {% block description %}
 <meta name="description" content="Index page">
 {% endblock description %}
+
+{% block loaded_css %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static "website/css/superslides.css" %}">
+{% endblock loaded_css %}
+
+{% block loaded_script %}
+{{ block.super }}
+<script src="{% static "website/js/jquery.easing.1.3.js" %}"></script>
+<script src="{% static "website/js/jquery.animate-enhanced.min.js" %}"></script>
+<script src="{% static "website/js/superslider/jquery.superslides.js" %}"></script>
+{% endblock loaded_script %}
 
 {# only for index, removing external page div #}
 {% block content_start %}
