@@ -1,4 +1,37 @@
 {% extends "website/inc/base_index.html" %}
+{% load staticfiles %}
 {% block main_content %}
-YOO!
+<div id="slides" style="float: left;">
+  <ul class="slides-container">
+    <li>
+      <img src="{% static "website/img/slider/surly.jpeg" %}" alt="">
+      <div class="container">
+        Slide one
+      </div>
+    </li>
+    <li>
+      <img src="{% static "website/img/slider/home-banner-01.jpg" %}" alt="">
+      <div class="container">
+        Slide two
+      </div>
+    </li>
+    <li>
+      <img src="{% static "website/img/slider/cinelli.jpeg" %}" alt="">
+      <div class="container">
+        Slide three
+      </div>
+    </li>
+  </ul>
+  <nav class="slides-navigation">
+    <a href="#" class="next">Next</a>
+    <a href="#" class="prev">Previous</a>
+  </nav>
+</div>
+<script>
+	$(document).ready(function(){
+		$('#slides').superslides({
+			animation: "fade"
+		});
+	});
+</script>
 {% endblock main_content %}
