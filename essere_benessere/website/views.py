@@ -21,8 +21,8 @@ def index(request):
 def about_us(request):
     return render(request, 'website/about_us.html')
 
-def our_works(request):
-    return render(request, 'website/our_works.html')
+def our_services(request):
+    return render(request, 'website/our_services.html')
 
 def contacts(request):
     return render(request, 'website/contacts.html')

@@ -1,5 +1,9 @@
 /* medium/large screen style */
 
+/* common element style {{{ */
+.page_wrapper { width: 980px; }
+/* common element style }}} */
+
 /* header style {{{ */
 .page_wrapper > div { float: left; }
 .header { height: 4.0625em; }
