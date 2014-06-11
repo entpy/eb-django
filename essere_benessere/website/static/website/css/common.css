@@ -1,13 +1,23 @@
 /* common element style {{{ */
 body { font: normal 100%/1 Helvetica, Arial, sans-serif; }
 b, .bold { font-weight: bold; }
+/*html { background-color: #ffdfeb; }*/
 .display_none { display: none; }
 .page { float: left; width: 100%; }
 .page_wrapper { margin: 0 auto; }
+.readable_content { letter-spacing: 0.015em; line-height: 1.31em; }
+.margin_top_40 { margin-top: 40px; }
+.margin_top_25 { margin-top: 25px; }
+.margin_top_78 { margin-top: 78px; }
+.margin_top_80 { margin-top: 80px; }
+.margin_right_20 { margin-right: 20px; }
+.width_100_100 { width: 100%; }
+.align_center { text-align: center; }
 /* common element style }}} */
 
 
 /* header style {{{ */
+.logo_container a { color: transparent; }
 /* header style }}} */
 
 /* main content style {{{ */
@@ -19,12 +29,29 @@ b, .bold { font-weight: bold; }
 .slides-navigation .next i { left: 1px; }
 .slides-pagination { margin-bottom: 5px; }
 .slides-pagination a { color: transparent; }
+.widescreen_slider_block { float: left; }
 /* superslides }}} */
 
+h1 { font-size: 30px; }
+.page_title_container { margin: 40px 0 20px; }
+.page_title_container * { color: #00182f; }
+.page_title_container .title { border-bottom: 1px solid #BFBFBF; display: inline-block; margin-bottom: 30px; margin-left: 50px; padding: 0 30px 8px; }
+.page_title_container .description { letter-spacing: 0.015em; line-height: 1.21em; }
+
+.contacts_container { width: 100%; }
+.contacts_container .contacts_container_wrapper { margin: 0 auto; width: 75%; }
+.contacts_container .contacts_container_wrapper > div { float: left; width: 50%; }
+
+.single_contact_container .top .title { font-size: 19px; font-weight: bold; }
+.single_contact_container .bottom { display: inline-block; margin-left: 23px; margin-top: 10px; }
+.single_contact_container .bottom > div { float: left; }
+.single_contact_container .bottom .image { margin-right: 15px; }
+.single_contact_container .bottom .content { margin-top: 13px; }
 /* footer style {{{ */
 /* footer style }}} */
 
 /* color style {{{ */
+.html {  }
 .header { background-color: #1c081c; }
 .navigation_desktop > li a { color: transparent; text-decoration: none; }
 .navigation_desktop .nav_element { color: #fff; }

@@ -1,10 +1,33 @@
 {% extends "website/inc/base_about_us.html" %}
 {% load staticfiles %}
 {% block main_content %}
-Yo!
-<script>
-	$(document).ready(function(){
-		alert("test");
-	});
-</script>
+{{ block.super }}
+<div class="image_text1">
+	<div class="image_container">
+		<img class="margin_top_40" src="{% static "website/img/pennelli.png" %}" alt="Chi siamo">
+	</div>
+	<div class="text_container">
+		<div class="text_container_wrapper readable_content">
+			<div class="title">Essere &amp; Benessere</div>
+			<div class="content">
+				 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum cursus, velit vestibulum commodo facilisis, ligula urna posuere libero, et placerat urna leo quis lectus. Phasellus nec neque ut elit imperdiet imperdiet at a felis. In consequat pharetra arcu. Mauris at tincidunt odio. Nullam molestie egestas eleifend. Phasellus hendrerit non leo et aliquam. Donec eget imperdiet metus. Morbi risus ligula, bibendum ac neque eu, imperdiet pharetra odio. Duis in nisi ipsum. Morbi ultricies vulputate tellus, sit amet mattis leo vulputate eu. Vivamus porta tempus euismod. 
+			</div>
+			<div class="title">Perchè scegliere noi?</div>
+			<div class="content">
+				 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum cursus, velit vestibulum commodo facilisis, ligula urna posuere libero. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum cursus, velit vestibulum commodo.
+			</div>
+		</div>
+	</div>
+</div>
+<div class="about_image_container">
+	<div class="image1">
+		<img src="{% static "website/img/pennello-ciglia.png" %}" alt="Chi siamo">
+	</div>
+	<div class="image2">
+		<img src="{% static "website/img/rossetto.png" %}" alt="Chi siamo">
+	</div>
+	<div class="image3">
+		<img src="{% static "website/img/matite.png" %}" alt="Chi siamo">
+	</div>
+</div>
 {% endblock main_content %}

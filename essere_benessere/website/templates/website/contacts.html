@@ -1,0 +1,81 @@
+{% extends "website/inc/base_contacts.html" %}
+{% load staticfiles %}
+{% block main_content %}
+{{ block.super }}
+<div class="contacts_container">
+	<div class="contacts_container_wrapper">
+		<div class="left">
+			<div class="single_contact_container">
+				<div class="top">
+					<div class="title">Indirizzo</div>
+				</div>
+				<div class="bottom">
+					<div class="image">
+						<img src="{% static "website/img/map.png" %}" alt="Indirizzo">
+					</div>
+					<div class="content readable_content">
+						Essere &amp; Benessere<br />Via bainotti 2a, Volvera (TO)
+					</div>
+				</div>
+			</div>
+			<div class="single_contact_container margin_top_78">
+				<div class="top">
+					<div class="title">Orario</div>
+				</div>
+				<div class="bottom">
+					<div class="image">
+						<img src="{% static "website/img/clock.png" %}" alt="Indirizzo">
+					</div>
+					<div class="content readable_content">
+						Mar-Ven 9.00-19.00<br />
+						Sabato 9.00-18.00<br />
+						Domenica e Lunedì chiuso
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="right">
+			<div class="single_contact_container">
+				<div class="top">
+					<div class="title">Telefono</div>
+				</div>
+				<div class="bottom">
+					<div class="image">
+						<img src="{% static "website/img/phone.png" %}" alt="Indirizzo">
+					</div>
+					<div class="content readable_content">
+						011.985.71.00
+					</div>
+				</div>
+			</div>
+			<div class="single_contact_container margin_top_25">
+				<div class="top">
+					<div class="title">Email</div>
+				</div>
+				<div class="bottom">
+					<div class="image">
+						<img src="{% static "website/img/mail.png" %}" alt="Indirizzo">
+					</div>
+					<div class="content readable_content">
+						info@esserebenessere.it
+					</div>
+				</div>
+			</div>
+			<div class="single_contact_container margin_top_25">
+				<div class="top">
+					<div class="title">Social</div>
+				</div>
+				<div class="bottom">
+					<div class="image">
+						<img class="margin_right_20" src="{% static "website/img/fb-contacts.png" %}" alt="Indirizzo">
+						<img src="{% static "website/img/g-contacts.png" %}" alt="Indirizzo">
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="width_100_100 align_center margin_top_80">
+	<img src="{% static "website/img/contacts-image.png" %}" alt="Contattaci">
+</div>
+{% endblock main_content %}

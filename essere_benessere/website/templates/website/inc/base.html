@@ -63,7 +63,10 @@
 		<header>
 			<div class="header page">
 				<div class="page_wrapper">
-					<div class="logo_container"><img src="{% static "website/img/logo.png" %}" alt="Essere & Benessere"></div>
+					<div class="logo_container">
+						<a href="/">
+							<img src="{% static "website/img/logo.png" %}" alt="Essere & Benessere"></div>
+						</a>
 					<div class="nav_container">
 						<nav>
 							<ul class="navigation_desktop">
@@ -137,10 +140,12 @@
 						</div>
 					</div>
 					<div class="copyright_container font_color1">
-						<span>Essere &amp; Benessere, Via Bainotti 2a, Volvera (TO) | P.IVA 1111111111 | 2014 Powered By Entpy Software</span>
+						<span>Essere &amp; Benessere, Via Bainotti 2a, Volvera (TO) P.IVA 1111111111 | 2014 Powered By Entpy Software</span>
 					</div>
 				</div>
 			</div>
 		</footer>
+		{% block custom_page_script %}
+		{% endblock custom_page_script %}
 	</body>
 </html>

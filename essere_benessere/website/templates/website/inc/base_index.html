@@ -11,7 +11,8 @@
 
 {% block loaded_css %}
 {{ block.super }}
-<link rel="stylesheet" href="{% static "website/css/superslides.css" %}">
+<link rel="stylesheet" href="{% static "website/css/superslides.css" %}" >
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" >
 {% endblock loaded_css %}
 
 {% block loaded_script %}
@@ -19,7 +20,6 @@
 <script src="{% static "website/js/jquery.easing.1.3.js" %}"></script>
 <script src="{% static "website/js/jquery.animate-enhanced.min.js" %}"></script>
 <script src="{% static "website/js/superslider/jquery.superslides.js" %}"></script>
-<link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 {% endblock loaded_script %}
 
 {# only for index, removing external page div #}
@@ -32,3 +32,7 @@
 {# only for index, removing external page div #}
 {% block content_end %}
 {% endblock content_end %}
+
+{% block custom_page_script %}
+<script src="{% static "website/js/view/index.js" %}"></script>
+{% endblock custom_page_script %}
