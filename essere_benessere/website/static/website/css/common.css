@@ -1,7 +1,7 @@
 /* common element style {{{ */
 body { font: normal 100%/1 Helvetica, Arial, sans-serif; }
 b, .bold { font-weight: bold; }
-/*html { background-color: #ffdfeb; }*/
+html { background-color: #ffdfeb; }
 .display_none { display: none; }
 .page { float: left; width: 100%; }
 .page_wrapper { margin: 0 auto; }
@@ -12,7 +12,9 @@ b, .bold { font-weight: bold; }
 .margin_top_80 { margin-top: 80px; }
 .margin_right_20 { margin-right: 20px; }
 .width_100_100 { width: 100%; }
+.width_53_100 { width: 53%!important; }
 .align_center { text-align: center; }
+.hover_opacity:hover { opacity: 0.7; }
 /* common element style }}} */
 
 
@@ -47,6 +49,22 @@ h1 { font-size: 30px; }
 .single_contact_container .bottom > div { float: left; }
 .single_contact_container .bottom .image { margin-right: 15px; }
 .single_contact_container .bottom .content { margin-top: 13px; }
+
+.offers_container { margin-top: 40px; width: 100%; }
+.single_offer_container { margin: 0 auto; width: 770px; }
+.single_offer_container > div { float: left; }
+.single_offer_container > .offert_wrapper { background-color: #FFD5DB; border: 4px solid #F6CCD5; padding: 19px; }
+.single_offer_container > .offert_wrapper > div { float: left; }
+.single_offer_container > .offert_wrapper > .image_container { width: 222px; }
+.single_offer_container > .offert_wrapper > .offert_data_container { width: 500px; }
+.offert_wrapper .offert_name { font-size: 17px; font-weight: bold; margin-bottom: 16px; text-align: center; }
+.offert_wrapper .offert_name { font-size: 17px; font-weight: bold; margin-bottom: 16px; text-align: center; }
+.offert_wrapper .html_container { background-color: #F6CCD5; color: #505050; font-size: 14px; padding: 20px; }
+.offert_wrapper .offer_details_container { margin-top: 20px; }
+.offert_wrapper .offer_details_container .section_title { border-bottom: 1px solid #BFBFBF; display: inline-block; font-size: 22px; margin-bottom: 9px; padding: 3px 15px; text-align: center; }
+.offer_single_details .label { display: inline-block; font-size: 14px; margin-bottom: 7px; margin-right: 10px; min-width: 110px; text-align: right; }
+.offer_single_details .value { font-size: 16px; font-weight: bold; }
+.separator { display: inline-block; margin: 50px 0; text-align: center; width: 100%; }
 /* footer style {{{ */
 /* footer style }}} */
 
