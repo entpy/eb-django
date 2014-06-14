@@ -3,6 +3,7 @@
 {% block main_content %}
 {{ block.super }}
 <div class="offers_container">
+	<!-- single offer container -->
 	<div class="single_offer_container">
 		<div class="offert_wrapper">
 			<div class="image_container">
@@ -27,9 +28,11 @@
 			</div>
 		</div>
 	</div>
+	<!-- offers separator -->
 	<div class="separator">
-		<img src="" alt="Essere & Benessere">
+		<img src="{% static "website/img/separator.png" %}" alt="Essere & Benessere">
 	</div>
+	<!-- single offer container -->
 	<div class="single_offer_container">
 		<div class="offert_wrapper">
 			<div class="image_container">
@@ -53,6 +56,39 @@
 				</div>
 			</div>
 		</div>
+	</div>
+	<!-- offers separator -->
+	<div class="separator">
+		<img src="{% static "website/img/separator.png" %}" alt="Essere & Benessere">
+	</div>
+	<!-- single offer container -->
+	<div class="single_offer_container">
+		<div class="offert_wrapper">
+			<div class="image_container">
+				<img src="http://placekitten.com/g/200/201" alt="Offerta speciale">
+			</div>
+			<div class="offert_data_container">
+				<div class="offert_name">Fantastica offerta!</div>
+				<div class="html_container readable_content">Lorem ipsum doloret sit amet.Lorem et sit amet.Lorem ipsum doloret et.Lorem ipsum doloret sit amet. oret sit amt.Lore ipsum doloret sit Lorem ipsum doloret</div>
+				<div class="offer_details_container">
+					<div class="section_title">Dettagli offerta</div>
+					<div class="content">
+						<div class="offer_single_details">
+							<span class="label">Scade tra:</span>
+							<span class="value">3 Giorni, 6 Ore, 2 minuti</span>
+						</div>
+						<div class="offer_single_details">
+							<span class="label">Codice</span>
+							<span class="value">H3SF8</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- offers separator -->
+	<div class="separator">
+		<img src="{% static "website/img/separator.png" %}" alt="Essere & Benessere">
 	</div>
 </div>
 {% endblock main_content %}

@@ -17,16 +17,27 @@
 
 /* main content style {{{ */
 .widescreen_slider_block { margin-top: 65px; }
+.image_text1 { display: block!important; margin: 0 auto; width: 85%; }
 .image_text1 > div { float: left; }
 .image_text1 .image_container { text-align: center; width: 40%; }
 .image_text1 .text_container { width: 60%; }
-.image_text1 .text_container .text_container_wrapper { background-color: #FFDFEB; border: 1px solid #FFC0CB; border-radius: 7px; float: right; padding: 20px; width: 85%; }
+.image_text1 .text_container .text_container_wrapper { float: right; width: 85%; }
 .image_text1 .text_container .text_container_wrapper .title { font-size: 17px; font-weight: bold; margin-bottom: 15px; margin-left: 10px; }
-.image_text1 .text_container .text_container_wrapper .content { font-size: 14px; margin-bottom: 30px; }
+.image_text1 .text_container .text_container_wrapper .content { border-radius: 5px; font-size: 14px; padding: 20px; }
 .about_image_container { margin-top: 25px; width: 100%; }
 .about_image_container > div { float: left; width: 33%; }
+.about_image_container .image1 { left: -80px; position: relative; text-align: right; top: -127px; }
 .about_image_container .image1 img { margin-left: 35px; }
 .about_image_container .image2 img { margin-top: 120px; }
+.page_title_container .title { margin-left: 50px; }
+/* offers page {{{ */
+.single_offer_container { width: 770px; }
+.single_offer_container > .offert_wrapper > .offert_data_container { width: 500px; }
+/* }}} */
+/* contact us page {{{ */
+.contacts_container { text-align: center; }
+.contacts_container .contacts_container_wrapper { border-radius: 5px; display: inline-block; padding: 20px; text-align: left; }
+/* }}} */
 /* main content style }}} */
 
 /* footer style {{{ */
