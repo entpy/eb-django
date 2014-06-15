@@ -2,7 +2,7 @@
 
 /* common element style {{{ */
 .page_wrapper { width: 980px; }
-.content .page_wrapper { background-color: #FFD5DB; margin-top: 65px; min-height: 470px; padding-bottom: 30px; }
+.content .page_wrapper { margin-top: 65px; min-height: 470px; padding-bottom: 30px; }
 .content .page_wrapper > div { display: inline-block; }
 /* common element style }}} */
 
@@ -17,13 +17,13 @@
 
 /* main content style {{{ */
 .widescreen_slider_block { margin-top: 65px; }
-.image_text1 { display: block!important; margin: 0 auto; width: 85%; }
+.image_text1 { margin: 0 auto; width: 85%; }
 .image_text1 > div { float: left; }
 .image_text1 .image_container { text-align: center; width: 40%; }
 .image_text1 .text_container { width: 60%; }
 .image_text1 .text_container .text_container_wrapper { float: right; width: 85%; }
 .image_text1 .text_container .text_container_wrapper .title { font-size: 17px; font-weight: bold; margin-bottom: 15px; margin-left: 10px; }
-.image_text1 .text_container .text_container_wrapper .content { border-radius: 5px; font-size: 14px; padding: 20px; }
+.image_text1 .text_container .text_container_wrapper .content { border-radius: 5px; font-size: 14px; margin-bottom: 40px; padding: 20px; }
 .about_image_container { margin-top: 25px; width: 100%; }
 .about_image_container > div { float: left; width: 33%; }
 .about_image_container .image1 { left: -80px; position: relative; text-align: right; top: -127px; }
@@ -35,8 +35,14 @@
 .single_offer_container > .offert_wrapper > .offert_data_container { width: 500px; }
 /* }}} */
 /* contact us page {{{ */
-.contacts_container { text-align: center; }
-.contacts_container .contacts_container_wrapper { border-radius: 5px; display: inline-block; padding: 20px; text-align: left; }
+/* }}} */
+/* our services page {{{ */
+.our_services_structure { width: 800px; }
+.our_services_structure > .left { width: 200px; }
+.our_services_structure > .right { width: 560px; }
+.service_html_container > .description_block_1_container > .left { width: 345px; }
+.service_html_container > .description_block_1_container > .right { width: 200px; }
+.service_html_container > .description_block_1_container > .right img { max-width: 100%; }
 /* }}} */
 /* main content style }}} */
 

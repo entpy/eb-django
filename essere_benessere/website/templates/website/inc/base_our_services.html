@@ -9,11 +9,25 @@
 <meta name="description" content="I nostri servizi">
 {% endblock description %}
 
+{% block loaded_css %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static "website/js/fancybox/jquery.fancybox.css" %}?v=2.1.5" >
+{% endblock loaded_css %}
+
+{% block loaded_script %}
+{{ block.super }}
+<script src="{% static "website/js/fancybox/jquery.fancybox.pack.js" %}?v=2.1.5"></script>
+{% endblock loaded_script %}
+
 {% block main_content %}
 <div class="page_title_container">
 	<div class="title">
 		<h1>I nostri servizi</h1>
 	</div>
-	<div class="description"></div>
+	<div class="description">Tutto quello che Essere &amp; Benessere può offrirti per prendersi cura del tuo corpo.</div>
 </div>
 {% endblock main_content %}
+
+{% block custom_page_script %}
+<script src="{% static "website/js/view/our_services.js" %}"></script>
+{% endblock custom_page_script %}
