@@ -1,0 +1,36 @@
+/* medium/large screen style */
+
+/* common element style {{{ */
+.page_wrapper { width: 100%; }
+/* common element style }}} */
+
+/* header style {{{ */
+.header { height: auto; position: relative; }
+.header .page_wrapper > div { text-align: center; width: 100%; }
+.nav_container { margin: 0px; }
+.nav_container ul { display: inline-block; }
+/* header style }}} */
+
+/* main content style {{{ */
+/* our services page {{{ */
+
+/* our services page }}} */
+.our_services_structure { width: 100%; }
+.our_services_structure > .right { width: 470px; }
+.service_html_container > .description_block_1_container > .left { width: 255px; }
+
+/* offers page {{{ */
+.single_offer_container  { width: 95%; }
+.single_offer_container > .offert_wrapper { display: inline-block; margin: 0 auto; }
+.single_offer_container > .offert_wrapper > .image_container { width: 30%; }
+.single_offer_container > .offert_wrapper > .image_container img { width: 90%; }
+.single_offer_container > .offert_wrapper > .offert_data_container { width: 70%; }
+.separator img { width: 75%; }
+/* offers page }}} */
+/* main content style }}} */
+
+/* footer style {{{ */
+.footer .footer_container { width: 80%; padding: 10px; }
+.footer .footer_container .footer_container_wrapper { display: inline-block; width: 100%; }
+.footer .footer_container .footer_container_wrapper .footer_block { float: left; margin: auto; width: 50%; }
+/* footer style }}} */
