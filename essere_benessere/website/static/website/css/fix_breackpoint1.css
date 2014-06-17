@@ -15,9 +15,15 @@
 /* our services page {{{ */
 
 /* our services page }}} */
-.our_services_structure { width: 100%; }
-.our_services_structure > .right { width: 470px; }
-.service_html_container > .description_block_1_container > .left { width: 255px; }
+.our_services_structure { display: table; width: 90%; }
+.our_services_structure .services_name_image_container { display: none; }
+.our_services_structure > div { display: table-cell; float: none; vertical-align: top; }
+.our_services_structure > .left { width: 25%; }
+.our_services_structure > .right { width: 75%; }
+.service_html_container > .description_block_1_container { display: table; }
+.service_html_container > .description_block_1_container > div { display: table-cell; float: none; vertical-align: top; }
+.service_html_container > .description_block_1_container > .left { margin-right: 1%; width: 39%; }
+.service_html_container > .description_block_1_container > .right { width: 39%; }
 
 /* offers page {{{ */
 .single_offer_container  { width: 95%; }
