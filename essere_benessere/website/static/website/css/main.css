@@ -5,3 +5,5 @@
 @import url(big_css.css) screen and (min-width: 471px); /* big screen css layout */
 
 @import url(fix_breackpoint1.css) screen and (min-width: 471px) and (max-width: 995px); /* medium screen css layout fix  */
+
+@import url(fix_breackpoint2.css) screen and (min-width: 471px) and (max-width: 745px); /* medium screen css layout fix  */
