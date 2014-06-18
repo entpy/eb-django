@@ -4,6 +4,7 @@
 .page_wrapper { width: 980px; }
 .content .page_wrapper { margin-top: 65px; min-height: 470px; padding-bottom: 30px; }
 .content .page_wrapper > div { display: inline-block; }
+.display_only_pc { display: block; }
 /* common element style }}} */
 
 /* header style {{{ */

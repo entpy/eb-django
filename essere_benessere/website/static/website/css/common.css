@@ -3,6 +3,7 @@ body { font: normal 100%/1 Helvetica, Arial, sans-serif; }
 b, .bold { font-weight: bold; }
 html { background-color: #ffdfeb; }
 .display_none, .hidden { display: none!important; }
+.display_only_mobile, .display_only_pc { display: none; }
 .page { float: left; width: 100%; }
 .page_wrapper { margin: 0 auto; }
 .content .page_wrapper { background-color: #FFD5DB; margin-bottom: 30px; }
