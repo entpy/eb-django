@@ -66,19 +66,20 @@ h1 { font-size: 30px; }
 .contacts_page { text-align: center; }
 .contacts_page .contacts_container_wrapper > div { float: left; width: 50%; }
 .contacts_page .contacts_container_wrapper { background-color: #FFDFEB; border: 1px solid #FFC0CB; margin: 0 auto; width: 75%; border-radius: 5px; display: inline-block; padding: 20px; text-align: left; }
-/* contact us page }}} */
-
 .single_contact_container .top .title { font-size: 19px; font-weight: bold; }
 .single_contact_container .bottom { display: inline-block; margin-left: 23px; margin-top: 10px; }
 .single_contact_container .bottom > div { float: left; }
 .single_contact_container .bottom .image { margin-right: 15px; }
 .single_contact_container .bottom .content { margin-top: 13px; }
+.single_contact_container.time_contact { margin-top: 78px; }
+.single_contact_container.email_contact, .single_contact_container.social_contact { margin-top: 25px; }
+/* contact us page }}} */
 
 /* our offers page {{{ */
 .our_offers_page { margin-top: 40px; }
 .single_offer_container { margin: 0 auto; }
 .single_offer_container > div { float: left; }
-.single_offer_container > .offert_wrapper { background-color: #FFDFEB; border: 4px solid #F6CCD5; border-radius: 4px; padding: 19px; }
+.single_offer_container > .offert_wrapper { background-color: #cc99ff; border: 4px solid #F6CCD5; border-radius: 4px; padding: 19px; }
 .single_offer_container > .offert_wrapper > div { float: left; }
 .single_offer_container > .offert_wrapper > .image_container { width: 222px; }
 .offert_wrapper .offert_name { font-size: 17px; font-weight: bold; margin-bottom: 16px; text-align: center; }
@@ -93,7 +94,7 @@ h1 { font-size: 30px; }
 	transition: all 300ms cubic-bezier(0.250, 0.250, 0.750, 0.750); /* linear */
 }
 .offert_wrapper .offer_details_container { margin-top: 20px; }
-.offert_wrapper .offer_details_container .section_title { border-bottom: 1px solid #BFBFBF; display: inline-block; font-size: 22px; margin-bottom: 9px; padding: 3px 15px 5px; text-align: center; }
+.offert_wrapper .offer_details_container .section_title { border-bottom: 1px solid #1c081c; display: inline-block; font-size: 22px; margin-bottom: 9px; padding: 3px 15px 5px; text-align: center; }
 .offer_single_details .label { display: inline-block; font-size: 14px; margin-bottom: 7px; margin-right: 10px; min-width: 110px; text-align: right; }
 .offer_single_details .value { font-size: 16px; font-weight: bold; }
 .separator { display: inline-block; margin: 50px 0; text-align: center; width: 100%; }
@@ -155,13 +156,32 @@ h1 { font-size: 30px; }
 .service_html_container > .description_block_2_container > div { float: left; }
 .service_html_container > .description_block_2_container > .title { font-size: 15px; font-weight: bold; margin-bottom: 6px; margin-left: 7px; }
 .service_html_container > .description_block_2_container > .content { margin-bottom: 20px; }
-/* }}} */
+/* our services page }}} */
+
+/* get offers page {{{ */
+.styled_form input { border: 1px solid lightgray; padding: 10px 20px; width: 205px; }
+.styled_form > .input_container { display: table; margin: 0 auto; width: 520px; }
+.styled_form > .input_container.input_container_margin_top { margin-top: 21px; }
+.styled_form > .input_container > div { display: table-cell; width: 50%; }
+.styled_form > .input_container > .right { text-align: right; }
+.styled_form > .input_container .birthday_fake_input { background-color: white; border: 1px solid lightgray; display: table; line-height: 0; margin: 0 auto; padding: 7px 20px; width: auto; }
+.styled_form > .input_container .birthday_fake_input > div { display: table-cell; width: 50%; }
+.styled_form > .input_container .birthday_fake_input > .left { color: #757575; width: 40%; }
+.styled_form > .input_container .birthday_fake_input > .right { text-align: right; width: 60%; }
+.styled_form > .input_container .birthday_fake_input select { background: none repeat scroll 0 0 #ebebeb; border: 1px solid lightgray; padding: 2px 10px; }
+.styled_form > .disclaimer_container { margin-top: 70px; text-align: center; }
+.styled_form > .disclaimer_container label { font-size: 14px; vertical-align: middle; }
+.styled_form > .disclaimer_container input { vertical-align: middle; width: auto; }
+.styled_form > .submit_container { margin-top: 10px; text-align: center; }
+.styled_form > .submit_container input[type="submit"] { background-color: #1c081c; border: 2px solid #cc99ff; color: white; cursor: pointer; font-size: 17px; }
+.styled_form > .submit_container input[type="submit"]:hover { background-color: #420042; }
+/* get offers page }}} */
+
 /* main content style }}} */
 /* footer style {{{ */
 /* footer style }}} */
 
 /* color style {{{ */
-.html {  }
 .header {
 	background-color: #1c081c;
 	-webkit-transition: all 300ms cubic-bezier(0.250, 0.250, 0.750, 0.750);

@@ -3,16 +3,16 @@
 /* common element style {{{ */
 .display_only_mobile { display: block; }
 .display_only_pc { display: none; }
+.content .page_wrapper { margin-top: 10px; }
 /* common element style }}} */
 
 /* header style {{{ */
-.header .page_wrapper .logo_container { margin-left: 10px; text-align: left; width: 80%; }
-.navigation_desktop > li {
-	float: none;
-	padding: 10px 0;
-	text-align: center;
-	width: 100%;
-}
+.header .page_wrapper .nav_container { display: none; }
+.header .page_wrapper .logo_container { margin-left: 0px; margin-top: 16px; text-align: left; width: 80%; }
+.header .page_wrapper .logo_container img { margin-left: 10px; max-width: 205px; width: 100%; }
+.header .page_wrapper .toggle_menu_container { float: left; width: 20%; text-align: right; }
+.header .page_wrapper .toggle_menu_container > span { color: #ffdfeb; cursor: pointer; padding: 7px; position: relative; right: 17px; top: 2px; }
+.navigation_desktop > li { float: none; padding: 10px 0; text-align: center; width: 100%; }
 /* header style }}} */
 
 /* main content style {{{ */
@@ -47,6 +47,13 @@
 .offer_single_details .label { display: block; margin-right: 0px; min-width: 1px; text-align: center; }
 .offer_single_details .value { display: block; text-align: center; }
 /* offers page }}} */
+
+/* contact us page {{{ */
+.contacts_page .contacts_container_wrapper > div { float: none; width: 100%; }
+.single_contact_container { margin-top: 25px!important; }
+.single_contact_container:first-child { margin-top: 0px!important; }
+.single_contact_container > .top { margin-bottom: 5px; }
+/* contact us page }}} */
 /* main content style }}} */
 
 /* footer style {{{ */

@@ -1,0 +1,53 @@
+{% extends "website/inc/base_get_offers.html" %}
+{% load staticfiles %}
+{% block main_content %}
+{{ block.super }}
+<div class="get_offers_page single_page_content">
+	<div class="form_container">
+		<form class="styled_form" name="get_offers_form" action="" method="POST">
+			<input type="hidden" name="get_offers_form_sent" value="1">
+			<div class="input_container">
+				<div class="left">
+					<input placeholder="Nome" type="text" name="first_name" value="">
+				</div>
+				<div class="right">
+					<input placeholder="Cognome" type="text" name="last_name" value="">
+				</div>
+			</div>
+			<div class="input_container input_container_margin_top">
+				<div class="left">
+					<input placeholder="*Email" type="text" name="email" value="">
+				</div>
+				<div class="right">
+					<input placeholder="Telefono" type="text" name="phone" value="">
+				</div>
+			</div>
+			<div class="input_container input_container_margin_top birthday_container">
+				<div class="center">
+					<div class="birthday_fake_input">
+						<div class="left">Data di nascita</div>
+						<div class="right">
+							<select name="date_selector birthday_day">
+								<option>GG</option>
+							</select>
+							<select name="date_selector birthday_month">
+								<option>MM</option>
+							</select>
+							<select name="date_selector birthday_year">
+								<option>AAAA</option>
+							</select>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="disclaimer_container">
+				<label for="disclaimer_checkbox">Acconsenti al trattamento dei dati personali</label>
+				<input id="disclaimer_checkbox" type="checkbox" name="disclaimer" value="1">
+			</div>
+			<div class="submit_container">
+				<input type="submit" name="submit" value="Registrati">
+			</div>
+		</form>
+	</div>
+</div>
+{% endblock main_content %}
