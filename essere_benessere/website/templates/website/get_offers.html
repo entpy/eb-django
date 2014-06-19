@@ -16,10 +16,10 @@
 			</div>
 			<div class="input_container input_container_margin_top">
 				<div class="left">
-					<input placeholder="*Email" type="text" name="email" value="">
+					<input placeholder="*Email" type="email" name="email" value="" required>
 				</div>
 				<div class="right">
-					<input placeholder="Telefono" type="text" name="phone" value="">
+					<input placeholder="Telefono" type="number" name="phone" value="">
 				</div>
 			</div>
 			<div class="input_container input_container_margin_top birthday_container">
@@ -28,21 +28,21 @@
 						<div class="left">Data di nascita</div>
 						<div class="right">
 							<select name="date_selector birthday_day">
-								<option>GG</option>
+								<option selected="selected">GG</option>
 							</select>
 							<select name="date_selector birthday_month">
-								<option>MM</option>
+								<option selected="selected">MM</option>
 							</select>
 							<select name="date_selector birthday_year">
-								<option>AAAA</option>
+								<option selected="selected">AAAA</option>
 							</select>
 						</div>
 					</div>
 				</div>
 			</div>
 			<div class="disclaimer_container">
-				<label for="disclaimer_checkbox">Acconsenti al trattamento dei dati personali</label>
-				<input id="disclaimer_checkbox" type="checkbox" name="disclaimer" value="1">
+				<label for="disclaimer_checkbox">Acconsento al trattamento dei dati personali</label>
+				<input id="disclaimer_checkbox" type="checkbox" name="disclaimer" value="1" required>
 			</div>
 			<div class="submit_container">
 				<input type="submit" name="submit" value="Registrati">

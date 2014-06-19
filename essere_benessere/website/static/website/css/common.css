@@ -54,6 +54,11 @@ html { background-color: #ffdfeb; }
 .slides-pagination { margin-bottom: 5px; }
 .slides-pagination a { color: transparent; }
 .widescreen_slider_block { float: left; }
+
+/* slider data blocks */
+.widescreen_slider_block .slider_data_block { background-color: white; border: 3px solid red; display: block; padding: 13px 21px 11px 21px; position: relative; top: 3px; left: 20px; width: 300px; }
+.widescreen_slider_block .slider_data_block .title { border-bottom: 1px solid red; margin-bottom: 4px; padding: 0 8px 4px 8px; }
+.widescreen_slider_block .slider_data_block .content {  }
 /* superslides }}} */
 
 h1 { font-size: 30px; }
