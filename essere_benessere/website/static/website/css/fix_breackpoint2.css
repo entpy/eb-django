@@ -54,6 +54,19 @@
 .single_contact_container:first-child { margin-top: 0px!important; }
 .single_contact_container > .top { margin-bottom: 5px; }
 /* contact us page }}} */
+
+/* get offers page {{{ */
+.styled_form > .input_container { display: table; margin: 0 auto; width: 90%; }
+.styled_form > .input_container > div { display: block; margin-top: 18px; width: auto; }
+.styled_form > .input_container > .right, .styled_form > .input_container > div { margin: 16px auto 0; max-width: 400px; text-align: center; }
+.styled_form > .input_container.input_container_margin_top { margin-top: 0px; }
+.styled_form > .input_container .birthday_fake_input { border-radius: 3px; display: block; line-height: normal; width: auto; }
+.styled_form > .input_container .birthday_fake_input .center { max-width: 400px; }
+.styled_form > .input_container .birthday_fake_input > .left { display: block; margin-bottom: 7px; text-align: center; width: 100%; }
+.styled_form > .input_container .birthday_fake_input > .right { display: block; text-align: center; width: 100%; }
+.styled_form input { border-radius: 3px; box-sizing: border-box; width: 100%; max-width: 400px; }
+.styled_form input[type="submit"] { width: 80%; max-width: 300px; }
+/* get offers page }}} */
 /* main content style }}} */
 
 /* footer style {{{ */

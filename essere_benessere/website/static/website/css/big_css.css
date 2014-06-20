@@ -17,6 +17,12 @@
 /* header style }}} */
 
 /* main content style {{{ */
+/* slider data blocks {{{ */
+.widescreen_slider_block .slider_data_block { position: absolute; width: 300px; }
+.widescreen_slider_block .slider_data_block.slider_data_block1 { left: 10%; top: 70px; }
+.widescreen_slider_block .slider_data_block.slider_data_block2 { left: 15%; top: 150px; }
+.widescreen_slider_block .slider_data_block.slider_data_block3 { right: 14%; top: 20px; }
+/* slider data blocks }}} */
 .widescreen_slider_block { margin-top: 65px; }
 .image_text1 { margin: 0 auto; width: 85%; }
 .image_text1 > div { float: left; }

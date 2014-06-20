@@ -9,6 +9,11 @@
 <meta name="description" content="Ricevi offerte">
 {% endblock description %}
 
+{% block loaded_script %}
+{{ block.super }}
+<script src="{% static "website/js/form-validator.010.js" %}"></script>
+{% endblock loaded_script %}
+
 {% block main_content %}
 <div class="page_title_container">
 	<div class="title">

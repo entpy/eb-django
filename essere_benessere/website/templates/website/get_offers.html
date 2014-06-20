@@ -16,10 +16,10 @@
 			</div>
 			<div class="input_container input_container_margin_top">
 				<div class="left">
-					<input placeholder="*Email" type="email" name="email" value="" required>
+					<input class="elementToCheck emailCheck mandatoryCheck" placeholder="Email *" type="email" name="email" value="" required>
 				</div>
 				<div class="right">
-					<input placeholder="Telefono" type="number" name="phone" value="">
+					<input class="elementToCheck phoneCheck" placeholder="Telefono" type="text" name="phone" value="">
 				</div>
 			</div>
 			<div class="input_container input_container_margin_top birthday_container">
@@ -41,8 +41,8 @@
 				</div>
 			</div>
 			<div class="disclaimer_container">
-				<label for="disclaimer_checkbox">Acconsento al trattamento dei dati personali</label>
-				<input id="disclaimer_checkbox" type="checkbox" name="disclaimer" value="1" required>
+				<label for="disclaimer_checkbox">Acconsento al trattamento dei dati personali *</label>
+				<input class="elementToCheck mandatoryCheck" id="disclaimer_checkbox" type="checkbox" name="disclaimer" value="1" required>
 			</div>
 			<div class="submit_container">
 				<input type="submit" name="submit" value="Registrati">
