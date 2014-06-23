@@ -64,7 +64,7 @@
 .styled_form > .input_container .birthday_fake_input .center { max-width: 400px; }
 .styled_form > .input_container .birthday_fake_input > .left { display: block; margin-bottom: 7px; text-align: center; width: 100%; }
 .styled_form > .input_container .birthday_fake_input > .right { display: block; text-align: center; width: 100%; }
-.styled_form input { border-radius: 3px; box-sizing: border-box; width: 100%; max-width: 400px; }
+.styled_form input { border-radius: 3px; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; width: 100%; }
 .styled_form input[type="submit"] { width: 80%; max-width: 300px; }
 /* get offers page }}} */
 /* main content style }}} */
