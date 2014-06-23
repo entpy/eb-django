@@ -1,5 +1,7 @@
 $(document).ready(function(){
 	$('#slides').superslides({
-		animation: "fade"
+		play: 4000,
+		animation: "fade",
+		inherit_height_from: window
 	});
 });
