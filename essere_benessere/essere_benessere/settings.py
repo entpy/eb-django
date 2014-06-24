@@ -24,6 +24,8 @@ DEBUG = True
 
 TEMPLATE_DEBUG = True
 
+TEMPLATE_DIRS = [os.path.join(BASE_DIR, 'templates')]
+
 ALLOWED_HOSTS = []
 
 
@@ -57,7 +59,6 @@ WSGI_APPLICATION = 'essere_benessere.wsgi.application'
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
 
 # postgreSQL
-"""
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -68,6 +69,7 @@ DATABASES = {
         'PORT': '5432',
     }
 }
+"""
 # MySQL
 DATABASES = {
     'default': {
@@ -94,7 +96,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
@@ -105,3 +106,40 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
 	os.path.join(BASE_DIR, "static"), #inside project
 )
+
+"""
+HOW TO SUL LOGGING
+------------------
+
+Il logger e' un contenitore per i log, vengono inseriti dentro di esso
+solo se i livelli di logging del file sono >= a quelli del contenitore
+
+l' handler del logger gestisce dove i messaggi di log raccolti dal logger
+andranno spediti, per esempio su file, console, ecc..
+
+E' inoltre possibile impostare filtri e formattazione per i log
+(per ora qui non viene fatto!)
+"""
+LOGGING = {
+	'version': 1,
+	'disable_existing_loggers': False,
+	'handlers': {
+		'file': {
+			'level': 'DEBUG',
+			'class': 'logging.FileHandler',
+			'filename': '/tmp/debug.log',
+		},
+		'console' : {
+			'class' : 'logging.StreamHandler',
+			'level' : 'INFO',
+			'stream' : 'ext://sys.stdout',
+		},
+	},
+	'loggers': {
+		'django.request': {
+			'handlers': ['file'],
+			'level': 'DEBUG',
+			'propagate': True,
+		},
+	},
+}
