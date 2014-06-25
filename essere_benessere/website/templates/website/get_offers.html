@@ -4,7 +4,8 @@
 {{ block.super }}
 <div class="get_offers_page single_page_content">
 	<div class="form_container">
-		<form class="styled_form" name="get_offers_form" action="" method="POST">
+		<form class="styled_form" name="get_offers_form" action="{% url 'get_offers' %}" method="POST">
+			{% csrf_token %}
 			<input type="hidden" name="get_offers_form_sent" value="1">
 			<div class="input_container">
 				<div class="left">
@@ -16,7 +17,7 @@
 			</div>
 			<div class="input_container input_container_margin_top">
 				<div class="left">
-					<input class="elementToCheck emailCheck mandatoryCheck" placeholder="Email *" type="email" name="email" value="" required>
+					<input class="elementToCheck emailCheck mandatoryCheck" placeholder="Email *" type="email" name="email" value="" >
 				</div>
 				<div class="right">
 					<input class="elementToCheck phoneCheck" placeholder="Telefono" type="text" name="phone" value="">
@@ -42,7 +43,7 @@
 			</div>
 			<div class="disclaimer_container">
 				<label for="disclaimer_checkbox">Acconsento al trattamento dei dati personali *</label>
-				<input class="elementToCheck mandatoryCheck" id="disclaimer_checkbox" type="checkbox" name="disclaimer" value="1" required>
+				<input class="elementToCheck mandatoryCheck" id="disclaimer_checkbox" type="checkbox" name="disclaimer" value="1" >
 			</div>
 			<div class="submit_container">
 				<input type="submit" name="submit" value="Registrati">
