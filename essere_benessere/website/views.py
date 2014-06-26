@@ -1,5 +1,8 @@
 from django.shortcuts import render
 from website.models import Account
+# include constants file
+from essere_benessere import constants, functions
+from essere_benessere.functions import CommonUtils
 import logging
 
 # Get an instance of a logger
@@ -63,6 +66,13 @@ def get_offers(request):
     else:
         logger.debug('Attenzione: submit del form non ancora eseguito')
 
+    # built date selector
+    # days list
+    days_choices = CommonUtils.get_days_list_choice()
+    # months list
+    months_choices = CommonUtils.get_months_list_choice()
+    # years list
+    years_choices = CommonUtils.get_years_list_choice()
 
     """
     try:
