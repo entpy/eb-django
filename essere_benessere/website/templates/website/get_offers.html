@@ -30,6 +30,9 @@
 						<div class="right">
 							<select name="date_selector birthday_day">
 								<option selected="selected">GG</option>
+								{% for days_choices in day_number %}
+									<option value="{{ day_number }}">{{ day_number }}</option>
+								{% endfor %}
 							</select>
 							<select name="date_selector birthday_month">
 								<option selected="selected">MM</option>

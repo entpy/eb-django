@@ -1,6 +1,6 @@
 /* common element style {{{ */
 /*body { font: normal 100%/1 Helvetica, Arial, sans-serif; }*/
-body {
+body, body * {
    font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
    font-weight: 300;
 }
@@ -175,15 +175,15 @@ h1 { font-size: 30px; }
 /* our services page }}} */
 
 /* get offers page {{{ */
-.styled_form input { border: 1px solid lightgray; padding: 10px 20px; width: 205px; }
+.styled_form input { border: 1px solid lightgray; font-size: 16px; padding: 10px 20px; width: 205px; }
 .styled_form > .input_container { display: table; margin: 0 auto; width: 520px; }
 .styled_form > .input_container.input_container_margin_top { margin-top: 21px; }
 .styled_form > .input_container > div { display: table-cell; width: 50%; }
 .styled_form > .input_container > .right { text-align: right; }
-.styled_form > .input_container .birthday_fake_input { background-color: white; border: 1px solid lightgray; display: table; line-height: 0; margin: 0 auto; padding: 7px 20px; width: auto; }
-.styled_form > .input_container .birthday_fake_input > div { display: table-cell; width: 50%; }
-.styled_form > .input_container .birthday_fake_input > .left { color: #757575; width: 40%; }
-.styled_form > .input_container .birthday_fake_input > .right { text-align: right; width: 60%; }
+.styled_form > .input_container .birthday_fake_input { background-color: white; border: 1px solid lightgray; display: table; line-height: 0; margin: 0 auto; padding: 7px 0px; width: 100%; }
+.styled_form > .input_container .birthday_fake_input > div { display: table-cell; text-align: center; width: 50%; }
+.styled_form > .input_container .birthday_fake_input > .left { color: #757575; font-size: 16px; width: 40%; text-rendering: optimizelegibility; }
+.styled_form > .input_container .birthday_fake_input > .right { width: 60%; }
 .styled_form > .input_container .birthday_fake_input select { background: none repeat scroll 0 0 #ebebeb; border: 1px solid lightgray; padding: 2px 10px; }
 .styled_form > .disclaimer_container { margin-top: 70px; text-align: center; }
 .styled_form > .disclaimer_container label { font-size: 14px; vertical-align: middle; }

@@ -58,7 +58,7 @@ def get_offers(request):
                 logger.debug('Nuovo utente, inserisco in db')
                 # TODO: inserisco in db l'utente
             else:
-                # TODO: mostro errore: mail inserita già esistente
+                # TODO: mostro errore: mail inserita gia' esistente
                 logger.debug("Utente gia' esistente in db")
         else:
             logger.debug('Attenzione: inserire email e/o confermare disclaimer')
@@ -66,13 +66,18 @@ def get_offers(request):
     else:
         logger.debug('Attenzione: submit del form non ancora eseguito')
 
-    # built date selector
+    CommonUtilsInstance = CommonUtils()
+    # built of date selector
     # days list
-    days_choices = CommonUtils.get_days_list_choice()
+    days_choices = CommonUtilsInstance.get_days_list_choice()
     # months list
-    months_choices = CommonUtils.get_months_list_choice()
+    months_choices = CommonUtilsInstance.get_months_list_choice()
     # years list
-    years_choices = CommonUtils.get_years_list_choice()
+    years_choices = CommonUtilsInstance.get_years_list_choice()
+
+    logger.debug('lista mesi: ' + str(months_choices))
+
+    context = {"days_choices" : [1,2,3,4,5]}
 
     """
     try:
@@ -92,4 +97,4 @@ def get_offers(request):
         return HttpResponseRedirect(reverse('polls:results', args=(p.id,)))
     """
 
-    return render(request, 'website/get_offers.html')
+    return render(request, 'website/get_offers.html', context)
