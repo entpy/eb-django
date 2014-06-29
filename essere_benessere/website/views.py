@@ -1,5 +1,7 @@
 from django.shortcuts import render
 from website.models import Account
+from django.http import HttpResponseRedirect, HttpResponse
+from django.core.urlresolvers import reverse
 # include constants file
 from essere_benessere import constants, functions
 from essere_benessere.functions import CommonUtils
@@ -48,53 +50,65 @@ def our_offers(request):
 
 def get_offers(request):
 
-    # se la mail dell'utente non esiste inserisco i dati
-    # altrimenti per il momento non permetto la modifica di una mail gia esistente
-    if (request.POST.get("get_offers_form_sent", "")):
-        if(request.POST.get("email", "") and request.POST.get("disclaimer", "")):
-            try:
-                account_obj = Account.objects.get(email=request.POST['email'])
-            except (KeyError, Account.DoesNotExist):
-                logger.debug('Nuovo utente, inserisco in db')
-                # TODO: inserisco in db l'utente
-            else:
-                # TODO: mostro errore: mail inserita gia' esistente
-                logger.debug("Utente gia' esistente in db")
-        else:
-            logger.debug('Attenzione: inserire email e/o confermare disclaimer')
-            # TODO mostro errore: inserire tutti i campi obbligatori
-    else:
-        logger.debug('Attenzione: submit del form non ancora eseguito')
+	CommonUtilsInstance = CommonUtils()
+	# built of date selector
+	# days list
+	days_choices = CommonUtilsInstance.get_days_list_choice()
+	# months list
+	months_choices = CommonUtilsInstance.get_months_list_choice()
+	# years list
+	years_choices = CommonUtilsInstance.get_years_list_choice()
 
-    CommonUtilsInstance = CommonUtils()
-    # built of date selector
-    # days list
-    days_choices = CommonUtilsInstance.get_days_list_choice()
-    # months list
-    months_choices = CommonUtilsInstance.get_months_list_choice()
-    # years list
-    years_choices = CommonUtilsInstance.get_years_list_choice()
+	context = {
+		"post" : request.POST,
+		"days_choices" : days_choices,
+		"months_choices" : months_choices,
+		"years_choices" : years_choices,
+	}
 
-    logger.debug('lista mesi: ' + str(months_choices))
+	# se la mail dell'utente non esiste inserisco i dati
+	# altrimenti per il momento non permetto la modifica di una mail gia esistente
+	if (request.POST.get("get_offers_form_sent", "")):
+		if(request.POST.get("email", "") and request.POST.get("disclaimer", "")):
+		    try:
+			account_obj = Account.objects.get(email=request.POST['email'])
+		    except (KeyError, Account.DoesNotExist):
+			logger.debug('Nuovo utente, inserisco in db')
+			account_obj = Account()
+			account_obj.first_name = request.POST['first_name']
+			account_obj.last_name = request.POST['last_name']
+			account_obj.email = request.POST['email']
+			account_obj.mobile_phone = request.POST['phone']
+			# account_obj.birthday_date()
+			account_obj.receive_promotions = 1
+			account_obj.save()
+			return HttpResponseRedirect(reverse(get_offers))
+		    else:
+			# TODO: mostro errore: mail inserita gia' esistente
+			logger.debug("Utente gia' esistente in db")
+		else:
+			logger.debug('Attenzione: inserire email e/o confermare disclaimer')
+			# TODO mostro errore: inserire tutti i campi obbligatori
+	else:
+		logger.debug('Attenzione: submit del form non ancora eseguito')
 
-    context = {"days_choices" : [1,2,3,4,5]}
 
-    """
-    try:
-        account = p.choice_set.get(pk=request.POST['choice'])
-    except (KeyError, Choice.DoesNotExist):
-        # Redisplay the poll voting form.
-        return render(request, 'polls/detail.html', {
-            'poll': p,
-            'error_message': "You didn't select a choice.",
-        })
-    else:
-        selected_choice.votes += 1
-        selected_choice.save()
-        # Always return an HttpResponseRedirect after successfully dealing
-        # with POST data. This prevents data from being posted twice if a
-        # user hits the Back button.
-        return HttpResponseRedirect(reverse('polls:results', args=(p.id,)))
-    """
+	"""
+	try:
+	account = p.choice_set.get(pk=request.POST['choice'])
+	except (KeyError, Choice.DoesNotExist):
+	# Redisplay the poll voting form.
+	return render(request, 'polls/detail.html', {
+	    'poll': p,
+	    'error_message': "You didn't select a choice.",
+	})
+	else:
+	selected_choice.votes += 1
+	selected_choice.save()
+	# Always return an HttpResponseRedirect after successfully dealing
+	# with POST data. This prevents data from being posted twice if a
+	# user hits the Back button.
+	return HttpResponseRedirect(reverse('polls:results', args=(p.id,)))
+	"""
 
-    return render(request, 'website/get_offers.html', context)
+	return render(request, 'website/get_offers.html', context)

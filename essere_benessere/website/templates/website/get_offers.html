@@ -9,18 +9,18 @@
 			<input type="hidden" name="get_offers_form_sent" value="1">
 			<div class="input_container">
 				<div class="left">
-					<input placeholder="Nome" type="text" name="first_name" value="">
+					<input placeholder="Nome" type="text" name="first_name" value="{{ post.first_name }}">
 				</div>
 				<div class="right">
-					<input placeholder="Cognome" type="text" name="last_name" value="">
+					<input placeholder="Cognome" type="text" name="last_name" value="{{ post.last_name }}">
 				</div>
 			</div>
 			<div class="input_container input_container_margin_top">
 				<div class="left">
-					<input class="elementToCheck emailCheck mandatoryCheck" placeholder="Email *" type="email" name="email" value="" >
+					<input class="elementToCheck emailCheck mandatoryCheck" placeholder="Email *" type="email" name="email" value="{{ post.email }}" >
 				</div>
 				<div class="right">
-					<input class="elementToCheck phoneCheck" placeholder="Telefono" type="text" name="phone" value="">
+					<input class="elementToCheck phoneCheck" placeholder="Telefono" type="text" name="phone" value="{{ post.phone }}">
 				</div>
 			</div>
 			<div class="input_container input_container_margin_top birthday_container">
@@ -28,17 +28,23 @@
 					<div class="birthday_fake_input">
 						<div class="left">Data di nascita</div>
 						<div class="right">
-							<select name="date_selector birthday_day">
-								<option selected="selected">GG</option>
-								{% for days_choices in day_number %}
-									<option value="{{ day_number }}">{{ day_number }}</option>
+							<select name="birthday_day">
+								<option selected="selected">gg</option>
+								{% for day_number in days_choices %}
+									<option {% if post.birthday_day == day_number|slugify %}selected="selected"{% endif %} value="{{ day_number }}">{{ day_number }}</option>
 								{% endfor %}
 							</select>
-							<select name="date_selector birthday_month">
-								<option selected="selected">MM</option>
+							<select name="birthday_month">
+								<option selected="selected">mm</option>
+								{% for month_number in months_choices %}
+									<option {% if post.birthday_month == month_number.0|slugify %}selected="selected"{% endif %} value="{{ month_number.0 }}">{{ month_number.1 }}</option>
+								{% endfor %}
 							</select>
-							<select name="date_selector birthday_year">
-								<option selected="selected">AAAA</option>
+							<select name="birthday_year">
+								<option selected="selected">aaaa</option>
+								{% for year in years_choices %}
+									<option {% if post.birthday_year == year|slugify %}selected="selected"{% endif %} value="{{ year }}">{{ year }}</option>
+								{% endfor %}
 							</select>
 						</div>
 					</div>
@@ -52,6 +58,7 @@
 				<input type="submit" name="submit" value="Registrati">
 			</div>
 		</form>
+		success: {{ success }}
 	</div>
 </div>
 {% endblock main_content %}

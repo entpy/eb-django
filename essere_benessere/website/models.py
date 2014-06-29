@@ -14,7 +14,7 @@ class Account(models.Model):
 	last_name = models.CharField(max_length=30)
 	email = models.EmailField()
 	mobile_phone = models.CharField(max_length=20)
-	birthday_date = models.DateField()
+	birthday_date = models.DateField(blank=True, null=True)
 	receive_promotions = models.BooleanField(default=0)
 	loyal_customer = models.BooleanField(default=0)
 	status = models.BooleanField(default=1)
