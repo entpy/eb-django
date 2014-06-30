@@ -3,6 +3,19 @@
 {% block main_content %}
 {{ block.super }}
 <div class="get_offers_page single_page_content">
+	{% if messages %}
+		<ul class="messages">
+		{% for message in messages %}
+		<li{% if message.tags %} class="{{ message.tags }}"{% endif %}>
+			<span class="msg_image_container">
+				<i class="msg_image msg_image_success fa fa-check"></i>
+				<i class="msg_image msg_image_error fa fa-ban"></i>
+			</span>
+			<span class="msg_container">{{ message }}</span>
+		</li>
+		{% endfor %}
+		</ul>
+	{% endif %}
 	<div class="form_container">
 		<form class="styled_form" name="get_offers_form" action="{% url 'get_offers' %}" method="POST">
 			{% csrf_token %}
@@ -58,7 +71,6 @@
 				<input type="submit" name="submit" value="Registrati">
 			</div>
 		</form>
-		success: {{ success }}
 	</div>
 </div>
 {% endblock main_content %}

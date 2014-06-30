@@ -41,6 +41,23 @@ html { background-color: #ffdfeb; }
 	-o-transition: all 300ms cubic-bezier(0.250, 0.250, 0.750, 0.750);
 	transition: all 300ms cubic-bezier(0.250, 0.250, 0.750, 0.750); /* linear */
 }
+
+/* message framework {{{ */
+ul.messages { display: inline-block; margin-bottom: 40px; margin-top: 10px; width: 100%; }
+ul.messages li.success .msg_image { display: none; }
+ul.messages li.error .msg_image { display: none; }
+ul.messages li.success .msg_image_success { display: inline; }
+ul.messages li.error .msg_image_error { display: inline; }
+ul.messages li { margin: 0 auto; padding: 13px 3px; text-align: center; width: 89%; }
+ul.messages li i { font-size: 28px; margin-right: 10px; vertical-align: sub; }
+ul.messages li span { font-weight: bold; }
+ul.messages li .msg_image_container { padding-left: 10px; }
+ul.messages li .msg_container { padding-left: 5px; padding-right: 10px; }
+ul.messages li.success { background-color: #ECFFD8; color: green; border: 1px solid #afff96; }
+ul.messages li.success i { color: green; }
+ul.messages li.error { background-color: #FFF9F2; color: #FF5555; border: 1px solid #ffa6a6; }
+ul.messages li.error i { color: red; }
+/* message framework }}} */
 /* common element style }}} */
 
 /* header style {{{ */

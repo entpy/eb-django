@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 """
 Simple E/R scheme
 =================
@@ -7,43 +9,89 @@ Account -> Campaign <- Promotion
 """
 
 from django.db import models
+import string, random, logging
+
+# Get an instance of a logger
+logger = logging.getLogger('django.request')
 
 class Account(models.Model):
 	id_account = models.AutoField(primary_key=True)
-	first_name = models.CharField(max_length=30)
-	last_name = models.CharField(max_length=30)
+	first_name = models.CharField("Nome", max_length=30)
+	last_name = models.CharField("Cognome", max_length=30)
 	email = models.EmailField()
-	mobile_phone = models.CharField(max_length=20)
-	birthday_date = models.DateField(blank=True, null=True)
-	receive_promotions = models.BooleanField(default=0)
-	loyal_customer = models.BooleanField(default=0)
+	mobile_phone = models.CharField("Numero telefonico", max_length=20)
+	birthday_date = models.DateField("Data di nascita", blank=True, null=True)
+	receive_promotions = models.BooleanField("Riceve le promozioni", default=0)
+	loyal_customer = models.BooleanField("Cliente affezionato", default=0)
 	status = models.BooleanField(default=1)
 
 	# On Python 3: def __str__(self):
 	def __unicode__(self):
-		return self.id_account
+		return str(self.id_account)
 
 class Promotion(models.Model):
 
-	# promotion type selector
+	# promotion type
 	PROMOTION_TYPES = (
 	    ('manual', 'Manuale'),
 	    ('frontent_post', 'Pubblica sul frontend'),
 	    ('birthday', 'Promozione compleanno'),
 	)
 
+	# promotion type selector
+	PROMOTION_TYPES_SELECTOR = (
+	    ('frontent_post', 'Pubblica sul frontend'),
+	    ('birthday', 'Promozione compleanno'),
+	)
+
 	id_promotion = models.AutoField(primary_key=True)
 	code = models.CharField(max_length=10)
-	name = models.CharField(max_length=50)
-	description = models.TextField()
-	expiring_date = models.DateTimeField()
-	promo_type = models.CharField(max_length=30, choices=PROMOTION_TYPES)
+	name = models.CharField("Titolo promozione", max_length=50)
+	description = models.TextField("Contenuto")
+        promo_image = models.ImageField("Immagine della promozione", upload_to="/")
+	expiring_date = models.DateField("Scadenza")
+	promo_type = models.CharField(max_length=30, choices=PROMOTION_TYPES_SELECTOR)
 	status = models.BooleanField(default=1)
 	campaigns = models.ManyToManyField(Account, through='Campaign')
 
 	# On Python 3: def __str__(self):
 	def __unicode__(self):
-		return self.id_promotion
+		return str(self.id_promotion)
+
+        def generate_random_code(self, depth = 0):
+                """
+                Generating a random promo code, if the generated code already
+                exists, than recursively call this function to generate a ne ones.
+                Max recursion depth: 50
+                """
+
+                # generating a random code
+                random_code = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(5))
+
+                try:
+                        # checking if code already exists
+                        Promotion.objects.get(code=random_code)
+
+                        # than recall this function to generate a new ones
+                        if (depth < 50):
+                            random_code = Promotion.generate_random_code(self, depth+1)
+                        else:
+                            logger.error("ATTENZIONE: non sono riuscito a generare un nuovo codice | depth level: " + str(depth))
+                            random_code = "PROMOCODE1"
+
+                except (KeyError, Promotion.DoesNotExist):
+                        # Yo!
+                        pass
+
+                return random_code
+
+        def get_valid_promotions_list(self, promo_type = "frontent_post"):
+                """
+                Return a list of valid promotions (not already expired)
+                """
+                return_var = False
+
+                return return_var
 
 class Campaign(models.Model):
 	id_campaign = models.AutoField(primary_key=True)
@@ -53,4 +101,4 @@ class Campaign(models.Model):
 
 	# On Python 3: def __str__(self):
 	def __unicode__(self):
-		return self.id_campaign
+		return str(self.id_campaign)
