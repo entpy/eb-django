@@ -31,17 +31,14 @@ class Account(models.Model):
 
 class Promotion(models.Model):
 
-	# promotion type
-	PROMOTION_TYPES = (
-	    ('manual', 'Manuale'),
-	    ('frontent_post', 'Pubblica sul frontend'),
-	    ('birthday', 'Promozione compleanno'),
-	)
+        PROMOTION_TYPE_MANUAL = { "key" : "manual", "description" : "Manuale" }
+        PROMOTION_TYPE_FRONTEND = { "key" : "frontend_post", "description" : "Pubblica sul frontend" }
+        PROMOTION_TYPE_BIRTHDAY = { "key" : "birthday", "description" : "Promozione compleanno" }
 
-	# promotion type selector
+	# promotion type selector for admin
 	PROMOTION_TYPES_SELECTOR = (
-	    ('frontent_post', 'Pubblica sul frontend'),
-	    ('birthday', 'Promozione compleanno'),
+	    (PROMOTION_TYPE_FRONTEND.key, PROMOTION_TYPE_FRONTEND.description),
+	    (PROMOTION_TYPE_BIRTHDAY.key, PROMOTION_TYPE_BIRTHDAY.description),
 	)
 
 	id_promotion = models.AutoField(primary_key=True)
@@ -85,7 +82,7 @@ class Promotion(models.Model):
 
                 return random_code
 
-        def get_valid_promotions_list(self, promo_type = "frontent_post"):
+        def get_valid_promotions_list(self, promo_type = PROMOTION_TYPE_FRONTEND.key):
                 """
                 Return a list of valid promotions (not already expired)
                 """
