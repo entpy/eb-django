@@ -49,7 +49,7 @@ ul.messages li.error .msg_image { display: none; }
 ul.messages li.success .msg_image_success { display: inline; }
 ul.messages li.error .msg_image_error { display: inline; }
 ul.messages li { margin: 0 auto; padding: 13px 3px; text-align: center; width: 89%; }
-ul.messages li i { font-size: 28px; margin-right: 10px; vertical-align: sub; }
+ul.messages li i { font-size: 28px; margin-right: 10px; vertical-align: middle; }
 ul.messages li span { font-weight: bold; }
 ul.messages li .msg_image_container { padding-left: 10px; }
 ul.messages li .msg_container { padding-left: 5px; padding-right: 10px; }
