@@ -1,7 +1,7 @@
 /* common element style {{{ */
 /*body { font: normal 100%/1 Helvetica, Arial, sans-serif; }*/
 body, body * {
-   font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
+   font: normal 100%/1 "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
    font-weight: 300;
 }
 b, .bold { font-weight: bold; }

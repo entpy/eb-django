@@ -37,8 +37,8 @@ class Promotion(models.Model):
 
 	# promotion type selector for admin
 	PROMOTION_TYPES_SELECTOR = (
-	    (PROMOTION_TYPE_FRONTEND.key, PROMOTION_TYPE_FRONTEND.description),
-	    (PROMOTION_TYPE_BIRTHDAY.key, PROMOTION_TYPE_BIRTHDAY.description),
+	    (PROMOTION_TYPE_FRONTEND["key"], PROMOTION_TYPE_FRONTEND["description"]),
+	    (PROMOTION_TYPE_BIRTHDAY["key"], PROMOTION_TYPE_BIRTHDAY["description"]),
 	)
 
 	id_promotion = models.AutoField(primary_key=True)
@@ -82,7 +82,7 @@ class Promotion(models.Model):
 
                 return random_code
 
-        def get_valid_promotions_list(self, promo_type = PROMOTION_TYPE_FRONTEND.key):
+        def get_valid_promotions_list(self, promo_type = PROMOTION_TYPE_FRONTEND["key"]):
                 """
                 Return a list of valid promotions (not already expired)
                 """

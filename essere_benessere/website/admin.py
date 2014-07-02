@@ -32,9 +32,14 @@ class AccountAdmin(admin.ModelAdmin):
                 # custom view which should return an HttpResponse
                 myForm = super(AccountAdmin, self).get_form(request)
                 # logger.debug("admin form: " + str(myForm))
+                myList = super(AccountAdmin, self).get_paginator(self, Account.objects.all(), 10)
+                page1 = myList.page(1)
+                pageLis = page1.object_list
+                account_obj = pageLis[0]
+                logger.debug("admin list: " + str(account_obj.email))
                 template = loader.get_template('admin/custom_view/send_campaign.html')
                 context = RequestContext(request, {
-                        'account_form': myForm,
+                        'account_form': pageLis,
                         'variabile': "ciao",
                 })
 
