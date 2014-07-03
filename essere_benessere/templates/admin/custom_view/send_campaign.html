@@ -45,7 +45,37 @@
 {% block coltype %}flex{% endblock %}
 
 {% block content %}
-	{{ account_form }}
+
+	<div class="module{% if cl.has_filters %} filtered{% endif %}" id="changelist">
+		<form id="changelist-form" action="" method="post">
+			{% csrf_token %}
+
+			<input type="hidden" name="previous_page_number" value="{{ contacts.previous_page_number }}">
+			<input type="hidden" name="next_page_number" value="{{ contacts.next_page_number }}">
+
+			<div class="result">
+			{% for contact in contacts %}
+				<input type="checkbox" name="contacts[{{ contact.id_account }}]" value="1{# TODO: print 1 if is checked #}" /><label>{{ contact.email }}</label><br />
+				{% endfor %}
+			</div>
+			<div class="pagination">
+				<span class="step-links">
+					{% if contacts.has_previous %}
+					    <input type="submit" name="previous" value="Indietro"/>
+					{% endif %}
+
+					<span class="current">
+					    Page {{ contacts.number }} of {{ contacts.paginator.num_pages }}.
+					</span>
+
+					{% if contacts.has_next %}
+					    <input type="submit" name="next" value="Avanti"/>
+					{% endif %}
+				</span>
+			</div>
+		</form>
+	</div>
+
   <div id="content-main">
     {% block object-tools %}
       {% if has_add_permission %}

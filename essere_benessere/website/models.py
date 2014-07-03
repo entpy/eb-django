@@ -99,3 +99,76 @@ class Campaign(models.Model):
 	# On Python 3: def __str__(self):
 	def __unicode__(self):
 		return str(self.id_campaign)
+
+        def add_campaign_user(self, id_account=False, id_promotion=False):
+                """
+                Function to add a row from db, starting from "id_account" and "id_promotion"
+                Return true on success
+                """
+
+                campaign_obj = Campaign(
+                        id_account = id_account,
+                        id_promotion = id_promotion,
+                        status = 0
+                )
+
+                campaign_obj.save()
+
+                return True
+
+        def remove_campaign_user(self, id_account=False, id_promotion=False):
+                """
+                Function to delete a row from db, starting from "id_account" and "id_promotion"
+                Return true on success
+                """
+
+                return_var = False
+
+                try:
+                        # retrieve campaign row
+                        campaign_obj = Campaign.objects.get(
+                                id_account=id_account,
+                                id_promotion=id_promotion,
+                        )
+
+                        # delete retrieved row from db
+                        campaign_obj.delete()
+
+                        return_var = True
+                except (KeyError, Campaign.DoesNotExist):
+                        # this senders already not exists
+
+                return return_var
+
+        def set_campaign_user(self, senders_dictionary = False, id_promotion = False):
+            """
+            Function to set (or unset) accounts to receive a promotion.
+            This function works like this:
+                { "id_account" : 1 } => to enable
+                { "id_account" : 0 } => to disable
+
+            So, for example, if you works with a dictionary like this:
+                { "4" : 1, "5" : 1, "6" : 0, "7" : 1, "8" : 0 }
+
+            Users 4, 5, 7 will be enabled, while users 6, 8 will be disabled.
+            Enabled or disable means row added or removed from db with
+            "add_campaign_user" or "remove_campaign_user" functions.
+            Return true on success
+            """
+
+        def get_senders_dictionary(self, senders_show_block = False, senders_list = False):
+                """
+                Function to render a senders dictionary like this:
+                { "4" : 1, "5" : 1, "6" : 0, "7" : 1, "8" : 0 }
+                Return a senders dictionary on success
+                """
+
+                senders_dictionary = {}
+
+                for sender_show in senders_show_block:
+                        if (senders_list[sender_show.id_account] == 1):
+                                senders_dictionary["sender_show.id_account"] = 1
+                        else:
+                                senders_dictionary["sender_show.id_account"] = 0
+
+                return senders_dictionary
