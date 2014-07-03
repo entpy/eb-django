@@ -149,6 +149,7 @@ class Campaign(models.Model):
 
             So, for example, if you works with a dictionary like this:
                 { "4" : 1, "5" : 1, "6" : 0, "7" : 1, "8" : 0 }
+            You can create previously dictionary with "Campaign.get_senders_dictionary()" function.
 
             Users 4, 5, 7 will be enabled, while users 6, 8 will be disabled.
             Enabled or disable means row added or removed from db with
