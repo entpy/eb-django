@@ -1,9 +1,12 @@
+# -*- coding: utf-8 -*-
+
 from django.contrib import admin
-from website.models import Account,Promotion
+from website.models import Account,Promotion, Campaign
 from django.conf.urls import patterns
 from django.http import HttpResponseRedirect, HttpResponse
 from django.template import RequestContext, loader
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.shortcuts import render
 import logging
 
 # Get an instance of a logger
@@ -17,7 +20,7 @@ class AccountAdmin(admin.ModelAdmin):
         def get_urls(self):
             urls = super(AccountAdmin, self).get_urls()
             my_urls = patterns('',
-                    (r'^send_campaign/$', self.admin_site.admin_view(self.send_campaign))
+                    (r'^send-campaign/$', self.admin_site.admin_view(self.send_campaign))
             )
 
             # return custom URLs with default URLs
@@ -29,7 +32,9 @@ class AccountAdmin(admin.ModelAdmin):
                 sending promotion to a customer list
                 """
 
+                logger.debug("PROVA")
                 contact_list = Account.objects.all()
+                campaign_obj = Campaign()
                 paginator = Paginator(contact_list, 5)
 
                 # TODO list 
@@ -59,13 +64,18 @@ class AccountAdmin(admin.ModelAdmin):
                 }
                 """
 
-                # default page number
-                page = 2
+                # TODO: wtf?! default page number
+                page = request.GET.get('page')
 
-                # 1 TODO: set/unset campaign senders
-                senders_dictionary = Campaign.get_senders_dictionary(paginator.page(page), request.POST.get('contacts'))
+                # 1 set/unset campaign senders
+                if(request.POST.get("select_senders_form_sent", "")):
+                        selected_contacts = request.POST.getlist("contacts[]")
 
-                logger.debug("selected customers post: " + str(request.POST))
+                        # retrieving checkded list
+                        senders_dictionary = campaign_obj.get_checkbox_dictionary(paginator.page(page), selected_contacts, "id_account")
+
+                        # saving or removing checked/unchecked checkbox from db
+                        campaign_obj.set_campaign_user(senders_dictionary, id_promotion = 1)
 
                 # retrieving paginator object
                 try:
@@ -87,14 +97,15 @@ class AccountAdmin(admin.ModelAdmin):
                 # logger.debug("admin list: " + str(account_obj.email))
 
                 # loading template
-                template = loader.get_template('admin/custom_view/send_campaign.html')
+                # template = loader.get_template('admin/custom_view/send_campaign.html')
 
                 # creating template context
-                context = RequestContext(request, {
+                context = {
                         'contacts': contacts,
-                })
+                }
 
-                return HttpResponse(template.render(context))
+                # return HttpResponse(template.render(context))
+                return render(request, 'admin/custom_view/send_campaign.html', context)
 
 class PromotionAdmin(admin.ModelAdmin):
         # fileds in add/modify form

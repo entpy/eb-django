@@ -106,13 +106,16 @@ class Campaign(models.Model):
                 Return true on success
                 """
 
-                campaign_obj = Campaign(
-                        id_account = id_account,
-                        id_promotion = id_promotion,
-                        status = 0
-                )
+                try:
+                        campaign_obj = Campaign.objects.get(id_account=id_account, id_promotion=id_promotion)
+                except (KeyError, Campaign.DoesNotExist):
+                        campaign_obj = Campaign(
+                                            id_account = Account(id_account=id_account),
+                                            id_promotion = Promotion(id_promotion=id_promotion),
+                                            status = 0
+                                        )
 
-                campaign_obj.save()
+                        campaign_obj.save()
 
                 return True
 
@@ -137,39 +140,59 @@ class Campaign(models.Model):
                         return_var = True
                 except (KeyError, Campaign.DoesNotExist):
                         # this senders already not exists
+                        pass
 
                 return return_var
 
         def set_campaign_user(self, senders_dictionary = False, id_promotion = False):
-            """
-            Function to set (or unset) accounts to receive a promotion.
-            This function works like this:
-                { "id_account" : 1 } => to enable
-                { "id_account" : 0 } => to disable
+                """
+                Function to set (or unset) accounts to receive a promotion.
+                This function works like this:
+                    { "id_account" : 1 } => to enable
+                    { "id_account" : 0 } => to disable
 
-            So, for example, if you works with a dictionary like this:
-                { "4" : 1, "5" : 1, "6" : 0, "7" : 1, "8" : 0 }
-            You can create previously dictionary with "Campaign.get_senders_dictionary()" function.
+                So, for example, if you works with a dictionary like this:
+                    { "4" : 1, "5" : 1, "6" : 0, "7" : 1, "8" : 0 }
+                You can create previously dictionary with "Campaign.get_senders_dictionary()" function.
 
-            Users 4, 5, 7 will be enabled, while users 6, 8 will be disabled.
-            Enabled or disable means row added or removed from db with
-            "add_campaign_user" or "remove_campaign_user" functions.
-            Return true on success
-            """
+                Users 4, 5, 7 will be enabled, while users 6, 8 will be disabled.
+                Enabled or disable means row added or removed from db with
+                "add_campaign_user" or "remove_campaign_user" functions.
+                Return True on success
+                """
 
-        def get_senders_dictionary(self, senders_show_block = False, senders_list = False):
+                if (senders_dictionary and id_promotion):
+                        for key, value in senders_dictionary.iteritems():
+                                if (value):
+                                        self.add_campaign_user(id_account=key, id_promotion=id_promotion)
+                                else:
+                                        self.remove_campaign_user(id_account=key, id_promotion=id_promotion)
+
+                return True
+
+        def get_checkbox_dictionary(self, paginator_element_list = False, checked_elements = False, checkbox_name = False):
                 """
                 Function to render a senders dictionary like this:
                 { "4" : 1, "5" : 1, "6" : 0, "7" : 1, "8" : 0 }
-                Return a senders dictionary on success
+                Return a checkbox status dictionary on success
+
+                paginator_element_list: all objects in current view (list)
+                checked_elements: all checkbox select in current view (list)
+                checkbox_name: db column name identifier of every checkbox
+                (string) -> es <input type="checkbox" name="checkbox_name[23]" value="1"> 23 is the unique database model ID, like id_account
                 """
 
-                senders_dictionary = {}
+                checkbox_dictionary = {}
 
-                for sender_show in senders_show_block:
-                        if (senders_list[sender_show.id_account] == 1):
-                                senders_dictionary["sender_show.id_account"] = 1
-                        else:
-                                senders_dictionary["sender_show.id_account"] = 0
+                if (checkbox_name):
+                        for element in paginator_element_list:
+                                logger.error("models.py: single element " + str(element))
+                                # se element è contenuto in checked_elements allora ok
+                                if (str(element) in checked_elements):
+                                        checkbox_dictionary[str(element)] = 1
+                                else:
+                                        checkbox_dictionary[str(element)] = 0
 
-                return senders_dictionary
+                logger.error("models.py, get_senders_dictionary: " + str(checkbox_dictionary))
+
+                return checkbox_dictionary

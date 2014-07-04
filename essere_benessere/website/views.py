@@ -75,26 +75,26 @@ def get_offers(request):
 	if (request.POST.get("get_offers_form_sent", "")):
 		if(request.POST.get("email", "") and request.POST.get("disclaimer", "")):
 		    try:
-			account_obj = Account.objects.get(email=request.POST['email'])
+                            account_obj = Account.objects.get(email=request.POST['email'])
 		    except (KeyError, Account.DoesNotExist):
-			logger.debug('Nuovo utente, inserisco in db')
-			account_obj = Account(
-                                first_name = request.POST['first_name'],
-                                last_name = request.POST['last_name'],
-                                email = request.POST['email'],
-                                mobile_phone = request.POST['phone'],
-                                receive_promotions = 1,
-                        )
+                            logger.debug('Nuovo utente, inserisco in db')
+                            account_obj = Account(
+                                    first_name = request.POST['first_name'],
+                                    last_name = request.POST['last_name'],
+                                    email = request.POST['email'],
+                                    mobile_phone = request.POST['phone'],
+                                    receive_promotions = 1,
+                            )
 
                         try:
-                            birthday = datetime.date(int(request.POST['birthday_year']),
-                                    int(request.POST['birthday_month']),
-                                    int(request.POST['birthday_day'])
-                            )
-                            account_obj.birthday_date = birthday
+                                birthday = datetime.date(int(request.POST['birthday_year']),
+                                        int(request.POST['birthday_month']),
+                                        int(request.POST['birthday_day'])
+                                )
+                                account_obj.birthday_date = birthday
                         except:
-                            # logger.error("Errore con il salvataggio della data o data non inserita")
-                            pass
+                                # logger.error("Errore con il salvataggio della data o data non inserita")
+                                pass
 
                         # saving account information
 			account_obj.save()
@@ -103,8 +103,8 @@ def get_offers(request):
                         messages.add_message(request, messages.SUCCESS, 'Grazie per esserti registrato!')
 			return HttpResponseRedirect(reverse(get_offers))
 		    else:
-                        messages.add_message(request, messages.ERROR, "Attenzione utente già esistente")
-			logger.debug("Utente gia' esistente in db")
+                            messages.add_message(request, messages.ERROR, "Attenzione utente già esistente")
+                            logger.debug("Utente gia' esistente in db")
 		else:
                         messages.add_message(request, messages.ERROR, 'Per continuare è necessario inserire una mail e confermare la privacy.')
                         logger.debug('Attenzione: inserire email e/o confermare disclaimer')
