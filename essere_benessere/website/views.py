@@ -74,40 +74,40 @@ def get_offers(request):
 	# altrimenti per il momento non permetto la modifica di una mail gia esistente
 	if (request.POST.get("get_offers_form_sent", "")):
 		if(request.POST.get("email", "") and request.POST.get("disclaimer", "")):
-		    try:
-                            account_obj = Account.objects.get(email=request.POST['email'])
-		    except (KeyError, Account.DoesNotExist):
-                            logger.debug('Nuovo utente, inserisco in db')
-                            account_obj = Account(
-                                    first_name = request.POST['first_name'],
-                                    last_name = request.POST['last_name'],
-                                    email = request.POST['email'],
-                                    mobile_phone = request.POST['phone'],
-                                    receive_promotions = 1,
-                            )
+			try:
+				account_obj = Account.objects.get(email=request.POST['email'])
+			except (KeyError, Account.DoesNotExist):
+				logger.debug('Nuovo utente, inserisco in db')
+				account_obj = Account(
+					first_name = request.POST['first_name'],
+					last_name = request.POST['last_name'],
+					email = request.POST['email'],
+					mobile_phone = request.POST['phone'],
+					receive_promotions = 1,
+				)
 
-                        try:
-                                birthday = datetime.date(int(request.POST['birthday_year']),
-                                        int(request.POST['birthday_month']),
-                                        int(request.POST['birthday_day'])
-                                )
-                                account_obj.birthday_date = birthday
-                        except:
-                                # logger.error("Errore con il salvataggio della data o data non inserita")
-                                pass
+				try:
+					birthday = datetime.date(int(request.POST['birthday_year']),
+						int(request.POST['birthday_month']),
+						int(request.POST['birthday_day'])
+					)
+					account_obj.birthday_date = birthday
+				except:
+					# logger.error("Errore con il salvataggio della data o data non inserita")
+					pass
 
-                        # saving account information
-			account_obj.save()
+				# saving account information
+				account_obj.save()
 
-                        # if user successfully inserted, than showing a success message
-                        messages.add_message(request, messages.SUCCESS, 'Grazie per esserti registrato!')
-			return HttpResponseRedirect(reverse(get_offers))
-		    else:
-                            messages.add_message(request, messages.ERROR, "Attenzione utente già esistente")
-                            logger.debug("Utente gia' esistente in db")
+				# if user successfully inserted, than showing a success message
+				messages.add_message(request, messages.SUCCESS, 'Grazie per esserti registrato!')
+				return HttpResponseRedirect(reverse(get_offers))
+			else:
+				messages.add_message(request, messages.ERROR, "Attenzione utente già esistente")
+				logger.debug("Utente gia' esistente in db")
 		else:
-                        messages.add_message(request, messages.ERROR, 'Per continuare è necessario inserire una mail e confermare la privacy.')
-                        logger.debug('Attenzione: inserire email e/o confermare disclaimer')
+			messages.add_message(request, messages.ERROR, 'Per continuare è necessario inserire una mail e confermare la privacy.')
+			logger.debug('Attenzione: inserire email e/o confermare disclaimer')
 	else:
 		logger.debug('Attenzione: submit del form non ancora eseguito')
 

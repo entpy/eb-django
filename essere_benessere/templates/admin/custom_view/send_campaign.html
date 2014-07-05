@@ -1,19 +1,122 @@
-	<div class="module{% if cl.has_filters %} filtered{% endif %}" id="changelist">
+{% extends "admin/base_site.html" %}
+{% load i18n admin_urls admin_static admin_list %}
+
+{% block extrastyle %}
+  {{ block.super }}
+  <link rel="stylesheet" type="text/css" href="{% static "admin/css/changelists.css" %}" />
+  {% if cl.formset %}
+    <link rel="stylesheet" type="text/css" href="{% static "admin/css/forms.css" %}" />
+  {% endif %}
+  {% if cl.formset or action_form %}
+    <script type="text/javascript" src="{% url 'admin:jsi18n' %}"></script>
+  {% endif %}
+  {{ media.css }}
+{% endblock %}
+
+{% block extrahead %}
+{{ block.super }}
+{{ media.js }}
+{% if action_form %}{% if actions_on_top or actions_on_bottom %}
+<script type="text/javascript">
+(function($) {
+    $(document).ready(function($) {
+        $("tr input.action-select").actions();
+    });
+})(django.jQuery);
+</script>
+{% endif %}{% endif %}
+{% endblock %}
+
+{% block bodyclass %}change-list{% endblock %}
+
+{% if not is_popup %}
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+<a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
+&rsaquo; {{ cl.opts.verbose_name_plural|capfirst }}
+</div>
+{% endblock %}
+{% endif %}
+
+{% block coltype %}flex{% endblock %}
+
+{% block content %}
+  <div id="content-main">
+    {% block object-tools %}
+      {% if has_add_permission %}
+        <ul class="object-tools">
+          {% block object-tools-items %}
+            <li>
+              {% url cl.opts|admin_urlname:'add' as add_url %}
+              <a href="{% add_preserved_filters add_url is_popup %}" class="addlink">
+                {% blocktrans with cl.opts.verbose_name as name %}Add {{ name }}{% endblocktrans %}
+              </a>
+            </li>
+          {% endblock %}
+        </ul>
+      {% endif %}
+    {% endblock %}
+    {% if cl.formset.errors %}
+        <p class="errornote">
+        {% if cl.formset.total_error_count == 1 %}{% trans "Please correct the error below." %}{% else %}{% trans "Please correct the errors below." %}{% endif %}
+        </p>
+        {{ cl.formset.non_form_errors }}
+    {% endif %}
+    <div class="module{% if cl.has_filters %} filtered{% endif %}" id="changelist">
+
+      {% block filters %}
+        {% if cl.has_filters %}
+          <div id="changelist-filter">
+            <h2>{% trans 'Filter' %}</h2>
+            {% for spec in cl.filter_specs %}{% admin_list_filter cl spec %}{% endfor %}
+          </div>
+        {% endif %}
+      {% endblock %}
+
 		<form name="select_senders_form" action="" method="POST">
 			{% csrf_token %}
-
 			<input type="hidden" name="select_senders_form_sent" value="1">
+			<input type="hidden" name="current_page" value="{{ contacts.number }}">
 			{% if contacts.has_previous %}
-				<input type="hidden" name="previous_page_number" value="{{ contacts.previous_page_number }}">
+				<input type="hidden" name="new_page" value="{{ contacts.previous_page_number }}">
 			{% endif %}
 			{% if contacts.has_next %}
-				<input type="hidden" name="next_page_number" value="{{ contacts.next_page_number }}">
+				<input type="hidden" name="new_page" value="{{ contacts.next_page_number }}">
 			{% endif %}
 
 			<div class="result">
-			{% for contact in contacts %}
-				<input type="checkbox" name="contacts[]" value="{{ contact.id_account }}" {# TODO: checked="checked" if is checked #} /><label>{{ contact.email }}</label><br />
-				{% endfor %}
+				<table id="result_list">
+					<thead>
+						<tr>
+							<th class="action-checkbox-column" scope="col">
+								<div class="text"><span><input type="checkbox" id="action-toggle" style="display: inline;"></span></div>
+								<div class="clear"></div>
+							</th>
+							<th class="column-__str__" scope="col">
+								<div class="text"><span>Email</span></div>
+								<div class="clear"></div>
+							</th>
+							<th class="column-__str__" scope="col">
+								<div class="text"><span>Nome</span></div>
+								<div class="clear"></div>
+							</th>
+							<th class="column-__str__" scope="col">
+								<div class="text"><span>Cognome</span></div>
+								<div class="clear"></div>
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for contact in contacts %}
+							<tr class="row2">
+								<td class="action-checkbox"><input type="checkbox" name="contacts[]" class="action-select" value="{{ contact.id_account }}" {% if contact.id_account in campaign_contacts_list %}checked="checked"{% endif %} /></td>
+								<th><label>{{ contact.email }}</label></th>
+								<th><label>{{ contact.first_name }}</label></th>
+								<th><label>{{ contact.last_name }}</label></th>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
 			</div>
 			<div class="pagination">
 				<span class="step-links">
@@ -31,4 +134,6 @@
 				</span>
 			</div>
 		</form>
-	</div>
+    </div>
+  </div>
+{% endblock %}

@@ -36,6 +36,7 @@ class AccountAdmin(admin.ModelAdmin):
                 contact_list = Account.objects.all()
                 campaign_obj = Campaign()
                 paginator = Paginator(contact_list, 5)
+		working_id_promotion = 2
 
                 # TODO list 
                 """
@@ -54,28 +55,27 @@ class AccountAdmin(admin.ModelAdmin):
                 3:{
                     passing checked checkbox to template context
                 }
-
-                4:{
-                    # get paginator page number, if exists
-                    if request.POST.get('previous') exists
-                        then page = request.POST.get('previous_page_number') contain previously page number
-                    else if request.POST.get('next') exists
-                        then page = request.POST.get('next_page_number') contain next page number
-                }
                 """
 
-                # TODO: wtf?! default page number
-                page = request.GET.get('page')
+		# retrieving new page number
+                page = request.POST.get('new_page')
 
-                # 1 set/unset campaign senders
-                if(request.POST.get("select_senders_form_sent", "")):
+		# retrieving old page number
+                old_viewed_page = request.POST.get('current_page')
+
+                """1""" # set/unset campaign senders
+                if(request.POST.get("select_senders_form_sent", "") and request.POST.get("current_page", "")):
                         selected_contacts = request.POST.getlist("contacts[]")
 
-                        # retrieving checkded list
-                        senders_dictionary = campaign_obj.get_checkbox_dictionary(paginator.page(page), selected_contacts, "id_account")
+                        # retrieving checked list from current view (only checkbox that are shown from paginator current view)
+                        senders_dictionary = campaign_obj.get_checkbox_dictionary(paginator.page(old_viewed_page), selected_contacts, "id_account")
 
                         # saving or removing checked/unchecked checkbox from db
-                        campaign_obj.set_campaign_user(senders_dictionary, id_promotion = 1)
+                        campaign_obj.set_campaign_user(senders_dictionary, id_promotion = working_id_promotion)
+		
+		"""2""" # retrieving all checked checkbox for current promotion
+		campaign_contacts_list = campaign_obj.get_account_list(id_promotion = working_id_promotion)
+		logger.debug("selected_contacts_list: " + str(campaign_contacts_list))
 
                 # retrieving paginator object
                 try:
@@ -101,7 +101,8 @@ class AccountAdmin(admin.ModelAdmin):
 
                 # creating template context
                 context = {
-                        'contacts': contacts,
+                        'contacts' : contacts,
+			'campaign_contacts_list' : campaign_contacts_list,
                 }
 
                 # return HttpResponse(template.render(context))

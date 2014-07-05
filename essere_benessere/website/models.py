@@ -170,7 +170,7 @@ class Campaign(models.Model):
 
                 return True
 
-        def get_checkbox_dictionary(self, paginator_element_list = False, checked_elements = False, checkbox_name = False):
+        def get_checkbox_dictionary(self, paginator_element_list=False, checked_elements=False, checkbox_name=False):
                 """
                 Function to render a senders dictionary like this:
                 { "4" : 1, "5" : 1, "6" : 0, "7" : 1, "8" : 0 }
@@ -196,3 +196,20 @@ class Campaign(models.Model):
                 logger.error("models.py, get_senders_dictionary: " + str(checkbox_dictionary))
 
                 return checkbox_dictionary
+
+	def get_account_list(self, id_promotion=False):
+		"""
+		Function to retrieve all account about a promotion id
+		Return an account id list on success
+		"""
+		
+		return_var = []
+
+		if (id_promotion):
+			account_list = Campaign.objects.filter(id_promotion=id_promotion)
+			for single_element in account_list:
+				return_var.append(single_element.id_account.id_account)
+
+			# logger.debug("[get_account_list], account_list: " + str(return_var))
+
+		return return_var
