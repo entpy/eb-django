@@ -38,7 +38,6 @@ class AccountAdmin(admin.ModelAdmin):
                 paginator = Paginator(contact_list, 5)
 		working_id_promotion = 2
 
-                # TODO list 
                 """
                 1:{
                     saving checked and delete unchecked checkbox from form into
