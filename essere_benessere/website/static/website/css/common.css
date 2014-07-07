@@ -188,7 +188,7 @@ h1 { font-size: 30px; }
 /* our services page }}} */
 
 /* get offers page {{{ */
-.styled_form input { border: 1px solid lightgray; font-size: 16px; padding: 10px 20px; width: 205px; }
+.styled_form input { border: 1px solid lightgray; border-radius: 0; font-size: 16px; padding: 10px 20px; width: 205px; -webkit-appearance: none; }
 .styled_form > .input_container { display: table; margin: 0 auto; width: 520px; }
 .styled_form > .input_container.input_container_margin_top { margin-top: 21px; }
 .styled_form > .input_container > div { display: table-cell; width: 50%; }
