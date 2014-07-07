@@ -20,13 +20,27 @@ class AccountAdmin(admin.ModelAdmin):
         def get_urls(self):
             urls = super(AccountAdmin, self).get_urls()
             my_urls = patterns('',
-                    (r'^send-campaign/$', self.admin_site.admin_view(self.send_campaign))
+                    (r'^campaigns/step1$', self.admin_site.admin_view(self.create_promotion)),
+                    (r'^campaigns/step2$', self.admin_site.admin_view(self.select_recipients)),
             )
 
             # return custom URLs with default URLs
             return my_urls + urls
 
-        def send_campaign(self, request):
+        def create_promotion(self, request):
+
+                # 1: get add promotion form
+
+
+                # creating template context
+                context = {
+                        'test' : True,
+                }
+
+                # return HttpResponse(template.render(context))
+                return render(request, 'admin/campaigns/step1.html', context)
+
+        def select_recipients(self, request):
                 """
                 Send campaign wizard view, a custom admin view to enable
                 sending promotion to a customer list
@@ -105,7 +119,7 @@ class AccountAdmin(admin.ModelAdmin):
                 }
 
                 # return HttpResponse(template.render(context))
-                return render(request, 'admin/custom_view/send_campaign.html', context)
+                return render(request, 'admin/campaigns/step2.html', context)
 
 class PromotionAdmin(admin.ModelAdmin):
         # fileds in add/modify form
