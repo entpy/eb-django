@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 
 from django.contrib import admin
-from website.models import Account,Promotion, Campaign
+from website.models import Account, Promotion, Campaign
 from django.conf.urls import patterns
 from django.http import HttpResponseRedirect, HttpResponse
 from django.template import RequestContext, loader
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render
+from django.forms.models import modelform_factory
 import logging
 
 # Get an instance of a logger
@@ -30,15 +31,19 @@ class AccountAdmin(admin.ModelAdmin):
         def create_promotion(self, request):
 
                 # 1: get add promotion form
-
+		PromotionFormSet = modelform_factory(Promotion, fields=("name", "description", "promo_image", "expiring_date"), required=True)
+		formset = PromotionFormSet()
+		formset.required_css_class = 'required'
 
                 # creating template context
                 context = {
-                        'test' : True,
+                        'adminform' : formset,
                 }
 
+		logger.debug("promo FORM: " + str(formset))
+
                 # return HttpResponse(template.render(context))
-                return render(request, 'admin/campaigns/step1.html', context)
+                return render(request, 'admin/custom_view/campaigns/step1.html', context)
 
         def select_recipients(self, request):
                 """
@@ -50,7 +55,7 @@ class AccountAdmin(admin.ModelAdmin):
                 contact_list = Account.objects.all()
                 campaign_obj = Campaign()
                 paginator = Paginator(contact_list, 5)
-		working_id_promotion = 2
+		working_id_promotion = 1
 
                 """
                 1:{
@@ -119,15 +124,15 @@ class AccountAdmin(admin.ModelAdmin):
                 }
 
                 # return HttpResponse(template.render(context))
-                return render(request, 'admin/campaigns/step2.html', context)
+                return render(request, 'admin/custom_view/campaigns/step2.html', context)
 
 class PromotionAdmin(admin.ModelAdmin):
         # fileds in add/modify form
         fields = ('name', 'description', 'promo_image', 'expiring_date', 'promo_type')
 
         def save_model(self, request, obj, form, change):
-                # generating a random code before save data
-                obj.code = obj.generate_random_code()
+                # TODO: generating a random code before save data
+                # obj.code = obj.generate_random_code()
                 obj.save()
 
 # registering models to admin interface

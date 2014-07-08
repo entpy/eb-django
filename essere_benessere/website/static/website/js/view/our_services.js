@@ -4,7 +4,9 @@ $(document).ready(function(){
 	load_default_services_block();
 
 	// fancybox init
-	$(".fancybox").fancybox();
+	$(".fancybox").fancybox({
+		"openEffect" : "none"
+	});
 
 	$(".serviceClickAction").on("click",  function(){
 

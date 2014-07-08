@@ -8,7 +8,7 @@ html { background-color: #ffdfeb; }
 .page_wrapper { margin: 0 auto; }
 .content .page_wrapper { background-color: #FFD5DB; margin-bottom: 30px; }
 .single_page_content { width: 100%; }
-.readable_content, .service_html_container > .description_block_2_container > .content { font-size: 14px; letter-spacing: 0.015em; line-height: 1.51em; }
+.readable_content, .service_html_container > .description_block_2_container > .content { font-size: 14px; letter-spacing: 0.015em; line-height: 1.90em; }
 .margin_top_40 { margin-top: 40px; }
 .margin_top_25 { margin-top: 25px; }
 .margin_top_78 { margin-top: 78px; }
