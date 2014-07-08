@@ -42,7 +42,6 @@ class Promotion(models.Model):
 	)
 
 	id_promotion = models.AutoField(primary_key=True)
-	code = models.CharField(max_length=10)
 	name = models.CharField("Titolo promozione", max_length=50)
 	description = models.TextField("Contenuto")
         promo_image = models.ImageField("Immagine della promozione", upload_to="/tmp/")
@@ -58,7 +57,7 @@ class Promotion(models.Model):
         def generate_random_code(self, depth = 0):
                 """
                 Generating a random promo code, if the generated code already
-                exists, than recursively call this function to generate a ne ones.
+                exists, than recursively call this function to generate a new ones.
                 Max recursion depth: 50
                 """
 
@@ -94,6 +93,7 @@ class Campaign(models.Model):
 	id_campaign = models.AutoField(primary_key=True)
 	id_account = models.ForeignKey(Account)
 	id_promotion = models.ForeignKey(Promotion)
+	code = models.CharField(max_length=10)
 	status = models.BooleanField(default=0)
 
 	# On Python 3: def __str__(self):
