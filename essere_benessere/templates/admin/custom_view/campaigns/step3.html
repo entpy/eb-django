@@ -1,0 +1,109 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_urls admin_static admin_modify %}
+
+{% block extrahead %}{{ block.super }}
+<script type="text/javascript" src="/static/admin/js/jquery.js"></script>
+<script type="text/javascript" src="/static/admin/js/jquery.init.js"></script>
+<script type="text/javascript" src="{% url 'admin:jsi18n' %}"></script>
+<script type="text/javascript" src="/static/admin/js/core.js"></script>
+{{ adminform.media }}
+{% endblock %}
+{% block extrastyle %}{{ block.super }}
+<link rel="stylesheet" type="text/css" href="{% static "admin/css/forms.css" %}" />
+<style>
+	.promo_image_container img {
+		max-height: 60px;
+		max-width: 70px;
+	}
+
+	/* inputreview page css fix {{{ */
+	.datetimeshortcuts { display: none; }
+	.senders_edit_container { margin-left: 14px; }
+	.footer_button_text_separator {
+		display: inline;
+		float: right;
+		margin-left: 10px;
+		margin-right: 10px;
+		margin-top: 5px;
+	}
+	/* inputreview page css fix }}} */
+</style>
+{% endblock %}
+
+{% block coltype %}colM{% endblock %}
+
+{% block bodyclass %}{{ opts.app_label }}-{{ opts.object_name.lower }} change-form{% endblock %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+<a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
+&rsaquo; {% if has_change_permission %}<a href="{% url opts|admin_urlname:'changelist' %}">{{ opts.verbose_name_plural|capfirst }}</a>{% else %}{{ opts.verbose_name_plural|capfirst }}{% endif %}
+&rsaquo; {% if add %}{% trans 'Add' %} {{ opts.verbose_name }}{% else %}{{ original|truncatewords:"18" }}{% endif %}
+</div>
+{% endblock %}
+{% block content %}
+<h1>Crea la promozione</h1>
+<div id="content-main">
+{% block object-tools %}
+{% if change %}{% if not is_popup %}
+  <ul class="object-tools">
+    {% block object-tools-items %}
+    <li>
+        {% url opts|admin_urlname:'history' original.pk|admin_urlquote as history_url %}
+        <a href="{% add_preserved_filters history_url %}" class="historylink">{% trans "History" %}</a>
+    </li>
+    {% if has_absolute_url %}<li><a href="{% url 'admin:view_on_site' content_type_id original.pk %}" class="viewsitelink">{% trans "View on site" %}</a></li>{% endif%}
+    {% endblock %}
+  </ul>
+{% endif %}{% endif %}
+{% endblock %}
+<form name="promotion_review_form" class="promotion_review_form" action="" method="post">
+	<div>
+		{% block field_sets %}
+			<div>
+				<fieldset class="module aligned ">
+					{% for fieldset in adminform %}
+						<div class="form-row">
+							<div>
+								{% if fieldset.name == "promo_image" and adminform.instance.promo_image.url != "" %}
+									<label>Immagine promozione</label>
+									<!-- display promo image (only if the field is image) -->
+									<span class="promo_image_container">
+										<img src="{{ adminform.instance.promo_image.url }}">
+									</span>
+								{% else %}
+									{{ fieldset.label_tag }} {{ fieldset }}
+								{% endif %}
+							</div>
+						</div>
+					{% endfor %}
+						<div class="form-row">
+							<div>
+								<label>Numero di destinatari</label>
+								<!-- display promo image (only if the field is image) -->
+								<span>{{ total_senders }}</span>
+								<span class="senders_edit_container">
+									<a href="/admin/website/account/campaigns/step2">Modifica</a>
+								</span>
+							</div>
+						</div>
+				</fieldset>
+			</div>
+		{% endblock %}
+	</div>
+</form>
+<form name="send_campaign_form" action="" method="post">
+	{% csrf_token %}
+	<input type="hidden" name="send_campaign_form_sent" value="1" />
+	<div class="submit-row">
+		<input type="submit" name="send_promotion" class="default" value="Invia promozione">
+		<div class="footer_button_text_separator">oppure</div>
+		<input type="submit" name="edit_promotion" value="Modifica dettagli promozione">
+	</div>
+</form>
+<script>
+	django.jQuery(document).ready(function(){
+		django.jQuery(".promotion_review_form input, .promotion_review_form textarea").attr('readonly', 'readonly')
+	});
+</script>
+{% endblock %}

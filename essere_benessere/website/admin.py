@@ -1,14 +1,15 @@
 # -*- coding: utf-8 -*-
 
-from django.contrib import admin
 from website.models import Account, Promotion, Campaign
-from django.conf.urls import patterns
-from django.http import HttpResponseRedirect, HttpResponse
-from django.template import RequestContext, loader
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.shortcuts import render
-from django.forms.models import modelform_factory
 import logging
+from django import forms
+from django.contrib import admin, messages
+from django.contrib.admin import widgets 
+from django.conf.urls import patterns
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.http import HttpResponseRedirect, HttpResponse
+from django.shortcuts import render
+from django.template import RequestContext, loader
 
 # Get an instance of a logger
 logger = logging.getLogger('django.request')
@@ -21,41 +22,69 @@ class AccountAdmin(admin.ModelAdmin):
         def get_urls(self):
             urls = super(AccountAdmin, self).get_urls()
             my_urls = patterns('',
-                    (r'^campaigns/step1$', self.admin_site.admin_view(self.create_promotion)),
+                    (r'^campaigns/step1/(?P<new_campaign>\d+)?$', self.admin_site.admin_view(self.create_promotion)),
                     (r'^campaigns/step2$', self.admin_site.admin_view(self.select_recipients)),
+                    (r'^campaigns/step3/(?P<id_promotion>\d+)?$', self.admin_site.admin_view(self.campaign_review)),
             )
 
             # return custom URLs with default URLs
             return my_urls + urls
 
-        def create_promotion(self, request):
+        # STEP 1
+        def create_promotion(self, request, new_campaign=False):
+
+                # retrieving id promotion from GET (if exists and saving into session)
+                if (new_campaign):
+                        request.session['promotion_id'] = None
 
                 # 1: get add promotion form
-		PromotionFormSet = modelform_factory(Promotion, fields=("name", "description", "promo_image", "expiring_date"), required=True)
-		formset = PromotionFormSet()
-		formset.required_css_class = 'required'
+                try:
+                        # TODO: get promo id from session
+                        promotion_obj = None
+                        promotion_obj = Promotion.objects.get(id_promotion=request.session['promotion_id'])
+                except (KeyError, Promotion.DoesNotExist):
+                        # object doesn't exists
+                        pass
 
+                if (request.method == 'POST'):
+                        formset = PromotionForm(request.POST, request.FILES, instance=promotion_obj)
+                        if formset.is_valid():
+                                promo = formset.save()
+
+                                # saving created promotion id into session
+                                # logger.debug("Promo id creata: " + str(promo.id_promotion))
+                                request.session['promotion_id'] = promo.id_promotion
+
+                                # TODO: redirect to campaigns/step2
+                                return HttpResponseRedirect('/admin/website/account/campaigns/step2') # Redirect after POST
+                else:
+                        # TODO: find how to retrieve a model form starting from primary model key
+                        # promotion = Promotion.objects.get(id_promotion = 8)
+                        formset = PromotionForm(instance=promotion_obj)
+
+		logger.debug("selected_contacts_list: " + str(formset))
                 # creating template context
                 context = {
                         'adminform' : formset,
                 }
 
-		logger.debug("promo FORM: " + str(formset))
-
-                # return HttpResponse(template.render(context))
                 return render(request, 'admin/custom_view/campaigns/step1.html', context)
 
+        # STEP 2
         def select_recipients(self, request):
                 """
                 Send campaign wizard view, a custom admin view to enable
                 sending promotion to a customer list
                 """
 
-                logger.debug("PROVA")
+                # a campaign must exists before enter here
+                if (request.session['promotion_id'] is None):
+                        return HttpResponseRedirect('/admin/website/account/campaigns/step1')
+
                 contact_list = Account.objects.all()
                 campaign_obj = Campaign()
                 paginator = Paginator(contact_list, 5)
-		working_id_promotion = 1
+		working_id_promotion = request.session['promotion_id']
 
                 """
                 1:{
@@ -76,7 +105,10 @@ class AccountAdmin(admin.ModelAdmin):
                 """
 
 		# retrieving new page number
-                page = request.POST.get('new_page')
+                if (request.POST.get('next', '')):
+                        page = request.POST.get('next_page')
+                else:
+                        page = request.POST.get('previously_page')
 
 		# retrieving old page number
                 old_viewed_page = request.POST.get('current_page')
@@ -117,14 +149,63 @@ class AccountAdmin(admin.ModelAdmin):
                 # loading template
                 # template = loader.get_template('admin/custom_view/send_campaign.html')
 
-                # creating template context
+                """3""" # creating template context
                 context = {
                         'contacts' : contacts,
 			'campaign_contacts_list' : campaign_contacts_list,
+                        'id_promotion' : working_id_promotion,
                 }
 
-                # return HttpResponse(template.render(context))
+
+                # send promotion (after the senders selection)
+                if (request.POST.get("next_step", "")):
+                        return HttpResponseRedirect('/admin/website/account/campaigns/step3/' + str(working_id_promotion)) # Redirect after POST
+
+                # select senders list page
                 return render(request, 'admin/custom_view/campaigns/step2.html', context)
+
+        # STEP 3
+        def campaign_review(self, request, id_promotion=None):
+
+                try:
+                        # get add promotion form
+                        promotion_obj = Promotion.objects.get(id_promotion=id_promotion)
+                        promo_form = PromotionForm(instance=promotion_obj)
+
+                        if (promotion_obj.status == 0):
+                                # checking if user choose to re-edit the promotion
+                                if (request.POST.get("edit_promotion", "")):
+                                        return HttpResponseRedirect('/admin/website/account/campaigns/step1/') # Redirect after POST
+
+                                # checking if user choose to send the promotion
+                                if (request.POST.get("send_promotion", "")):
+                                        campaign_obj = Campaign()
+                                        campaign_obj.send_campaign(id_promotion)
+
+                                        # redirect to success page
+                                        messages.add_message(request, messages.SUCCESS, 'Promozione inviata con successo!')
+                                        return HttpResponseRedirect('/admin/website/account/campaigns/step1/1')
+
+                                # count total senders about this campaign
+                                campaign_obj = Campaign()
+                                total_senders = campaign_obj.count_campaign_senders(id_promotion=id_promotion)
+
+                                # creating template context
+                                context = {
+                                        'adminform' : promo_form,
+                                        'id_promotion' : id_promotion,
+                                        'total_senders' : total_senders,
+                                }
+
+                                # campaign review page
+                                return render(request, 'admin/custom_view/campaigns/step3.html', context)
+                        else:
+                                # promotion already sent
+                                return HttpResponseRedirect('/admin/website/account/campaigns/step1/') # Redirect after POST
+
+                except (KeyError, Promotion.DoesNotExist):
+                        # object doesn't exists, id_promotion must exists
+                        return HttpResponseRedirect('/admin/website/account/campaigns/step1/1') # Redirect after POST
 
 class PromotionAdmin(admin.ModelAdmin):
         # fileds in add/modify form
@@ -134,6 +215,15 @@ class PromotionAdmin(admin.ModelAdmin):
                 # TODO: generating a random code before save data
                 # obj.code = obj.generate_random_code()
                 obj.save()
+
+class PromotionForm(forms.ModelForm):
+
+        # promo_image = forms.ImageField(upload_to="/tmp/")
+
+        class Meta:
+                widgets = {'expiring_date': widgets.AdminDateWidget()}
+                model = Promotion
+                fields = ['name', 'description', 'promo_image', 'expiring_date']
 
 # registering models to admin interface
 admin.site.register(Account, AccountAdmin)

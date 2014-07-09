@@ -2,17 +2,26 @@
 {% load i18n admin_urls admin_static admin_modify %}
 
 {% block extrahead %}{{ block.super }}
+<script type="text/javascript" src="/static/admin/js/jquery.js"></script>
+<script type="text/javascript" src="/static/admin/js/jquery.init.js"></script>
 <script type="text/javascript" src="{% url 'admin:jsi18n' %}"></script>
-{{ media }}
+<script type="text/javascript" src="/static/admin/js/core.js"></script>
+{{ adminform.media }}
 {% endblock %}
-
-{% block extrastyle %}{{ block.super }}<link rel="stylesheet" type="text/css" href="{% static "admin/css/forms.css" %}" />{% endblock %}
+{% block extrastyle %}{{ block.super }}
+<link rel="stylesheet" type="text/css" href="{% static "admin/css/forms.css" %}" />
+<style>
+	.promo_image_container img {
+		max-height: 60px;
+		max-width: 70px;
+	}
+</style>
+{% endblock %}
 
 {% block coltype %}colM{% endblock %}
 
 {% block bodyclass %}{{ opts.app_label }}-{{ opts.object_name.lower }} change-form{% endblock %}
 
-{% if not is_popup %}
 {% block breadcrumbs %}
 <div class="breadcrumbs">
 <a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
@@ -20,7 +29,6 @@
 &rsaquo; {% if add %}{% trans 'Add' %} {{ opts.verbose_name }}{% else %}{{ original|truncatewords:"18" }}{% endif %}
 </div>
 {% endblock %}
-{% endif %}
 {% block content %}
 <h1>Crea la promozione</h1>
 <div id="content-main">
@@ -37,7 +45,7 @@
   </ul>
 {% endif %}{% endif %}
 {% endblock %}
-<form {% if has_file_field %}enctype="multipart/form-data" {% endif %}action="{{ form_url }}" method="post" id="{{ opts.model_name }}_form">{% csrf_token %}{% block form_top %}{% endblock %}
+<form enctype="multipart/form-data" action="" method="post" id="{{ opts.model_name }}_form">{% csrf_token %}{% block form_top %}{% endblock %}
 <div>
 {% if is_popup %}<input type="hidden" name="_popup" value="1" />{% endif %}
 {% if save_on_top %}{% block submit_buttons_top %}{% submit_row %}{% endblock %}{% endif %}
@@ -49,25 +57,32 @@
 {% endif %}
 
 {% block field_sets %}
-<div>
-	<fieldset class="module aligned ">
-	{% for fieldset in adminform %}
-		<div class="form-row">
-			<div>
-				{{ fieldset.label_tag }} {{ fieldset }}
-			</div>
-		</div>
-	{% endfor %}
-	</fieldset>
-</div>
+	<div>
+		<fieldset class="module aligned ">
+			{% for fieldset in adminform %}
+				<div class="form-row">
+					<div>
+						{{ fieldset.errors }}
+						{{ fieldset.label_tag }} {{ fieldset }}
+						{% if fieldset.name == "promo_image" and adminform.instance.promo_image.url != "" %}
+							<!-- display promo image (only if the field is image) -->
+							<span class="promo_image_container">
+								<img src="{{ adminform.instance.promo_image.url }}">
+							</span>
+						{% endif %}
+					</div>
+				</div>
+			{% endfor %}
+		</fieldset>
+	</div>
 {% endblock %}
 
 {% block after_field_sets %}{% endblock %}
 
 {% block inline_field_sets %}
-{% for inline_admin_formset in inline_admin_formsets %}
-    {% include inline_admin_formset.opts.template %}
-{% endfor %}
+	{% for inline_admin_formset in inline_admin_formsets %}
+		{% include inline_admin_formset.opts.template %}
+	{% endfor %}
 {% endblock %}
 
 {% block after_related_objects %}{% endblock %}

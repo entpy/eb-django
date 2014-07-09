@@ -10,6 +10,7 @@ Account -> Campaign <- Promotion
 
 from django.db import models
 import string, random, logging
+from django.core.mail import send_mail
 
 # Get an instance of a logger
 logger = logging.getLogger('django.request')
@@ -47,12 +48,31 @@ class Promotion(models.Model):
         promo_image = models.ImageField("Immagine della promozione", upload_to="/tmp/")
 	expiring_date = models.DateField("Scadenza")
 	promo_type = models.CharField(max_length=30, choices=PROMOTION_TYPES_SELECTOR)
-	status = models.BooleanField(default=1)
+	status = models.BooleanField(default=0)
 	campaigns = models.ManyToManyField(Account, through='Campaign')
 
 	# On Python 3: def __str__(self):
 	def __unicode__(self):
 		return str(self.id_promotion)
+
+        def get_valid_promotions_list(self, promo_type = PROMOTION_TYPE_FRONTEND["key"]):
+                """
+                Return a list of valid promotions (not already expired)
+                """
+                return_var = False
+
+                return return_var
+
+class Campaign(models.Model):
+	id_campaign = models.AutoField(primary_key=True)
+	id_account = models.ForeignKey(Account, db_column="id_account")
+	id_promotion = models.ForeignKey(Promotion, db_column="id_promotion")
+	code = models.CharField(max_length=10)
+	status = models.BooleanField(default=0)
+
+	# On Python 3: def __str__(self):
+	def __unicode__(self):
+		return str(self.id_campaign)
 
         def generate_random_code(self, depth = 0):
                 """
@@ -66,39 +86,20 @@ class Promotion(models.Model):
 
                 try:
                         # checking if code already exists
-                        Promotion.objects.get(code=random_code)
+                        Campaign.objects.get(code=random_code)
 
                         # than recall this function to generate a new ones
                         if (depth < 50):
-                            random_code = Promotion.generate_random_code(self, depth+1)
+                            random_code = Campaign.generate_random_code(self, depth+1)
                         else:
                             logger.error("ATTENZIONE: non sono riuscito a generare un nuovo codice | depth level: " + str(depth))
                             random_code = "PROMOCODE1"
 
-                except (KeyError, Promotion.DoesNotExist):
+                except (KeyError, Campaign.DoesNotExist):
                         # Yo!
                         pass
 
                 return random_code
-
-        def get_valid_promotions_list(self, promo_type = PROMOTION_TYPE_FRONTEND["key"]):
-                """
-                Return a list of valid promotions (not already expired)
-                """
-                return_var = False
-
-                return return_var
-
-class Campaign(models.Model):
-	id_campaign = models.AutoField(primary_key=True)
-	id_account = models.ForeignKey(Account)
-	id_promotion = models.ForeignKey(Promotion)
-	code = models.CharField(max_length=10)
-	status = models.BooleanField(default=0)
-
-	# On Python 3: def __str__(self):
-	def __unicode__(self):
-		return str(self.id_campaign)
 
         def add_campaign_user(self, id_account=False, id_promotion=False):
                 """
@@ -213,3 +214,66 @@ class Campaign(models.Model):
 			# logger.debug("[get_account_list], account_list: " + str(return_var))
 
 		return return_var
+
+        def count_campaign_senders(self, id_promotion=False):
+                """
+                Function to count all senders about a campaign
+                """
+
+                return_var = 0
+
+                if (id_promotion):
+                    return_var = Campaign.objects.filter(id_promotion=id_promotion).count()
+
+
+                return return_var
+
+        def send_campaign(self, id_promotion=None):
+                """
+                Function to send a campaing via email
+                for all promo sender:
+                    -generating a unique random code
+                    -sending promo
+                """
+                
+                return_var = False
+
+                if(id_promotion):
+                    senders_list = Campaign.objects.filter(id_promotion=id_promotion)
+
+                    for sender in senders_list:
+                            campaign_obj = Campaign.objects.get(id_campaign=sender.id_campaign)
+
+                            # generating unique random code
+                            random_code = campaign_obj.generate_random_code()
+                            campaign_obj.code = random_code
+                            campaign_obj.save()
+
+                            # sending campaign via mail
+                            # campaign_obj.send_promotional_email(campaign_obj.id_campaign())
+                            logger.error("models.py, send_campaign: " + str(id_promotion) + " | code: " + str(random_code))
+                            return_var = True
+
+                    # TODO: only for debug, plz remove
+                    campaign_obj.send_promotional_email()
+
+                return return_var
+
+        # TODO: implements this function
+        def send_promotional_email(self, id_campaign=None):
+                """
+                Function to send a promotion to an email address
+                """
+
+                return_var = False
+
+                send_mail(
+                        'Test',
+                        'Here is the message.',
+                        'from@example.com',
+                        ['veronesi1231@yahoo.com'],
+                        fail_silently=False
+                )
+
+                return return_var
+

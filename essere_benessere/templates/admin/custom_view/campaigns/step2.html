@@ -4,9 +4,7 @@
 {% block extrastyle %}
   {{ block.super }}
   <link rel="stylesheet" type="text/css" href="{% static "admin/css/changelists.css" %}" />
-  {% if cl.formset %}
-    <link rel="stylesheet" type="text/css" href="{% static "admin/css/forms.css" %}" />
-  {% endif %}
+  <link rel="stylesheet" type="text/css" href="{% static "admin/css/forms.css" %}" />
   {% if cl.formset or action_form %}
     <script type="text/javascript" src="{% url 'admin:jsi18n' %}"></script>
   {% endif %}
@@ -78,10 +76,10 @@
 			<input type="hidden" name="select_senders_form_sent" value="1">
 			<input type="hidden" name="current_page" value="{{ contacts.number }}">
 			{% if contacts.has_previous %}
-				<input type="hidden" name="new_page" value="{{ contacts.previous_page_number }}">
+				<input type="hidden" name="previously_page" value="{{ contacts.previous_page_number }}">
 			{% endif %}
 			{% if contacts.has_next %}
-				<input type="hidden" name="new_page" value="{{ contacts.next_page_number }}">
+				<input type="hidden" name="next_page" value="{{ contacts.next_page_number }}">
 			{% endif %}
 
 			<div class="result">
@@ -132,6 +130,9 @@
 					    <input type="submit" name="next" value="Avanti"/>
 					{% endif %}
 				</span>
+			</div>
+			<div class="submit-row">
+				<input type="submit" name="next_step" class="default" value="Save">
 			</div>
 		</form>
     </div>
