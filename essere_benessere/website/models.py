@@ -9,8 +9,11 @@ Account -> Campaign <- Promotion
 """
 
 from django.db import models
-import string, random, logging
 from django.core.mail import send_mail
+from django.utils import timezone
+import datetime
+from datetime import datetime
+import string, random, logging
 
 # Get an instance of a logger
 logger = logging.getLogger('django.request')
@@ -235,31 +238,70 @@ class Campaign(models.Model):
                     -generating a unique random code
                     -sending promo
                 """
-                
+
                 return_var = False
 
                 if(id_promotion):
                     senders_list = Campaign.objects.filter(id_promotion=id_promotion)
 
                     for sender in senders_list:
-                            campaign_obj = Campaign.objects.get(id_campaign=sender.id_campaign)
+                            try:
+                                    campaign_obj = Campaign.objects.get(id_campaign=sender.id_campaign)
 
-                            # generating unique random code
-                            random_code = campaign_obj.generate_random_code()
-                            campaign_obj.code = random_code
-                            campaign_obj.save()
+                                    # generating unique random code
+                                    random_code = campaign_obj.generate_random_code()
+                                    campaign_obj.code = random_code
+                                    campaign_obj.save()
 
-                            # sending campaign via mail
-                            # campaign_obj.send_promotional_email(campaign_obj.id_campaign())
-                            logger.error("models.py, send_campaign: " + str(id_promotion) + " | code: " + str(random_code))
-                            return_var = True
+                                    # sending campaign via mail
+                                    campaign_obj.send_promotional_email(campaign_obj.id_campaign)
 
-                    # TODO: only for debug, plz remove
-                    campaign_obj.send_promotional_email()
+                                    return_var = True
+                            except(KeyError, Campaign.DoesNotExist):
+                                    # id campaign doesn't exists
+                                    return_var = False
+                                    break
 
                 return return_var
 
-        # TODO: implements this function
+        def get_campaign_details(self, id_campaign=None, campaign_code=None):
+                """
+                Function to retrieve all details about a campaign.
+                Return a dictionary like this:
+                    campaign_details = {
+                                            'title' : 'promo title',
+                                            'content' : 'promo content'
+                                            ...
+                                        }
+                """
+
+                campaign_details = {}
+                campaign_obj = None
+
+                try:
+                        if (id_campaign):
+                                campaign_obj = Campaign.objects.select_related().get(id_campaign=id_campaign)
+                        elif (campaign_code):
+                                campaign_obj = Campaign.objects.select_related().get(code=campaign_code)
+
+                        if (campaign_obj):
+                                promotion_obj = campaign_obj.id_promotion
+                                account_obj = campaign_obj.id_account
+
+                                campaign_details["name"] = promotion_obj.name
+                                campaign_details["description"] = promotion_obj.description
+                                campaign_details["expiring_in"] = promotion_obj.expiring_date
+                                campaign_details["image_url"] = promotion_obj.promo_image
+                                campaign_details["code"] = campaign_obj.code
+                                campaign_details["receiver_email"] = account_obj.email
+                                campaign_details["receiver_first_name"] = account_obj.first_name
+                                campaign_details["receiver_last_name"] = account_obj.last_name
+                except(KeyError, Campaign.DoesNotExist):
+                        # id_campaign doesn't exists
+                        pass
+
+                return campaign_details
+
         def send_promotional_email(self, id_campaign=None):
                 """
                 Function to send a promotion to an email address
@@ -267,13 +309,77 @@ class Campaign(models.Model):
 
                 return_var = False
 
-                send_mail(
-                        'Test',
-                        'Here is the message.',
-                        'from@example.com',
-                        ['veronesi1231@yahoo.com'],
-                        fail_silently=False
-                )
+                if (id_campaign is not None):
+                        campaign_obj = Campaign()
+                        campaign_details = campaign_obj.get_campaign_details(id_campaign=id_campaign)
+
+                        # TODO: buld email body from template
+                        html_email = campaign_details["description"] + " | code: " + campaign_details["code"] + " | address: " + campaign_details["receiver_email"]
+
+                        if (campaign_details):
+                                send_mail(
+                                        campaign_details["name"],
+                                        html_email,
+                                        'from@example.com',
+                                        ['veronesi1231@yahoo.it'],
+                                        fail_silently=False
+                                )
+
+                logger.error("EMAIL SENT")
+
+                return return_var
+
+        def check_code_validity(self, code, validity_check=None):
+                """
+                Function to check if a code is not yet used or if the
+                promotion isn't expired
+                Validity checks available:
+                    - not_used
+                    - not_expired
+                    - exists
+                """
+
+                return_var = False
+
+                try:
+                        campaign_obj = Campaign.objects.select_related().get(code=code)
+                        promotion_obj = campaign_obj.id_promotion
+
+                        if (validity_check == 'not_used'):
+                                if ((not campaign_obj.status) or (promotion_obj.promo_type == "frontend_post")):
+                                        return_var = True
+
+                        if (validity_check == 'not_expired'):
+                                if (promotion_obj.expiring_date >= datetime.now().date()):
+                                        return_var = True
+
+                        if (validity_check == 'exists'):
+                                if (campaign_obj.id_campaign):
+                                        return_var = True
+
+                except(KeyError, Campaign.DoesNotExist):
+                        # code not exists
+                        pass
+
+                return return_var
+
+        def redeem_code(self, code):
+                """
+                Function to redeem a coupon code
+                """
+
+                return_var = False
+
+                try:
+                        # setting code staus = 1 (code used)
+                        campaign_obj = Campaign.objects.get(code=code)
+                        campaign_obj.status = 1
+                        campaign_obj.save()
+                        return_var = True
+
+                except(KeyError, Campaign.DoesNotExist):
+                        # code not exists
+                        pass
 
                 return return_var
 

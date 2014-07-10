@@ -25,10 +25,70 @@ class AccountAdmin(admin.ModelAdmin):
                     (r'^campaigns/step1/(?P<new_campaign>\d+)?$', self.admin_site.admin_view(self.create_promotion)),
                     (r'^campaigns/step2$', self.admin_site.admin_view(self.select_recipients)),
                     (r'^campaigns/step3/(?P<id_promotion>\d+)?$', self.admin_site.admin_view(self.campaign_review)),
+                    (r'^code_validator$', self.admin_site.admin_view(self.code_validator)),
             )
 
             # return custom URLs with default URLs
             return my_urls + urls
+
+        def code_validator(self, request):
+                """
+                Function to validate a coupon code
+                """
+
+                can_redeem = False
+                promotion_details = {}
+
+                if request.method == 'POST':
+                        form = ValidateCodeForm(request.POST)
+
+                        # cancel operation
+                        if (request.POST.get("cancel", "")):
+                                messages.add_message(request, messages.WARNING, 'Operazione annullata.')
+                                return HttpResponseRedirect('/admin/website/account/code_validator') # Redirect after POST
+
+                        if form.is_valid():
+                                post_code = request.POST.get("promo_code")
+
+                                # retrieving promotion details
+                                campaign_obj = Campaign()
+
+                                # checking if code exists
+                                if (not campaign_obj.check_code_validity(code=post_code, validity_check="exists")):
+                                        messages.add_message(request, messages.ERROR, 'Codice promozionale non esistente.')
+                                        return HttpResponseRedirect('/admin/website/account/code_validator') # Redirect after POST
+
+                                # checking if code is not already validated
+                                if (not campaign_obj.check_code_validity(code=post_code, validity_check="not_used")):
+                                        messages.add_message(request, messages.ERROR, 'Codice promozionale già validato.')
+                                        return HttpResponseRedirect('/admin/website/account/code_validator') # Redirect after POST
+
+                                # checking if campaign is not expired
+                                if (not campaign_obj.check_code_validity(code=post_code, validity_check="not_expired")):
+                                        messages.add_message(request, messages.ERROR, 'Codice promozionale scaduto.')
+                                        return HttpResponseRedirect('/admin/website/account/code_validator') # Redirect after POST
+
+                                # user can redeem the code
+                                can_redeem = True
+
+                                # show promotion details
+                                promotion_details = campaign_obj.get_campaign_details(campaign_code=post_code)
+
+                                if (request.POST.get("redeem_code", "")):
+                                        # redeem code and redirect to success page
+                                        campaign_obj.redeem_code(post_code)
+                                        messages.add_message(request, messages.SUCCESS, 'Codice promozionale validato!')
+                                        return HttpResponseRedirect('/admin/website/account/code_validator') # Redirect after POST
+                else:
+                        form = ValidateCodeForm() # An unbound form
+
+                context = {
+                        'form' : form,
+                        'redeem_code' : can_redeem,
+                        'promotion_details' : promotion_details,
+                }
+
+                return render(request, 'admin/custom_view/code_validator.html', context)
 
         # STEP 1
         def create_promotion(self, request, new_campaign=False):
@@ -224,6 +284,9 @@ class PromotionForm(forms.ModelForm):
                 widgets = {'expiring_date': widgets.AdminDateWidget()}
                 model = Promotion
                 fields = ['name', 'description', 'promo_image', 'expiring_date']
+
+class ValidateCodeForm(forms.Form):
+    promo_code = forms.CharField(max_length=10, required=True)
 
 # registering models to admin interface
 admin.site.register(Account, AccountAdmin)
