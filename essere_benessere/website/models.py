@@ -346,7 +346,8 @@ class Campaign(models.Model):
                         promotion_obj = campaign_obj.id_promotion
 
                         if (validity_check == 'not_used'):
-                                if ((not campaign_obj.status) or (promotion_obj.promo_type == "frontend_post")):
+                                if ((not campaign_obj.status) or
+                                        (promotion_obj.promo_type == Promotion.PROMOTION_TYPE_FRONTEND["key"])):
                                         return_var = True
 
                         if (validity_check == 'not_expired'):

@@ -15,21 +15,49 @@ from django.template import RequestContext, loader
 logger = logging.getLogger('django.request')
 
 class AccountAdmin(admin.ModelAdmin):
+
         # fileds in add/modify form
         fields = (('first_name', 'last_name'), 'email', 'mobile_phone', 'birthday_date', ('receive_promotions', 'loyal_customer'))
 
         # URLs overwriting to add new admin views (with auth check and without cache)
         def get_urls(self):
-            urls = super(AccountAdmin, self).get_urls()
-            my_urls = patterns('',
-                    (r'^campaigns/step1/(?P<new_campaign>\d+)?$', self.admin_site.admin_view(self.create_promotion)),
-                    (r'^campaigns/step2$', self.admin_site.admin_view(self.select_recipients)),
-                    (r'^campaigns/step3/(?P<id_promotion>\d+)?$', self.admin_site.admin_view(self.campaign_review)),
-                    (r'^code_validator$', self.admin_site.admin_view(self.code_validator)),
-            )
+                urls = super(AccountAdmin, self).get_urls()
+                my_urls = patterns('',
+                        (r'^campaigns/step1/(?P<new_campaign>\d+)?$', self.admin_site.admin_view(self.create_promotion)),
+                        (r'^campaigns/step2$', self.admin_site.admin_view(self.select_recipients)),
+                        (r'^campaigns/step3/(?P<id_promotion>\d+)?$', self.admin_site.admin_view(self.campaign_review)),
+                        (r'^code_validator$', self.admin_site.admin_view(self.code_validator)),
+                        (r'^birthday_promo$', self.admin_site.admin_view(self.set_birthday_promo)),
+                )
 
-            # return custom URLs with default URLs
-            return my_urls + urls
+                # return custom URLs with default URLs
+                return my_urls + urls
+
+        # TODO: working on this function
+        def set_birthday_promo(self, request):
+                """
+                Function to create/edit a birthday promo
+                """
+
+                if request.method == 'POST':
+                        form = BirthdayPromotionForm(request.POST)
+
+                        if form.is_valid():
+                                # TODO: setting promo type to birthday_promo before saving
+                                # form.save():
+
+                                messages.add_message(request, messages.SUCCESS, 'Promozione compleanno modificata correttamente')
+                                return HttpResponseRedirect('/admin/website/account/birthday_promo') # Redirect after POST
+                else:
+                        form = BirthdayPromotionForm() # An unbound form
+
+                context = {
+                        'adminform' : form,
+                        'app_list' : {"app_label" : False },
+                }
+
+                return render(request, 'admin/change_form.html', context)
+
 
         def code_validator(self, request):
                 """
@@ -99,7 +127,7 @@ class AccountAdmin(admin.ModelAdmin):
 
                 # 1: get add promotion form
                 try:
-                        # TODO: get promo id from session
+                        # get promo id from session
                         promotion_obj = None
                         promotion_obj = Promotion.objects.get(id_promotion=request.session['promotion_id'])
                 except (KeyError, Promotion.DoesNotExist):
@@ -115,11 +143,10 @@ class AccountAdmin(admin.ModelAdmin):
                                 # logger.debug("Promo id creata: " + str(promo.id_promotion))
                                 request.session['promotion_id'] = promo.id_promotion
 
-                                # TODO: redirect to campaigns/step2
+                                # redirect to campaigns/step2
                                 return HttpResponseRedirect('/admin/website/account/campaigns/step2') # Redirect after POST
                 else:
-                        # TODO: find how to retrieve a model form starting from primary model key
-                        # promotion = Promotion.objects.get(id_promotion = 8)
+                        # retrieving a model form starting from primary model key
                         formset = PromotionForm(instance=promotion_obj)
 
 		logger.debug("selected_contacts_list: " + str(formset))
@@ -269,13 +296,14 @@ class AccountAdmin(admin.ModelAdmin):
 
 class PromotionAdmin(admin.ModelAdmin):
         # fileds in add/modify form
-        fields = ('name', 'description', 'promo_image', 'expiring_date', 'promo_type')
+        fields = ('name', 'description', 'promo_image', 'expiring_date')
 
         def save_model(self, request, obj, form, change):
-                # TODO: generating a random code before save data
-                # obj.code = obj.generate_random_code()
+                # setting promo type to frontend post
+                obj.promo_type = Promotion.PROMOTION_TYPE_FRONTEND["key"]
                 obj.save()
 
+# TODO: move in forms.py {{{
 class PromotionForm(forms.ModelForm):
 
         # promo_image = forms.ImageField(upload_to="/tmp/")
@@ -285,8 +313,18 @@ class PromotionForm(forms.ModelForm):
                 model = Promotion
                 fields = ['name', 'description', 'promo_image', 'expiring_date']
 
+class BirthdayPromotionForm(forms.ModelForm):
+
+        # promo_image = forms.ImageField(upload_to="/tmp/")
+
+        class Meta:
+                model = Promotion
+                fields = ['name', 'description', 'promo_image']
+
 class ValidateCodeForm(forms.Form):
     promo_code = forms.CharField(max_length=10, required=True)
+
+# TODO: move in forms.py }}}
 
 # registering models to admin interface
 admin.site.register(Account, AccountAdmin)
