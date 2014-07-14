@@ -1,15 +1,14 @@
 # -*- coding: utf-8 -*-
 
 from website.models import Account, Promotion, Campaign
-import logging
-from django import forms
-from django.contrib import admin, messages
-from django.contrib.admin import widgets 
+from website.forms import *
 from django.conf.urls import patterns
+from django.contrib import admin, messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 from django.template import RequestContext, loader
+import logging
 
 # Get an instance of a logger
 logger = logging.getLogger('django.request')
@@ -18,6 +17,9 @@ class AccountAdmin(admin.ModelAdmin):
 
         # fileds in add/modify form
         fields = (('first_name', 'last_name'), 'email', 'mobile_phone', 'birthday_date', ('receive_promotions', 'loyal_customer'))
+
+        # table list fields
+        list_display = ('email', 'mobile_phone', 'first_name', 'last_name')
 
         # URLs overwriting to add new admin views (with auth check and without cache)
         def get_urls(self):
@@ -33,31 +35,42 @@ class AccountAdmin(admin.ModelAdmin):
                 # return custom URLs with default URLs
                 return my_urls + urls
 
-        # TODO: working on this function
         def set_birthday_promo(self, request):
                 """
-                Function to create/edit a birthday promo
+                Function to create/edit or remove a birthday promo
                 """
 
-		opts = self.model._meta
+                promotion_obj = Promotion()
 
                 if request.method == 'POST':
-                        form = BirthdayPromotionForm(request.POST, request.FILES)
+
+                        # checking if birthday promo must be deleted
+                        if request.POST.get("delete"):
+                                promotion_obj.delete_birthday_promotion()
+                                messages.add_message(request, messages.SUCCESS, 'Promozione compleanno eliminata correttamente')
+                                return HttpResponseRedirect('/admin/website/account/birthday_promo') # Redirect after POST
+
+                        form = BirthdayPromotionForm(request.POST, request.FILES, instance=promotion_obj.get_birthday_promotion_instance())
 
                         if form.is_valid():
-                                # TODO: setting promo type to birthday_promo before saving
-                                # form.save():
+                                # saving birthday promo form (creting only instance without saving)
+                                birthday_promo_obj = form.save(commit=False)
+                                # setting promo type to birthday_promo before saving
+                                birthday_promo_obj.promo_type = Promotion.PROMOTION_TYPE_BIRTHDAY["key"]
+                                # saving instance into db
+                                birthday_promo_obj.save()
 
                                 messages.add_message(request, messages.SUCCESS, 'Promozione compleanno modificata correttamente')
                                 return HttpResponseRedirect('/admin/website/account/birthday_promo') # Redirect after POST
                 else:
-                        form = BirthdayPromotionForm() # An unbound form
+                        # empty or change birthday promo form
+                        form = BirthdayPromotionForm(instance=promotion_obj.get_birthday_promotion_instance())
 
                 context = {
                         'adminform' : form,
 			'title': "Promozione compleanno",
-			'opts': opts,
-			'app_label': opts.app_label,
+			'opts': self.model._meta,
+			'app_label': self.model._meta.app_label,
 			'has_change_permission': True,
 			'has_file_field' : True,
                 }
@@ -119,6 +132,9 @@ class AccountAdmin(admin.ModelAdmin):
                         'form' : form,
                         'redeem_code' : can_redeem,
                         'promotion_details' : promotion_details,
+                        'title': "Validatore di codici",
+                        'opts': self.model._meta,
+                        'app_label': self.model._meta.app_label,
                 }
 
                 return render(request, 'admin/custom_view/code_validator.html', context)
@@ -158,6 +174,9 @@ class AccountAdmin(admin.ModelAdmin):
                 # creating template context
                 context = {
                         'adminform' : formset,
+			'title': "Crea la promozione",
+			'opts': self.model._meta,
+			'app_label': self.model._meta.app_label,
                 }
 
                 return render(request, 'admin/custom_view/campaigns/step1.html', context)
@@ -178,24 +197,6 @@ class AccountAdmin(admin.ModelAdmin):
                 paginator = Paginator(contact_list, 5)
 		working_id_promotion = request.session['promotion_id']
 
-                """
-                1:{
-                    saving checked and delete unchecked checkbox from form into
-                    db/session if POST exists (fare una funzione che prenda una serie di id
-                    e li salvi/elimini, se l'id è presente lo aggiungo, se
-                    l'id non è presente lo elimino, sulla base del query_set
-                    "contact_list" )
-                }
-
-                2:{
-                    retrieving checked checkbox from db/session
-                }
-                
-                3:{
-                    passing checked checkbox to template context
-                }
-                """
-
 		# retrieving new page number
                 if (request.POST.get('next', '')):
                         page = request.POST.get('next_page')
@@ -205,7 +206,7 @@ class AccountAdmin(admin.ModelAdmin):
 		# retrieving old page number
                 old_viewed_page = request.POST.get('current_page')
 
-                """1""" # set/unset campaign senders
+                """1""" # set/unset campaign senders: saving checked and delete unchecked checkbox from form into db/session if POST exists
                 if(request.POST.get("select_senders_form_sent", "") and request.POST.get("current_page", "")):
                         selected_contacts = request.POST.getlist("contacts[]")
 
@@ -229,25 +230,15 @@ class AccountAdmin(admin.ModelAdmin):
                         # If page is out of range (e.g. 9999), deliver last page of results.
                         contacts = paginator.page(paginator.num_pages)
 
-                # custom view which should return an HttpResponse
-                # myForm = super(AccountAdmin, self).get_form(request)
-                # logger.debug("admin form: " + str(myForm))
-                # myList = super(AccountAdmin, self).get_paginator(self, Account.objects.all(), 10)
-                # page1 = myList.page(1)
-                # pageLis = page1.object_list
-                # account_obj = pageLis[0]
-                # logger.debug("admin list: " + str(account_obj.email))
-
-                # loading template
-                # template = loader.get_template('admin/custom_view/send_campaign.html')
-
                 """3""" # creating template context
                 context = {
                         'contacts' : contacts,
 			'campaign_contacts_list' : campaign_contacts_list,
                         'id_promotion' : working_id_promotion,
+			'title': "Seleziona i destinatari",
+			'opts': self.model._meta,
+			'app_label': self.model._meta.app_label,
                 }
-
 
                 # send promotion (after the senders selection)
                 if (request.POST.get("next_step", "")):
@@ -264,7 +255,7 @@ class AccountAdmin(admin.ModelAdmin):
                         promotion_obj = Promotion.objects.get(id_promotion=id_promotion)
                         promo_form = PromotionForm(instance=promotion_obj)
 
-                        if (promotion_obj.status == 0):
+                        if (not promotion_obj.status):
                                 # checking if user choose to re-edit the promotion
                                 if (request.POST.get("edit_promotion", "")):
                                         return HttpResponseRedirect('/admin/website/account/campaigns/step1/') # Redirect after POST
@@ -287,6 +278,9 @@ class AccountAdmin(admin.ModelAdmin):
                                         'adminform' : promo_form,
                                         'id_promotion' : id_promotion,
                                         'total_senders' : total_senders,
+                                        'title': "Riepilogo della campagna",
+                                        'opts': self.model._meta,
+                                        'app_label': self.model._meta.app_label,
                                 }
 
                                 # campaign review page
@@ -298,39 +292,3 @@ class AccountAdmin(admin.ModelAdmin):
                 except (KeyError, Promotion.DoesNotExist):
                         # object doesn't exists, id_promotion must exists
                         return HttpResponseRedirect('/admin/website/account/campaigns/step1/1') # Redirect after POST
-
-class PromotionAdmin(admin.ModelAdmin):
-        # fileds in add/modify form
-        fields = ('name', 'description', 'promo_image', 'expiring_date')
-
-        def save_model(self, request, obj, form, change):
-                # setting promo type to frontend post
-                obj.promo_type = Promotion.PROMOTION_TYPE_FRONTEND["key"]
-                obj.save()
-
-# TODO: move in forms.py {{{
-class PromotionForm(forms.ModelForm):
-
-        # promo_image = forms.ImageField(upload_to="/tmp/")
-
-        class Meta:
-                widgets = {'expiring_date': widgets.AdminDateWidget()}
-                model = Promotion
-                fields = ['name', 'description', 'promo_image', 'expiring_date']
-
-class BirthdayPromotionForm(forms.ModelForm):
-
-        # promo_image = forms.ImageField(upload_to="/tmp/")
-
-        class Meta:
-                model = Promotion
-                fields = ['name', 'description', 'promo_image']
-
-class ValidateCodeForm(forms.Form):
-    promo_code = forms.CharField(max_length=10, required=True)
-
-# TODO: move in forms.py }}}
-
-# registering models to admin interface
-admin.site.register(Account, AccountAdmin)
-admin.site.register(Promotion, PromotionAdmin)

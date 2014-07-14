@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
+from website.models import Account, Promotion, Campaign
 from django.shortcuts import render
-from website.models import Account
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from django.contrib import messages
@@ -15,42 +15,36 @@ import logging
 logger = logging.getLogger('django.request')
 
 def index(request):
-    """
-    index view
-    """
-
-    """ test only, remove plz
-    testo = ""
-    for i in range(0,10):
-            testo += str(i) + "-"
-
-    template = loader.get_template('website/index.html')
-    context = RequestContext(request, {
-            'latest_poll_list': 1,
-    })
-    return HttpResponse(template.render(context))
-    """
-    return render(request, 'website/index.html')
+        return render(request, 'website/index.html')
 
 def about_us(request):
-    return render(request, 'website/about_us.html')
+        return render(request, 'website/about_us.html')
 
 def our_services(request):
-    return render(request, 'website/our_services.html')
+        return render(request, 'website/our_services.html')
 
 def contacts(request):
-    return render(request, 'website/contacts.html')
+        return render(request, 'website/contacts.html')
 
 def pulsed_light(request):
-    return render(request, 'website/pulsed_light.html')
+        return render(request, 'website/pulsed_light.html')
 
 def dental_whitening(request):
-    return render(request, 'website/dental_whitening.html')
+        return render(request, 'website/dental_whitening.html')
 
 def our_offers(request):
-    # TODO: prelevo la lista di offerte presenti in db
-    # e le passo context della funzione render
-    return render(request, 'website/our_offers.html')
+
+        promotion_obj = Promotion()
+
+        valid_promotion_dict = promotion_obj.get_valid_promotions_list()
+        # TODO: prelevo la lista di offerte presenti in db, con relativi
+        # codici e le passo context della funzione render
+
+        context = {
+                'promotion_list' : valid_promotion_dict,
+        }
+
+        return render(request, 'website/our_offers.html', context)
 
 def get_offers(request):
 
@@ -88,8 +82,8 @@ def get_offers(request):
 
 				try:
 					birthday = datetime.date(int(request.POST['birthday_year']),
-						int(request.POST['birthday_month']),
-						int(request.POST['birthday_day'])
+                                                    int(request.POST['birthday_month']),
+                                                    int(request.POST['birthday_day'])
 					)
 					account_obj.birthday_date = birthday
 				except:

@@ -31,7 +31,6 @@
 {% block breadcrumbs %}
 <div class="breadcrumbs">
 <a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
-&rsaquo; {{ cl.opts.verbose_name_plural|capfirst }}
 </div>
 {% endblock %}
 {% endif %}
@@ -119,7 +118,7 @@
 			<div class="pagination">
 				<span class="step-links">
 					{% if contacts.has_previous %}
-					    <input type="submit" name="previous" value="Indietro"/>
+					    <input type="submit" name="previous" value="Pagina precedente"/>
 					{% endif %}
 
 					<span class="current">
@@ -127,12 +126,12 @@
 					</span>
 
 					{% if contacts.has_next %}
-					    <input type="submit" name="next" value="Avanti"/>
+					    <input type="submit" name="next" value="Pagina successiva"/>
 					{% endif %}
 				</span>
 			</div>
 			<div class="submit-row">
-				<input type="submit" name="next_step" class="default" value="Save">
+				<input type="submit" name="next_step" class="default" value="Salva">
 			</div>
 		</form>
     </div>

@@ -6,7 +6,19 @@
 {{ media }}
 {% endblock %}
 
-{% block extrastyle %}{{ block.super }}<link rel="stylesheet" type="text/css" href="{% static "admin/css/forms.css" %}" />{% endblock %}
+{% block extrastyle %}
+	{{ block.super }}
+	<link rel="stylesheet" type="text/css" href="{% static "admin/css/forms.css" %}" />
+	<style>
+		.footer_button_text_separator {
+			display: inline;
+			float: right;
+			margin-left: 10px;
+			margin-right: 10px;
+			margin-top: 5px;
+		}
+	</style>
+{% endblock %}
 
 {% block coltype %}colM{% endblock %}
 
@@ -77,10 +89,10 @@
    <script type="text/javascript">document.getElementById("{{ adminform.first_field.id_for_label }}").focus();</script>
 {% endif %}
 
-{# JavaScript for prepopulated fields #}
-
 <div class="submit-row">
-<input type="submit" name="_save" class="default" value="Save">
+	<input type="submit" name="_save" class="default" value="Salva promozione compleanno">
+	<div class="footer_button_text_separator">oppure</div>
+	<input type="submit" name="delete" value="Cancella promozione compleanno">
 </div>
 </form></div>
 {% endblock %}

@@ -49,7 +49,7 @@ class Promotion(models.Model):
 	name = models.CharField("Titolo promozione", max_length=50)
 	description = models.TextField("Contenuto")
         promo_image = models.ImageField("Immagine della promozione", upload_to="/tmp/")
-	expiring_date = models.DateField("Scadenza")
+	expiring_date = models.DateField("Scadenza", null=True)
 	promo_type = models.CharField(max_length=30, choices=PROMOTION_TYPES_SELECTOR)
 	status = models.BooleanField(default=0)
 	campaigns = models.ManyToManyField(Account, through='Campaign')
@@ -58,11 +58,65 @@ class Promotion(models.Model):
 	def __unicode__(self):
 		return str(self.id_promotion)
 
+        # TODO: working on this function
         def get_valid_promotions_list(self, promo_type = PROMOTION_TYPE_FRONTEND["key"]):
                 """
                 Return a list of valid promotions (not already expired)
                 """
+                
+                valid_promotion_list = []
+                campaign_obj = Campaign()
+
+                # list of all promotion valid
+                filtered_promotions = Promotion.objects.filter(promo_type=promo_type and expiring_date>= datetime.now().date())
+
+                # for every promo get details and campaign code
+                if (filtered_promotions):
+                        valid_promo in filtered_promotions:
+                                # retrieving related campaign objects from
+                                # valid promotion (in teoria dovrebbe essercene solo uno)
+                                valid_promotion_list.add(campaign_obj.get_campaign_details(id_campaign=valid_promo__id_campaign))
+
+                return valid_promotion_list
+
+        def delete_birthday_promotion(self):
+                """
+                Function to delete a birthday promotion
+                """
+
                 return_var = False
+
+                try:
+                        # retrieve birthday promotion
+                        # NB: exists only one promotion with type = birthday
+                        promotion_obj = Promotion.objects.get(promo_type=Promotion.PROMOTION_TYPE_BIRTHDAY["key"])
+
+                        # delete retrieved row from db
+                        promotion_obj.delete()
+
+                        return_var = True
+                except (KeyError, Promotion.DoesNotExist):
+                        # birthday promo not exists yet
+                        pass
+
+                return return_var
+
+        def get_birthday_promotion_instance(self):
+                """
+                Function to retrieve a birtyday promotion obj
+                Return id_promotion birthday on success, None otherwise
+                """
+
+                return_var = None
+
+                try:
+                        # retrieve birthday promotion
+                        # NB: exists only one promotion with type = birthday
+                        promotion_obj = Promotion.objects.get(promo_type=Promotion.PROMOTION_TYPE_BIRTHDAY["key"])
+                        return_var = promotion_obj
+                except (KeyError, Promotion.DoesNotExist):
+                        # birthday promo not exists yet
+                        pass
 
                 return return_var
 

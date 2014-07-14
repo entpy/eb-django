@@ -23,14 +23,12 @@
 {% block bodyclass %}{{ opts.app_label }}-{{ opts.object_name.lower }} change-form{% endblock %}
 
 {% block breadcrumbs %}
+{% block breadcrumbs %}
 <div class="breadcrumbs">
 <a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
-&rsaquo; {% if has_change_permission %}<a href="{% url opts|admin_urlname:'changelist' %}">{{ opts.verbose_name_plural|capfirst }}</a>{% else %}{{ opts.verbose_name_plural|capfirst }}{% endif %}
-&rsaquo; {% if add %}{% trans 'Add' %} {{ opts.verbose_name }}{% else %}{{ original|truncatewords:"18" }}{% endif %}
 </div>
 {% endblock %}
 {% block content %}
-<h1>Crea la promozione</h1>
 <div id="content-main">
 {% block object-tools %}
 {% if change %}{% if not is_popup %}
@@ -95,7 +93,7 @@
 {# JavaScript for prepopulated fields #}
 {# {% prepopulated_fields_js %} #}
 <div class="submit-row">
-<input type="submit" name="_save" class="default" value="Save">
+<input type="submit" name="_save" class="default" value="Salva">
 </div>
 </form></div>
 {% endblock %}

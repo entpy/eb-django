@@ -59,6 +59,7 @@ WSGI_APPLICATION = 'essere_benessere.wsgi.application'
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
 
 # postgreSQL
+"""
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -82,7 +83,6 @@ DATABASES = {
         'PORT': '3306',
     }
 }
-"""
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
@@ -102,7 +102,6 @@ USE_TZ = True
 
 # inside app
 STATIC_URL = '/static/'
-
 MEDIA_ROOT = '/tmp/'
 MEDIA_URL = '/tmp/'
 ADMIN_MEDIA_PREFIX = '/media/admin/'

@@ -36,11 +36,13 @@
 
 {% block breadcrumbs %}
 <div class="breadcrumbs">
-	<a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
+<a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
+&rsaquo; <a href="{% url 'admin:app_list' app_label=opts.app_label %}">{{ app_label|capfirst|escape }}</a>
+&rsaquo; {% if has_change_permission %}<a href="{% url opts|admin_urlname:'changelist' %}">{{ opts.verbose_name_plural|capfirst }}</a>{% else %}{{ opts.verbose_name_plural|capfirst }}{% endif %}
+&rsaquo; {% if add %}{% trans 'Add' %} {{ opts.verbose_name }}{% else %}{{ original|truncatewords:"18" }}{% endif %}
 </div>
 {% endblock %}
 {% block content %}
-<h1>Validatore di codici</h1>
 <div id="content-main">
 	<form name="code_validator_form" action="" method="post">
 		{% csrf_token %}
@@ -52,15 +54,15 @@
 					{% if promotion_details %}
 						<div class="form-row">
 							<div>
-								<label>Promo title:</label>
+								<label>Titolo promozione:</label>
 								<input type="text" name="promo_title" value="{{ promotion_details.name }}" readonly="readonly">
 							</div>
 							<div>
-								<label>Promo content:</label>
+								<label>Contenuto promozione:</label>
 								<textarea class="textarea_promo_content" name="promo_content" readonly="readonly">{{ promotion_details.description }}</textarea>
 							</div>
 							<div>
-								<label>Promo code:</label>
+								<label>Codice promozione:</label>
 								<input type="text" name="promo_code" value="{{ promotion_details.code }}" readonly="readonly">
 							</div>
 						</div>
@@ -78,7 +80,7 @@
 			</div>
 			{% if promotion_details %}
 				<div class="legend_container">
-					Clicca su <b>"Riscatta codice"</b> per bruciare il codice coupon.
+					Clicca su <b>"Riscatta codice"</b> per validare il codice coupon.
 				</div>
 			{% endif %}
 		{% endblock %}
