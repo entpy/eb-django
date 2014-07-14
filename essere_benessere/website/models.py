@@ -190,14 +190,14 @@ class Campaign(models.Model):
 
                 if (checkbox_name):
                         for element in paginator_element_list:
-                                logger.error("models.py: single element " + str(element))
+                                # logger.error("models.py: single element " + str(element))
                                 # se element è contenuto in checked_elements allora ok
                                 if (str(element) in checked_elements):
                                         checkbox_dictionary[str(element)] = 1
                                 else:
                                         checkbox_dictionary[str(element)] = 0
 
-                logger.error("models.py, get_senders_dictionary: " + str(checkbox_dictionary))
+                # logger.error("models.py, get_senders_dictionary: " + str(checkbox_dictionary))
 
                 return checkbox_dictionary
 
@@ -267,6 +267,8 @@ class Campaign(models.Model):
         def get_campaign_details(self, id_campaign=None, campaign_code=None):
                 """
                 Function to retrieve all details about a campaign.
+		First by id_campaign, if id_campaign is null campaign_code will
+		be used.
                 Return a dictionary like this:
                     campaign_details = {
                                             'title' : 'promo title',
@@ -331,7 +333,7 @@ class Campaign(models.Model):
 
         def check_code_validity(self, code, validity_check=None):
                 """
-                Function to check if a code is not yet used or if the
+                Function to check if a code is not used yet or if the
                 promotion isn't expired
                 Validity checks available:
                     - not_used
@@ -346,8 +348,7 @@ class Campaign(models.Model):
                         promotion_obj = campaign_obj.id_promotion
 
                         if (validity_check == 'not_used'):
-                                if ((not campaign_obj.status) or
-                                        (promotion_obj.promo_type == Promotion.PROMOTION_TYPE_FRONTEND["key"])):
+                                if ((not campaign_obj.status) or (promotion_obj.promo_type == Promotion.PROMOTION_TYPE_FRONTEND["key"])):
                                         return_var = True
 
                         if (validity_check == 'not_expired'):

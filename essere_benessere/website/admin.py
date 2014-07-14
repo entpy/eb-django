@@ -39,8 +39,10 @@ class AccountAdmin(admin.ModelAdmin):
                 Function to create/edit a birthday promo
                 """
 
+		opts = self.model._meta
+
                 if request.method == 'POST':
-                        form = BirthdayPromotionForm(request.POST)
+                        form = BirthdayPromotionForm(request.POST, request.FILES)
 
                         if form.is_valid():
                                 # TODO: setting promo type to birthday_promo before saving
@@ -53,11 +55,14 @@ class AccountAdmin(admin.ModelAdmin):
 
                 context = {
                         'adminform' : form,
-                        'app_list' : {"app_label" : False },
+			'title': "Promozione compleanno",
+			'opts': opts,
+			'app_label': opts.app_label,
+			'has_change_permission': True,
+			'has_file_field' : True,
                 }
 
-                return render(request, 'admin/change_form.html', context)
-
+                return render(request, 'admin/custom_view/birthday_promo.html', context)
 
         def code_validator(self, request):
                 """
