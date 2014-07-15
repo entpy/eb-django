@@ -9,8 +9,10 @@ Account -> Campaign <- Promotion
 """
 
 from django.db import models
-from django.core.mail import send_mail
+from django.core.mail import EmailMessage
+from django.conf import settings
 from django.utils import timezone
+from django.utils.html import format_html
 import datetime
 from datetime import datetime
 import string, random, logging
@@ -60,7 +62,7 @@ class Promotion(models.Model):
 
         def get_valid_promotions_list(self, promo_type = PROMOTION_TYPE_FRONTEND["key"]):
                 """
-                Return a list of valid promotions (not already expired)
+                Return a list of valid promotions (not expired yet)
                 """
 
                 valid_promotion_list = []
@@ -412,6 +414,22 @@ class Campaign(models.Model):
 
                 return return_var
 
+        # TODO: implements this function
+        def send_birthday_promotion(self):
+                """
+                Function to send a promotional email to users who have a birthday today
+                """
+
+                return True
+
+        # TODO: implements this function
+        def delete_expired_promotion(self):
+                """
+                Function to delete all expired promotion (and related campaigns)
+                """
+
+                return True
+
         def check_code_validity(self, code, validity_check=None):
                 """
                 Function to check if a code is not used yet or if the
@@ -421,6 +439,23 @@ class Campaign(models.Model):
                     - not_expired
                     - exists
                 """
+
+                # debug only plz remove XXX
+		# logger.debug("(test): " + str(settings.ABSOLUTE_WEBSITE_STATIC_DIR))
+                f = open(settings.ABSOLUTE_WEBSITE_STATIC_DIR + 'email_template.html', 'r')
+                html_email = f.read()
+
+                """
+                    {0} = title
+                    {1} = description
+                    {2} = code
+                    {3} = image_url
+                    {4} = site_static_url
+                    {5} = facebook_page_url
+                """
+                msg = EmailMessage("test", format_html(html_email, "fottuto titolo", "fottuta giornata"), 'from@example.com', ['veronesi1231@yahoo.it'])
+                msg.content_subtype = "html"  # Main content is now text/html
+                msg.send()
 
                 return_var = False
 
@@ -454,7 +489,7 @@ class Campaign(models.Model):
                 return_var = False
 
                 try:
-                        # setting code staus = 1 (code used)
+                        # setting code status = 1 (code used)
                         campaign_obj = Campaign.objects.get(code=code)
                         campaign_obj.status = 1
                         campaign_obj.save()
@@ -465,4 +500,3 @@ class Campaign(models.Model):
                         pass
 
                 return return_var
-

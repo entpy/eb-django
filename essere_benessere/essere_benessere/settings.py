@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
 
@@ -110,6 +109,9 @@ ADMIN_MEDIA_PREFIX = '/media/admin/'
 STATICFILES_DIRS = (
 	os.path.join(BASE_DIR, "static"), #inside project
 )
+
+# absolute dir
+ABSOLUTE_WEBSITE_STATIC_DIR = BASE_DIR + "/website" + STATIC_URL + 'website/'
 
 """
 HOW TO SUL LOGGING
