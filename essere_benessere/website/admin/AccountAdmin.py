@@ -19,7 +19,7 @@ class AccountAdmin(admin.ModelAdmin):
         fields = (('first_name', 'last_name'), 'email', 'mobile_phone', 'birthday_date', ('receive_promotions', 'loyal_customer'))
 
         # table list fields
-        list_display = ('email', 'mobile_phone', 'first_name', 'last_name')
+        list_display = ('email', 'mobile_phone', 'first_name', 'last_name', 'loyal_customer')
 
         # URLs overwriting to add new admin views (with auth check and without cache)
         def get_urls(self):
@@ -161,13 +161,12 @@ class AccountAdmin(admin.ModelAdmin):
                                 promo = formset.save()
 
                                 # saving created promotion id into session
-                                # logger.debug("Promo id creata: " + str(promo.id_promotion))
                                 request.session['promotion_id'] = promo.id_promotion
 
                                 # redirect to campaigns/step2
                                 return HttpResponseRedirect('/admin/website/account/campaigns/step2') # Redirect after POST
                 else:
-                        # retrieving a model form starting from primary model key
+                        # retrieving a model form starting from model instance
                         formset = PromotionForm(instance=promotion_obj)
 
 		logger.debug("selected_contacts_list: " + str(formset))
@@ -192,7 +191,7 @@ class AccountAdmin(admin.ModelAdmin):
                 if (request.session['promotion_id'] is None):
                         return HttpResponseRedirect('/admin/website/account/campaigns/step1')
 
-                contact_list = Account.objects.all()
+                contact_list = Account.objects.filter(receive_promotions=True)
                 campaign_obj = Campaign()
                 paginator = Paginator(contact_list, 5)
 		working_id_promotion = request.session['promotion_id']

@@ -31,7 +31,7 @@ class Account(models.Model):
 
 	# On Python 3: def __str__(self):
 	def __unicode__(self):
-		return str(self.id_account)
+		return str(self.email)
 
 class Promotion(models.Model):
 
@@ -56,26 +56,27 @@ class Promotion(models.Model):
 
 	# On Python 3: def __str__(self):
 	def __unicode__(self):
-		return str(self.id_promotion)
+		return str(self.name)
 
-        # TODO: working on this function
         def get_valid_promotions_list(self, promo_type = PROMOTION_TYPE_FRONTEND["key"]):
                 """
                 Return a list of valid promotions (not already expired)
                 """
-                
+
                 valid_promotion_list = []
                 campaign_obj = Campaign()
 
-                # list of all promotion valid
-                filtered_promotions = Promotion.objects.filter(promo_type=promo_type and expiring_date>= datetime.now().date())
+                # list of all promotion valid (queryset starts from campaign object)
+                filtered_promotions = Campaign.objects.filter(id_promotion__promo_type=promo_type)
 
-                # for every promo get details and campaign code
+                # for every campaign retrieving promo details
                 if (filtered_promotions):
-                        valid_promo in filtered_promotions:
-                                # retrieving related campaign objects from
-                                # valid promotion (in teoria dovrebbe essercene solo uno)
-                                valid_promotion_list.add(campaign_obj.get_campaign_details(id_campaign=valid_promo__id_campaign))
+                        for valid_promo in filtered_promotions:
+                                # retrieving valid campaign id
+                                id_valid_campaign = valid_promo.id_campaign
+                                # build dictionary with promotion details
+                                valid_promotion_list.append(campaign_obj.get_campaign_details(id_campaign=id_valid_campaign))
+                                logger.error("models.py, get_valid_promotions_list: " + str(valid_promotion_list))
 
                 return valid_promotion_list
 
@@ -122,7 +123,7 @@ class Promotion(models.Model):
 
 class Campaign(models.Model):
 	id_campaign = models.AutoField(primary_key=True)
-	id_account = models.ForeignKey(Account, db_column="id_account")
+	id_account = models.ForeignKey(Account, db_column="id_account", null=True)
 	id_promotion = models.ForeignKey(Promotion, db_column="id_promotion")
 	code = models.CharField(max_length=10)
 	status = models.BooleanField(default=0)
@@ -157,6 +158,30 @@ class Campaign(models.Model):
                         pass
 
                 return random_code
+
+        def add_frontend_post_campaign(self, id_promotion=None):
+                """
+                Function to add a campaign for frontend_post campaign
+                """
+
+                return_var = False
+
+                if (id_promotion):
+                    campaign_obj = Campaign()
+
+                    campaing_query_set = Campaign.objects.filter(id_promotion__id_promotion=id_promotion)
+                    # if a campaign code does not exists yet, then creating a new ones
+                    if (not campaing_query_set.exists()):
+                            campaign_obj = Campaign(
+                                                id_promotion = Promotion(id_promotion=id_promotion),
+                                                code = campaign_obj.generate_random_code(),
+                                                status = 0
+                                            )
+
+                            campaign_obj.save()
+                            return_var = True
+
+                return return_var
 
         def add_campaign_user(self, id_account=False, id_promotion=False):
                 """
@@ -349,9 +374,11 @@ class Campaign(models.Model):
                                 campaign_details["expiring_in"] = promotion_obj.expiring_date
                                 campaign_details["image_url"] = promotion_obj.promo_image
                                 campaign_details["code"] = campaign_obj.code
-                                campaign_details["receiver_email"] = account_obj.email
-                                campaign_details["receiver_first_name"] = account_obj.first_name
-                                campaign_details["receiver_last_name"] = account_obj.last_name
+                                # a frontend_post promotion has not recipients
+                                if (account_obj):
+                                        campaign_details["receiver_email"] = account_obj.email
+                                        campaign_details["receiver_first_name"] = account_obj.first_name
+                                        campaign_details["receiver_last_name"] = account_obj.last_name
                 except(KeyError, Campaign.DoesNotExist):
                         # id_campaign doesn't exists
                         pass

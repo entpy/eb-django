@@ -101,6 +101,10 @@
 								<div class="text"><span>Cognome</span></div>
 								<div class="clear"></div>
 							</th>
+							<th class="column-__str__" scope="col">
+								<div class="text"><span>Cliente affezionato</span></div>
+								<div class="clear"></div>
+							</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -110,6 +114,7 @@
 								<th><label>{{ contact.email }}</label></th>
 								<th><label>{{ contact.first_name }}</label></th>
 								<th><label>{{ contact.last_name }}</label></th>
+								<th><label>{% if contact.loyal_customer %}<img alt="True" src="/static/admin/img/icon-yes.gif">{% else %}<img alt="True" src="/static/admin/img/icon-no.gif">{% endif %}</label></th>
 							</tr>
 						{% endfor %}
 					</tbody>
