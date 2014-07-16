@@ -10,6 +10,15 @@ import datetime
 from essere_benessere import constants, functions
 from essere_benessere.functions import CommonUtils
 import logging
+import socket
+
+#TODO remove after debug
+from django.core.mail import EmailMessage
+from django.utils.html import format_html
+from django.conf import settings
+
+# Get an instance of a logger
+logger = logging.getLogger('django.request')
 
 # Get an instance of a logger
 logger = logging.getLogger('django.request')
@@ -36,12 +45,44 @@ def our_offers(request):
 
         promotion_obj = Promotion()
 
+        # list of all valid promotion (not expired) with type = frontend_post
         valid_promotion_dict = promotion_obj.get_valid_promotions_list()
-        # TODO: prelevo la lista di offerte presenti in db, con relativi
-        # codici e le passo context della funzione render
+
+        logger.error("hostname: " + str(socket.gethostname()))
+
+        # XXX debug only plz remove {{{
+        # logger.debug("(test): " + str(settings.ABSOLUTE_WEBSITE_STATIC_DIR))
+        f = open(settings.ABSOLUTE_WEBSITE_STATIC_DIR + 'email_template.html', 'r')
+        html_template = f.read()
+
+        """
+            {0} = title
+            {1} = description
+            {2} = code
+            {3} = image_url
+            {4} = site_static_url
+            {5} = facebook_page_url
+        """
+
+        """
+        html_body = format_html(
+                    html_template,
+                    "fottuto titolo", # promo title
+                    "fottuta giornata", # promo description
+                    "ABCaaa", # promo code
+                    "", # promot image URL
+                    "", # site static URL
+                    "http://www.facebook.com", # facebook page url
+                    )
+
+        msg = EmailMessage("test", html_body, 'from@example.com', ['veronesi1231@yahoo.it'])
+        msg.content_subtype = "html"  # Main content is now text/html
+        msg.send()
+        # debug only plz remove }}}
+        """
 
         context = {
-                'promotion_list' : valid_promotion_dict,
+                #'promotion_list' : valid_promotion_dict,
         }
 
         return render(request, 'website/our_offers.html', context)

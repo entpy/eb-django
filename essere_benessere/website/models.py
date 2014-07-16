@@ -440,23 +440,6 @@ class Campaign(models.Model):
                     - exists
                 """
 
-                # debug only plz remove XXX
-		# logger.debug("(test): " + str(settings.ABSOLUTE_WEBSITE_STATIC_DIR))
-                f = open(settings.ABSOLUTE_WEBSITE_STATIC_DIR + 'email_template.html', 'r')
-                html_email = f.read()
-
-                """
-                    {0} = title
-                    {1} = description
-                    {2} = code
-                    {3} = image_url
-                    {4} = site_static_url
-                    {5} = facebook_page_url
-                """
-                msg = EmailMessage("test", format_html(html_email, "fottuto titolo", "fottuta giornata"), 'from@example.com', ['veronesi1231@yahoo.it'])
-                msg.content_subtype = "html"  # Main content is now text/html
-                msg.send()
-
                 return_var = False
 
                 try:

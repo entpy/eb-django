@@ -53,7 +53,6 @@ ROOT_URLCONF = 'essere_benessere.urls'
 
 WSGI_APPLICATION = 'essere_benessere.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
 
