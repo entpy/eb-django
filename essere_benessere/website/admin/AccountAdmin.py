@@ -262,7 +262,7 @@ class AccountAdmin(admin.ModelAdmin):
                                 # checking if user choose to send the promotion
                                 if (request.POST.get("send_promotion", "")):
                                         campaign_obj = Campaign()
-                                        campaign_obj.send_campaign(id_promotion)
+                                        campaign_obj.send_campaign(id_promotion=id_promotion, request=request)
 
                                         # redirect to success page
                                         messages.add_message(request, messages.SUCCESS, 'Promozione inviata con successo!')

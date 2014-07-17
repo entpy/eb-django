@@ -312,7 +312,7 @@ class Campaign(models.Model):
 
                 return return_var
 
-        def send_campaign(self, id_promotion=None):
+        def send_campaign(self, id_promotion=None, request=None):
                 """
                 Function to send a campaing via email
                 for all promo sender:
@@ -335,7 +335,7 @@ class Campaign(models.Model):
                                     campaign_obj.save()
 
                                     # sending campaign via mail
-                                    campaign_obj.send_promotional_email(campaign_obj.id_campaign)
+                                    campaign_obj.send_promotional_email(id_campaign=campaign_obj.id_campaign, request=request)
 
                                     return_var = True
                             except(KeyError, Campaign.DoesNotExist):
@@ -374,7 +374,7 @@ class Campaign(models.Model):
                                 campaign_details["name"] = promotion_obj.name
                                 campaign_details["description"] = promotion_obj.description
                                 campaign_details["expiring_in"] = promotion_obj.expiring_date
-                                campaign_details["image_url"] = promotion_obj.promo_image
+                                campaign_details["image_relative_path"] = promotion_obj.promo_image
                                 campaign_details["code"] = campaign_obj.code
                                 # a frontend_post promotion has not recipients
                                 if (account_obj):
@@ -387,7 +387,7 @@ class Campaign(models.Model):
 
                 return campaign_details
 
-        def send_promotional_email(self, id_campaign=None):
+        def send_promotional_email(self, id_campaign=None, request=None):
                 """
                 Function to send a promotion to an email address
                 """
@@ -398,17 +398,39 @@ class Campaign(models.Model):
                         campaign_obj = Campaign()
                         campaign_details = campaign_obj.get_campaign_details(id_campaign=id_campaign)
 
-                        # TODO: buld email body from template
-                        html_email = campaign_details["description"] + " | code: " + campaign_details["code"] + " | address: " + campaign_details["receiver_email"]
-
                         if (campaign_details):
-                                send_mail(
-                                        campaign_details["name"],
-                                        html_email,
-                                        'from@example.com',
-                                        ['veronesi1231@yahoo.it'],
-                                        fail_silently=False
+
+                                # getting HTML template from file
+                                f = open(settings.ABSOLUTE_WEBSITE_STATIC_DIR + 'email_template.html', 'r')
+                                html_template = f.read()
+
+                                # TODO: buld email body from template
+                                """
+                                    {0} = title
+                                    {1} = description
+                                    {2} = code
+                                    {3} = expiring_in
+                                    {4} = image_url
+                                    {5} = site_static_url
+                                    {6} = facebook_page_url
+                                    {7} = site_url
+                                """
+
+                                html_body = format_html (
+                                        html_template,
+                                        campaign_details["name"], # promo title
+                                        campaign_details["description"], # promo description
+                                        campaign_details["code"], # promo code
+                                        campaign_details["expiring_in"], # promo code
+                                        request.build_absolute_uri(str(campaign_details["image_relative_path"])), # promot image URL
+                                        request.build_absolute_uri(settings.STATIC_URL + "website/img/"), # site static URL
+                                        "http://www.facebook.com", # facebook page url
+                                        request.build_absolute_uri("/"), # site URL
                                 )
+
+                                msg = EmailMessage(campaign_details["name"], html_body, 'from@example.com', ['veronesi1231@yahoo.it'])
+                                msg.content_subtype = "html"  # Main content is now text/html
+                                msg.send()
 
                 logger.error("EMAIL SENT")
 
