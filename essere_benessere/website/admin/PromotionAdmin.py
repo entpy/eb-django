@@ -6,6 +6,7 @@ from django.contrib import admin, messages
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 from django.template import RequestContext, loader
+from datetime import datetime
 import logging
 
 # Get an instance of a logger
@@ -18,6 +19,11 @@ class PromotionAdmin(admin.ModelAdmin):
 
         # table list fields
         list_display = ('name', 'expiring_date')
+
+        # showing only valid promotion
+        def queryset(self, request):
+                qs = super(PromotionAdmin, self).queryset(request)
+                return qs.filter(expiring_date__gte=datetime.now().date()).filter(promo_type=Promotion.PROMOTION_TYPE_FRONTEND["key"])
 
         def save_model(self, request, obj, form, change):
                 """

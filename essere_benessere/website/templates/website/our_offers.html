@@ -9,7 +9,7 @@
 			<div class="single_offer_container">
 				<div class="offert_wrapper">
 					<div class="image_container display_only_pc">
-						<img src="{{ single_promotion.image_url }}" alt="Offerta speciale">
+						<img src="{{ single_promotion.image_relative_path }}" alt="Offerta speciale">
 					</div>
 					<div class="offert_data_container">
 						<div class="offert_name">
@@ -23,8 +23,8 @@
 							</div>
 							<div class="content">
 								<div class="offer_single_details">
-									<span class="label">Scade tra:</span>
-									<span class="value">{{ single_promotion.expiring_in }}</span>
+									<span class="label">Scadenza:</span>
+									<span class="value">{{ single_promotion.expiring_in_readable_frontend | safe }}</span>
 								</div>
 								<div class="offer_single_details">
 									<span class="label">Codice</span>

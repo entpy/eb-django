@@ -212,11 +212,12 @@ class AccountAdmin(admin.ModelAdmin):
                         # retrieving checked list from current view (only checkbox that are shown from paginator current view)
                         senders_dictionary = campaign_obj.get_checkbox_dictionary(paginator.page(old_viewed_page), selected_contacts, "id_account")
 
+                        # logger.error("senders dictionary: " + str(senders_dictionary))
                         # saving or removing checked/unchecked checkbox from db
-                        campaign_obj.set_campaign_user(senders_dictionary, id_promotion = working_id_promotion)
-		
+                        campaign_obj.set_campaign_user(senders_dictionary, id_promotion=working_id_promotion)
+
 		"""2""" # retrieving all checked checkbox for current promotion
-		campaign_contacts_list = campaign_obj.get_account_list(id_promotion = working_id_promotion)
+		campaign_contacts_list = campaign_obj.get_account_list(id_promotion=working_id_promotion)
 		logger.debug("selected_contacts_list: " + str(campaign_contacts_list))
 
                 # retrieving paginator object
@@ -262,7 +263,7 @@ class AccountAdmin(admin.ModelAdmin):
                                 # checking if user choose to send the promotion
                                 if (request.POST.get("send_promotion", "")):
                                         campaign_obj = Campaign()
-                                        campaign_obj.send_campaign(id_promotion=id_promotion, request=request)
+                                        campaign_obj.send_campaign(id_promotion=id_promotion)
 
                                         # redirect to success page
                                         messages.add_message(request, messages.SUCCESS, 'Promozione inviata con successo!')

@@ -12,10 +12,16 @@ from django.db import models
 from django.core.mail import EmailMessage
 from django.conf import settings
 from django.utils import timezone
-from django.utils.html import format_html
+from django.utils.html import format_html, mark_safe
 import datetime
 from datetime import datetime
 import string, random, logging
+import sys
+from essere_benessere.functions import CommonUtils
+
+# force utf8 read data
+reload(sys);
+sys.setdefaultencoding("utf8")
 
 # Get an instance of a logger
 logger = logging.getLogger('django.request')
@@ -25,7 +31,7 @@ class Account(models.Model):
 	first_name = models.CharField("Nome", max_length=30)
 	last_name = models.CharField("Cognome", max_length=30)
 	email = models.EmailField()
-	mobile_phone = models.CharField("Numero telefonico", max_length=20)
+	mobile_phone = models.CharField("Numero telefonico", max_length=20, blank=True, null=True)
 	birthday_date = models.DateField("Data di nascita", blank=True, null=True)
 	receive_promotions = models.BooleanField("Riceve le promozioni", default=0)
 	loyal_customer = models.BooleanField("Cliente affezionato", default=0)
@@ -34,6 +40,17 @@ class Account(models.Model):
 	# On Python 3: def __str__(self):
 	def __unicode__(self):
 		return str(self.email)
+
+        def get_birthday_account(self):
+                """
+                list of all users who make birthday today
+                """
+
+                return_var = None
+
+                return_var = Account.objects.filter(birthday_date__month=(datetime.now().date().month)).filter(birthday_date__day=(datetime.now().date().day))
+
+                return return_var
 
 class Promotion(models.Model):
 
@@ -69,7 +86,10 @@ class Promotion(models.Model):
                 campaign_obj = Campaign()
 
                 # list of all promotion valid (queryset starts from campaign object)
-                filtered_promotions = Campaign.objects.filter(id_promotion__promo_type=promo_type)
+                filtered_promotions = Campaign.objects.filter(
+                        id_promotion__promo_type=promo_type).filter(
+                        id_promotion__expiring_date__gte=datetime.now().date()
+                )
 
                 # for every campaign retrieving promo details
                 if (filtered_promotions):
@@ -78,7 +98,6 @@ class Promotion(models.Model):
                                 id_valid_campaign = valid_promo.id_campaign
                                 # build dictionary with promotion details
                                 valid_promotion_list.append(campaign_obj.get_campaign_details(id_campaign=id_valid_campaign))
-                                logger.error("models.py, get_valid_promotions_list: " + str(valid_promotion_list))
 
                 return valid_promotion_list
 
@@ -271,12 +290,11 @@ class Campaign(models.Model):
 
                 if (checkbox_name):
                         for element in paginator_element_list:
-                                # logger.error("models.py: single element " + str(element))
                                 # se element è contenuto in checked_elements allora ok
-                                if (str(element) in checked_elements):
-                                        checkbox_dictionary[str(element)] = 1
+                                if (str(element.id_account) in checked_elements):
+                                        checkbox_dictionary[str(element.id_account)] = 1
                                 else:
-                                        checkbox_dictionary[str(element)] = 0
+                                        checkbox_dictionary[str(element.id_account)] = 0
 
                 # logger.error("models.py, get_senders_dictionary: " + str(checkbox_dictionary))
 
@@ -312,7 +330,7 @@ class Campaign(models.Model):
 
                 return return_var
 
-        def send_campaign(self, id_promotion=None, request=None):
+        def send_campaign(self, id_promotion=None):
                 """
                 Function to send a campaing via email
                 for all promo sender:
@@ -332,10 +350,11 @@ class Campaign(models.Model):
                                     # generating unique random code
                                     random_code = campaign_obj.generate_random_code()
                                     campaign_obj.code = random_code
+                                    campaign_obj.status = 0
                                     campaign_obj.save()
 
                                     # sending campaign via mail
-                                    campaign_obj.send_promotional_email(id_campaign=campaign_obj.id_campaign, request=request)
+                                    campaign_obj.send_promotional_email(id_campaign=campaign_obj.id_campaign)
 
                                     return_var = True
                             except(KeyError, Campaign.DoesNotExist):
@@ -374,6 +393,12 @@ class Campaign(models.Model):
                                 campaign_details["name"] = promotion_obj.name
                                 campaign_details["description"] = promotion_obj.description
                                 campaign_details["expiring_in"] = promotion_obj.expiring_date
+
+                                # retrieving custom expiring in string (frontend or backend)
+                                expiring_in_days = campaign_obj.get_expiring_in_days(campaign_details["expiring_in"])
+                                campaign_details["expiring_in_readable_frontend"] = campaign_obj.get_expiring_in_text(expiring_in_days)
+                                campaign_details["expiring_in_readable_backend"] = campaign_obj.get_expiring_in_text(expiring_in_days, True)
+
                                 campaign_details["image_relative_path"] = promotion_obj.promo_image
                                 campaign_details["code"] = campaign_obj.code
                                 # a frontend_post promotion has not recipients
@@ -387,7 +412,7 @@ class Campaign(models.Model):
 
                 return campaign_details
 
-        def send_promotional_email(self, id_campaign=None, request=None):
+        def send_promotional_email(self, id_campaign=None):
                 """
                 Function to send a promotion to an email address
                 """
@@ -400,57 +425,83 @@ class Campaign(models.Model):
 
                         if (campaign_details):
 
-                                # getting HTML template from file
-                                f = open(settings.ABSOLUTE_WEBSITE_STATIC_DIR + 'email_template.html', 'r')
-                                html_template = f.read()
+                                # building email html
+                                html_body = campaign_obj.build_email_html(campaign_details_dict=campaign_details)
 
-                                # TODO: buld email body from template
-                                """
-                                    {0} = title
-                                    {1} = description
-                                    {2} = code
-                                    {3} = expiring_in
-                                    {4} = image_url
-                                    {5} = site_static_url
-                                    {6} = facebook_page_url
-                                    {7} = site_url
-                                """
-
-                                html_body = format_html (
-                                        html_template,
-                                        campaign_details["name"], # promo title
-                                        campaign_details["description"], # promo description
-                                        campaign_details["code"], # promo code
-                                        campaign_details["expiring_in"], # promo code
-                                        request.build_absolute_uri(str(campaign_details["image_relative_path"])), # promot image URL
-                                        request.build_absolute_uri(settings.STATIC_URL + "website/img/"), # site static URL
-                                        "http://www.facebook.com", # facebook page url
-                                        request.build_absolute_uri("/"), # site URL
-                                )
-
-                                msg = EmailMessage(campaign_details["name"], html_body, 'from@example.com', ['veronesi1231@yahoo.it'])
+                                msg = EmailMessage(campaign_details["name"], html_body, 'from@example.com', [campaign_details["receiver_email"]])
                                 msg.content_subtype = "html"  # Main content is now text/html
                                 msg.send()
 
-                logger.error("EMAIL SENT")
+                logger.error("EMAIL SENT TO: " + campaign_details["receiver_email"])
 
                 return return_var
 
-        # TODO: implements this function
-        def send_birthday_promotion(self):
+        def build_email_html(self, campaign_details_dict=None):
                 """
-                Function to send a promotional email to users who have a birthday today
-                """
-
-                return True
-
-        # TODO: implements this function
-        def delete_expired_promotion(self):
-                """
-                Function to delete all expired promotion (and related campaigns)
+                Function to build email html from campaign details dictionary
                 """
 
-                return True
+                return_var = ""
+                campaign_obj = Campaign()
+                common_utils_obj = CommonUtils()
+
+                if (campaign_details_dict):
+
+                        # loading HTML template from file
+                        f = open(settings.ABSOLUTE_WEBSITE_STATIC_DIR + 'email_template.html', 'r')
+                        html_template = f.read()
+
+                        # bulding email body from template previously loaded
+                        """
+                            {0} = title
+                            {1} = description
+                            {2} = code
+                            {3} = expiring_in_readable_backend
+                            {4} = image_url
+                            {5} = site_static_url
+                            {6} = facebook_page_url
+                            {7} = site_url
+                        """
+
+                        logger.error("image URL: " + str(common_utils_obj.get_site_url() + str(campaign_details_dict["image_relative_path"])))
+                        # sobstitute var inside html template
+                        return_var = format_html (
+                                html_template,
+                                campaign_details_dict["name"], # promo title
+                                mark_safe(campaign_details_dict["description"]), # promo description
+                                campaign_details_dict["code"], # promo code
+                                mark_safe(campaign_details_dict["expiring_in_readable_backend"]), # promo expiring in days
+                                common_utils_obj.get_site_url() + str(campaign_details_dict["image_relative_path"]), # promot image URL
+                                common_utils_obj.get_site_url() + settings.STATIC_URL + "website/img/", # site static URL
+                                "", # facebook page url
+                                common_utils_obj.get_site_url(), # site URL
+                        )
+
+                return return_var
+
+        def get_expiring_in_text(self, expiring_in_days=None, is_frontend=False):
+                """
+                Function to build a string about promotion expiring in
+                """
+
+                expiring_in_string = ""
+
+                if (is_frontend):
+                        if (expiring_in_days == 0):
+                            expiring_in_string = "<br /><b>Approfittane subito, l'offerta scade OGGI!</b>"
+                        if (expiring_in_days == 1):
+                            expiring_in_string = "<br /><b>Approfittane subito, l'offerta scade domani!</b>"
+                        elif (expiring_in_days > 1):
+                            expiring_in_string = "<br /><b>Approfittane subito, l'offerta scade tra " + str(expiring_in_days) + " giorni</b>"
+                else:
+                        if (expiring_in_days == 0):
+                            expiring_in_string = "L'offerta scade <span class=\"expiring_today\">OGGI</span>!"
+                        if (expiring_in_days == 1):
+                            expiring_in_string = "L'offerta scade domani!"
+                        elif (expiring_in_days > 1):
+                            expiring_in_string = "L'offerta scade tra " + str(expiring_in_days) + " giorni"
+
+                return expiring_in_string
 
         def check_code_validity(self, code, validity_check=None):
                 """
@@ -473,7 +524,7 @@ class Campaign(models.Model):
                                         return_var = True
 
                         if (validity_check == 'not_expired'):
-                                if (promotion_obj.expiring_date >= datetime.now().date()):
+                                if ((promotion_obj.expiring_date is None) or (promotion_obj.expiring_date >= datetime.now().date())):
                                         return_var = True
 
                         if (validity_check == 'exists'):
@@ -505,3 +556,41 @@ class Campaign(models.Model):
                         pass
 
                 return return_var
+
+        def get_expiring_in_days(self, expiring_date=None):
+                """
+                Function to calculate expiring in between two date
+                """
+
+                return_var = None
+
+                if (expiring_date):
+                        return_var = (expiring_date - datetime.now().date()).days
+
+                return return_var
+
+        # TODO: implements this function
+        def send_birthday_promotion(self):
+                """
+                Function to send a promotional email to users who have a birthday today
+                """
+
+                account_obj = Account()
+                promotion_obj = Promotion()
+                campaign_obj = Campaign()
+
+                # list of all users whoget_birthday_account make birthday today
+                account_list = account_obj.get_birthday_account()
+
+                # retrieving birthday promotion
+                birthday_promo = promotion_obj.get_birthday_promotion_instance()
+
+                # for everyone sending a promotional email
+                if (account_list and birthday_promo):
+                        for single_account in account_list:
+                                # logger.error("single account: " + str(single_account.id_account))
+                                # logger.error("promo: " + str(birthday_promo.id_promotion))
+                                campaign_obj.add_campaign_user(id_account=single_account.id_account, id_promotion=birthday_promo.id_promotion)
+                                campaign_obj.send_campaign(id_promotion=birthday_promo.id_promotion)
+
+                return True

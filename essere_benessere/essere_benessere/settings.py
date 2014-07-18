@@ -37,6 +37,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
     'website',
 )
 
@@ -111,6 +112,8 @@ STATICFILES_DIRS = (
 
 # absolute dir
 ABSOLUTE_WEBSITE_STATIC_DIR = BASE_DIR + "/website" + STATIC_URL + 'website/'
+
+SITE_ID = 1
 
 """
 HOW TO SUL LOGGING

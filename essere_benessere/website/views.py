@@ -46,17 +46,11 @@ def our_offers(request):
         promotion_obj = Promotion()
         campaign_obj = Campaign()
 
+        # TODO: only for debug plz remove
+        campaign_obj.send_birthday_promotion()
+
         # list of all valid promotion (not expired) with type = frontend_post
         valid_promotion_dict = promotion_obj.get_valid_promotions_list()
-        req_test = HttpRequest()
-
-        logger.error("hostname: " + str(socket.gethostname()))
-        logger.error("request.get_host() + MEDIA_URL: " + str(request.get_host() + settings.MEDIA_URL))
-        logger.error("request.get_host() + STATIC_URL: " + str(request.get_host() + settings.STATIC_URL))
-
-        # XXX debug only plz remove {{{
-        campaign_obj.send_promotional_email(id_campaign=4, request=request)
-        # XXX debug only plz remove }}}
 
         context = {
                 'promotion_list' : valid_promotion_dict,
