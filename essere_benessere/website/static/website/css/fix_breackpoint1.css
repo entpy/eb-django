@@ -30,8 +30,8 @@
 /* offers page {{{ */
 .single_offer_container  { width: 95%; }
 .single_offer_container > .offert_wrapper { box-sizing: border-box; display: inline-block; margin: 0 auto; width: 100%; }
-.single_offer_container > .offert_wrapper > .image_container { width: 30%; }
-.single_offer_container > .offert_wrapper > .image_container img { width: 90%; }
+.single_offer_container > .offert_wrapper > .image_container { text-align: center; width: 30%; }
+.single_offer_container > .offert_wrapper > .image_container img { max-width: 160px; }
 .single_offer_container > .offert_wrapper > .offert_data_container { width: 70%; }
 .separator img { max-width: 600px; width: 75%; }
 /* offers page }}} */

@@ -110,7 +110,8 @@ h1 { font-size: 30px; }
 .single_offer_container > div { float: left; }
 .single_offer_container > .offert_wrapper { background-color: #cc99ff; border: 4px solid #F6CCD5; border-radius: 4px; padding: 19px; }
 .single_offer_container > .offert_wrapper > div { float: left; }
-.single_offer_container > .offert_wrapper > .image_container { width: 222px; }
+.single_offer_container > .offert_wrapper > .image_container { display: table; text-align: center; width: 222px; }
+.single_offer_container > .offert_wrapper > .image_container > .offer_image_wrapper_container { display: table-cell; height: 200px; vertical-align: middle; }
 .single_offer_container > .offert_wrapper > .image_container img { max-width: 200px; max-height: 200px; }
 .offert_wrapper .offert_name { font-size: 17px; font-weight: bold; margin-bottom: 16px; text-align: center; }
 .offert_wrapper .offert_name { font-size: 17px; font-weight: bold; margin-bottom: 16px; text-align: center; }
