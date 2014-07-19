@@ -12,11 +12,6 @@ from essere_benessere.functions import CommonUtils
 import logging
 import socket
 
-#TODO remove after debug
-from django.core.mail import EmailMessage
-from django.utils.html import format_html
-from django.conf import settings
-
 # Get an instance of a logger
 logger = logging.getLogger('django.request')
 
@@ -83,7 +78,7 @@ def get_offers(request):
 			try:
 				account_obj = Account.objects.get(email=request.POST['email'])
 			except (KeyError, Account.DoesNotExist):
-				logger.debug('Nuovo utente, inserisco in db')
+				# logger.debug('new user')
 				account_obj = Account(
 					first_name = request.POST['first_name'],
 					last_name = request.POST['last_name'],
@@ -110,30 +105,12 @@ def get_offers(request):
 				return HttpResponseRedirect(reverse(get_offers))
 			else:
 				messages.add_message(request, messages.ERROR, "Attenzione utente già esistente")
-				logger.debug("Utente gia' esistente in db")
+				# logger.debug("Utente gia' esistente in db")
 		else:
 			messages.add_message(request, messages.ERROR, 'Per continuare è necessario inserire una mail e confermare la privacy.')
-			logger.debug('Attenzione: inserire email e/o confermare disclaimer')
+			# logger.debug('Attenzione: inserire email e/o confermare disclaimer')
 	else:
-		logger.debug('Attenzione: submit del form non ancora eseguito')
-
-
-	"""
-	try:
-	account = p.choice_set.get(pk=request.POST['choice'])
-	except (KeyError, Choice.DoesNotExist):
-	# Redisplay the poll voting form.
-	return render(request, 'polls/detail.html', {
-	    'poll': p,
-	    'error_message': "You didn't select a choice.",
-	})
-	else:
-	selected_choice.votes += 1
-	selected_choice.save()
-	# Always return an HttpResponseRedirect after successfully dealing
-	# with POST data. This prevents data from being posted twice if a
-	# user hits the Back button.
-	return HttpResponseRedirect(reverse('polls:results', args=(p.id,)))
-	"""
+		# logger.debug('Attenzione: submit del form non ancora eseguito')
+		pass
 
 	return render(request, 'website/get_offers.html', context)

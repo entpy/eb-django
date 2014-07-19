@@ -37,6 +37,10 @@ class Account(models.Model):
 	loyal_customer = models.BooleanField("Cliente affezionato", default=0)
 	status = models.BooleanField(default=1)
 
+	class Meta:
+		verbose_name = "Utente"
+		verbose_name_plural = "Utenti"
+
 	# On Python 3: def __str__(self):
 	def __unicode__(self):
 		return str(self.email)
@@ -72,6 +76,11 @@ class Promotion(models.Model):
 	promo_type = models.CharField(max_length=30, choices=PROMOTION_TYPES_SELECTOR)
 	status = models.BooleanField(default=0)
 	campaigns = models.ManyToManyField(Account, through='Campaign')
+
+	# custom model options
+	class Meta:
+		verbose_name = "Promozione"
+		verbose_name_plural = "Promozioni"
 
 	# On Python 3: def __str__(self):
 	def __unicode__(self):

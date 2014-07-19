@@ -58,7 +58,6 @@ WSGI_APPLICATION = 'essere_benessere.wsgi.application'
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
 
 # postgreSQL
-"""
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -82,13 +81,14 @@ DATABASES = {
         'PORT': '3306',
     }
 }
+"""
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'it'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Rome'
 
 USE_I18N = True
 
