@@ -18,6 +18,7 @@ from datetime import datetime
 import string, random, logging
 import sys
 from essere_benessere.functions import CommonUtils
+from essere_benessere.CustomImagePIL import CustomImagePIL
 
 # force utf8 read data
 reload(sys);
@@ -76,6 +77,19 @@ class Promotion(models.Model):
 	# On Python 3: def __str__(self):
 	def __unicode__(self):
 		return str(self.name)
+
+        def save(self, *args, **kwargs):
+                """
+                Overrding save method to handle uploaded image
+                """
+
+                # saving model
+                super(Promotion, self).save(*args, **kwargs) # Call the "real" save() method.
+
+                # resize image
+                img_file_name = str(self.promo_image.path)
+                custom_image_PIL_obj = CustomImagePIL(file_path=img_file_name)
+                custom_image_PIL_obj.resize_image(filename=self.promo_image.path)
 
         def get_valid_promotions_list(self, promo_type = PROMOTION_TYPE_FRONTEND["key"]):
                 """
