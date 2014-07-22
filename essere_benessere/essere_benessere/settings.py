@@ -92,7 +92,7 @@ DATABASES = {
 
 # cron app configuration
 CRON_CLASSES = [
-    PROJECT_NAME + '.cron.BirthdayPromoCron",
+    PROJECT_NAME + '.cron.BirthdayPromoCron',
 ]
 
 # Internationalization
