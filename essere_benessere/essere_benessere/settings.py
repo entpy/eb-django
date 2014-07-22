@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+PROJECT_NAME = "essere_benessere"
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
@@ -25,6 +26,11 @@ TEMPLATE_DEBUG = True
 
 TEMPLATE_DIRS = [os.path.join(BASE_DIR, 'templates')]
 
+# common in most templates
+TEMPLATE_CONTEXT_PROCESSORS = (
+    PROJECT_NAME + '.context_processors.admin_media',
+)
+
 ALLOWED_HOSTS = []
 
 
@@ -38,6 +44,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
+    'django_cron',
     'website',
 )
 
@@ -50,14 +57,15 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-ROOT_URLCONF = 'essere_benessere.urls'
+ROOT_URLCONF = PROJECT_NAME + '.urls'
 
-WSGI_APPLICATION = 'essere_benessere.wsgi.application'
+WSGI_APPLICATION = PROJECT_NAME + '.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
 
 # postgreSQL
+"""
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -81,7 +89,11 @@ DATABASES = {
         'PORT': '3306',
     }
 }
-"""
+
+# cron app configuration
+CRON_CLASSES = [
+    PROJECT_NAME + '.cron.BirthdayPromoCron",
+]
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/

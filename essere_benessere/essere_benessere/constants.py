@@ -16,4 +16,3 @@ PROJECT_CONSTANTS = {
             },
         },
 }
-

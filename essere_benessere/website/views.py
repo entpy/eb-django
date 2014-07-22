@@ -10,7 +10,6 @@ import datetime
 from essere_benessere import constants, functions
 from essere_benessere.functions import CommonUtils
 import logging
-import socket
 
 # Get an instance of a logger
 logger = logging.getLogger('django.request')
@@ -39,10 +38,6 @@ def dental_whitening(request):
 def our_offers(request):
 
         promotion_obj = Promotion()
-        campaign_obj = Campaign()
-
-        # TODO: only for debug plz remove
-        campaign_obj.send_birthday_promotion()
 
         # list of all valid promotion (not expired) with type = frontend_post
         valid_promotion_dict = promotion_obj.get_valid_promotions_list()

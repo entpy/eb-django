@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 
-#! /usr/bin/python
-
 import Image
 import ImageDraw
 import re
@@ -126,12 +124,6 @@ class CustomImagePIL:
 
                 return return_var
 
-# Example {{{
-# call function to resize image
-# custom_image_PIL_obj = CustomImagePIL("image3.png")
-# custom_image_PIL_obj.resize_image(filename="prova.png")
-# Example }}}
-
 """
 HOW resize_image WORKS
 ======================
@@ -183,4 +175,17 @@ Caso 3:
     | |   | |
     | +---+ |
     +-------+
+
+HOW TO USE
+==========
+
+# class init
+custom_image_PIL_obj = CustomImagePIL("image3.png")
+# resize and saving with custom name
+custom_image_PIL_obj.resize_image(filename="prova.png")
+
+TODO
+====
+
+- Custom box width and height form class instance
 """
