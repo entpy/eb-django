@@ -26,11 +26,6 @@ TEMPLATE_DEBUG = True
 
 TEMPLATE_DIRS = [os.path.join(BASE_DIR, 'templates')]
 
-# common in most templates
-TEMPLATE_CONTEXT_PROCESSORS = (
-    PROJECT_NAME + '.context_processors.admin_media',
-)
-
 ALLOWED_HOSTS = []
 
 

@@ -13,12 +13,10 @@ from django.core.mail import EmailMessage
 from django.conf import settings
 from django.utils import timezone
 from django.utils.html import format_html, mark_safe
-import datetime
-from datetime import datetime
-import string, random, logging
-import sys
 from essere_benessere.functions import CommonUtils
 from essere_benessere.CustomImagePIL import CustomImagePIL
+from datetime import datetime
+import datetime, string, random, logging, sys
 
 # force utf8 read data
 reload(sys);
@@ -592,7 +590,6 @@ class Campaign(models.Model):
 
                 return return_var
 
-        # TODO: implements this function
         def send_birthday_promotion(self):
                 """
                 Function to send a promotional email to users who have a birthday today
