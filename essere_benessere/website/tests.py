@@ -26,5 +26,5 @@ class PromotionMethodTests(TestCase):
 
         self.assertEqual(total_promo_valid, True)
 
-        # TODO: this test not working
+        # TODO: this test not working (why whyyyy?)
         self.assertEqual(str(promo_instance.promo_type), str(Promotion.PROMOTION_TYPE_BIRTHDAY["key"]))
