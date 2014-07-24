@@ -1,4 +1,24 @@
 /* common element style {{{ */
+@font-face {
+    font-family: 'helveticaneue-light';
+    src: url('/static/website/font/helveticaneue-light-webfont.eot');
+    src: url('/static/website/font/helveticaneue-light-webfont.eot?#iefix') format('embedded-opentype'),
+         url('/static/website/font/helveticaneue-light-webfont.woff') format('woff'),
+         url('/static/website/font/helveticaneue-light-webfont.ttf') format('truetype'),
+         url('/static/website/font/helveticaneue-light-webfont.svg#helvetica_neue45_light') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+@font-face {
+    font-family: 'helveticaneue-thin';
+    src: url('/static/website/font/helveticaneue-thin-webfont.eot');
+    src: url('/static/website/font/helveticaneue-thin-webfont.eot?#iefix') format('embedded-opentype'),
+         url('/static/website/font/helveticaneue-thin-webfont.woff') format('woff'),
+         url('/static/website/font/helveticaneue-thin-webfont.ttf') format('truetype'),
+         url('/static/website/font/helveticaneue-thin-webfont.svg#helvetica_neue35_thin') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
 body { font: normal 100%/1 Helvetica, Arial, sans-serif; }
 b, .bold { font-weight: bold; }
 html { background-color: #ffdfeb; }
@@ -81,11 +101,12 @@ ul.messages li.error i { color: red; }
 	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#1c081cff, endColorstr=#1c081cec);
 	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#1c081cff, endColorstr=#1c081cec)";
 }
-.widescreen_slider_block .slider_data_block .title { color: #FF93F8; border-bottom: 1px solid #000; font-weight: bold; margin-bottom: 4px; padding: 0 15px 4px; }
+.widescreen_slider_block .slider_data_block .title { color: #FF93F8; border-bottom: 1px solid #000; font-family: 'helveticaneue-light'; font-weight: bold; margin-bottom: 4px; padding: 0 15px 4px; }
+.widescreen_slider_block .slider_data_block .content { font-family: 'helveticaneue-light'; }
 /* slider data blocks }}} */
 /* superslides }}} */
 
-h1 { font-size: 30px; }
+h1 { font-size: 30px; font-family: 'helveticaneue-light'; }
 .page_title_container { display: block!important; margin: 0 auto 20px auto; padding-top: 20px; width: 90%; }
 .page_title_container * { color: #00182f; }
 .page_title_container .title { border-bottom: 1px solid #BFBFBF; display: inline-block; margin-bottom: 30px; padding: 0 30px 8px; }
@@ -190,12 +211,12 @@ h1 { font-size: 30px; }
 /* our services page }}} */
 
 /* get offers page {{{ */
-.styled_form input { border: 1px solid lightgray; border-radius: 0; font-size: 16px; padding: 10px 20px; width: 205px; -webkit-appearance: none; }
+.styled_form input { border: 1px solid lightgray; border-radius: 5px; font-size: 16px; padding: 10px 20px; width: 205px; -webkit-appearance: none; }
 .styled_form > .input_container { display: table; margin: 0 auto; width: 520px; }
 .styled_form > .input_container.input_container_margin_top { margin-top: 21px; }
 .styled_form > .input_container > div { display: table-cell; width: 50%; }
 .styled_form > .input_container > .right { text-align: right; }
-.styled_form > .input_container .birthday_fake_input { background-color: white; border: 1px solid lightgray; display: table; line-height: 0; margin: 0 auto; padding: 7px 0px; width: 100%; }
+.styled_form > .input_container .birthday_fake_input { background-color: white; border-radius: 5px; border: 1px solid lightgray; display: table; line-height: 0; margin: 0 auto; padding: 7px 0px; width: 100%; }
 .styled_form > .input_container .birthday_fake_input > div { display: table-cell; text-align: center; width: 50%; }
 .styled_form > .input_container .birthday_fake_input > .left { color: #757575; font-size: 16px; width: 40%; text-rendering: optimizelegibility; }
 .styled_form > .input_container .birthday_fake_input > .right { width: 60%; }

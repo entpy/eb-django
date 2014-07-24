@@ -15,8 +15,8 @@ from django.utils import timezone
 from django.utils.html import format_html, mark_safe
 from essere_benessere.functions import CommonUtils
 from essere_benessere.CustomImagePIL import CustomImagePIL
-from datetime import datetime
 import datetime, string, random, logging, sys
+from datetime import datetime
 
 # force utf8 read data
 reload(sys);
@@ -155,7 +155,7 @@ class Promotion(models.Model):
                 try:
                         # retrieve birthday promotion
                         # NB: exists only one promotion with type = birthday
-                        promotion_obj = Promotion.objects.get(promo_type=Promotion.PROMOTION_TYPE_BIRTHDAY["key"])
+                        promotion_obj = Promotion.objects.get(promo_type=self.PROMOTION_TYPE_BIRTHDAY["key"])
                         return_var = promotion_obj
                 except (KeyError, Promotion.DoesNotExist):
                         # birthday promo not exists yet
