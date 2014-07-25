@@ -132,7 +132,7 @@ class Promotion(models.Model):
                 try:
                         # retrieve birthday promotion
                         # NB: exists only one promotion with type = birthday
-                        promotion_obj = Promotion.objects.get(promo_type=Promotion.PROMOTION_TYPE_BIRTHDAY["key"])
+                        promotion_obj = Promotion.objects.get(promo_type=self.PROMOTION_TYPE_BIRTHDAY["key"])
 
                         # delete retrieved row from db
                         promotion_obj.delete()
