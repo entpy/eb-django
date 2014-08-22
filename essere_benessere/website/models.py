@@ -70,7 +70,7 @@ class Promotion(models.Model):
 	id_promotion = models.AutoField(primary_key=True)
 	name = models.CharField("Titolo promozione", max_length=50)
 	description = models.TextField("Contenuto")
-        promo_image = models.ImageField("Immagine della promozione", upload_to="/tmp/")
+        promo_image = models.ImageField("Immagine della promozione", upload_to="/")
 	expiring_date = models.DateField("Scadenza", null=True)
 	promo_type = models.CharField(max_length=30, choices=PROMOTION_TYPES_SELECTOR)
 	status = models.BooleanField(default=0)
@@ -420,7 +420,7 @@ class Campaign(models.Model):
                                 campaign_details["expiring_in_readable_frontend"] = campaign_obj.get_expiring_in_text(expiring_in_days)
                                 campaign_details["expiring_in_readable_backend"] = campaign_obj.get_expiring_in_text(expiring_in_days, True)
 
-                                campaign_details["image_relative_path"] = promotion_obj.promo_image
+                                campaign_details["image_relative_path"] = promotion_obj.promo_image.url
                                 campaign_details["code"] = campaign_obj.code
                                 # a frontend_post promotion has not recipients
                                 if (account_obj):

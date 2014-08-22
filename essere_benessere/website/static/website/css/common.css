@@ -21,12 +21,12 @@
 }
 body { font: normal 100%/1 Helvetica, Arial, sans-serif; }
 b, .bold { font-weight: bold; }
-html { background-color: #ffdfeb; }
+/*html { background-color: #ffdfeb; }*/
 .display_none, .hidden { display: none!important; }
 .display_only_mobile, .display_only_pc { display: none; }
 .page { float: left; width: 100%; }
 .page_wrapper { margin: 0 auto; }
-.content .page_wrapper { background-color: #FFD5DB; margin-bottom: 30px; }
+.content .page_wrapper { background-color: #FFD5DB; margin-bottom: 30px; box-shadow: 0 0 3px 0 #aeaeae; }
 .single_page_content { width: 100%; }
 .readable_content, .service_html_container > .description_block_2_container > .content { font-size: 14px; letter-spacing: 0.015em; line-height: 1.90em; }
 .margin_top_40 { margin-top: 40px; }
@@ -218,12 +218,12 @@ h1 { font-size: 30px; }
 .styled_form > .input_container > .right { text-align: right; }
 .styled_form > .input_container .birthday_fake_input { background-color: white; border-radius: 5px; border: 1px solid lightgray; display: table; line-height: 0; margin: 0 auto; padding: 7px 0px; width: 100%; }
 .styled_form > .input_container .birthday_fake_input > div { display: table-cell; text-align: center; width: 50%; }
-.styled_form > .input_container .birthday_fake_input > .left { color: #757575; font-size: 16px; width: 40%; text-rendering: optimizelegibility; }
+.styled_form > .input_container .birthday_fake_input > .left { color: #757575; font-size: 17px; width: 40%; text-rendering: optimizelegibility; }
 .styled_form > .input_container .birthday_fake_input > .right { width: 60%; }
 .styled_form > .input_container .birthday_fake_input select { background: none repeat scroll 0 0 #ebebeb; border: 1px solid lightgray; padding: 2px 10px; }
 .styled_form > .disclaimer_container { margin-top: 70px; text-align: center; }
 .styled_form > .disclaimer_container label { font-size: 14px; vertical-align: middle; }
-.styled_form > .disclaimer_container input { vertical-align: middle; width: auto; }
+.styled_form > .disclaimer_container input { -webkit-appearance: checkbox; vertical-align: middle; width: auto; }
 .styled_form > .submit_container { margin-top: 10px; text-align: center; }
 .styled_form > .submit_container input[type="submit"] { background-color: #1c081c; border: 2px solid #cc99ff; color: white; cursor: pointer; font-size: 17px; }
 .styled_form > .submit_container input[type="submit"]:hover { background-color: #420042; }
@@ -235,14 +235,13 @@ h1 { font-size: 30px; }
 
 /* color style {{{ */
 .header {
-	background-color: #1c081c;
+	background-color: #420042;
 	-webkit-transition: all 300ms cubic-bezier(0.250, 0.250, 0.750, 0.750);
 	-moz-transition: all 300ms cubic-bezier(0.250, 0.250, 0.750, 0.750);
 	-o-transition: all 300ms cubic-bezier(0.250, 0.250, 0.750, 0.750);
 	transition: all 300ms cubic-bezier(0.250, 0.250, 0.750, 0.750); /* linear */
 }
 .header:hover {
-	background-color: #420042;
 	box-shadow: 0 0 8px 1px #000000;
 	-webkit-transition: all 300ms cubic-bezier(0.250, 0.250, 0.750, 0.750);
 	-moz-transition: all 300ms cubic-bezier(0.250, 0.250, 0.750, 0.750);
@@ -264,7 +263,7 @@ h1 { font-size: 30px; }
 	-o-transition: all 300ms cubic-bezier(0.250, 0.250, 0.750, 0.750);
 	transition: all 300ms cubic-bezier(0.250, 0.250, 0.750, 0.750); /* linear */
 }
-.footer { background-color: #cc99ff; border-top: 3px solid #FFC0CB; box-shadow: 0 0px 4px 0px #000000; }
+.footer { background-color: #cc99ff; border-top: 3px solid #FFC0CB; }
 .footer .footer_container { background-color: #ffdfeb; border: 4px solid #ffc2d0; border-radius: 5px; -moz-border-radius: 5px; }
 .font_color1 { color: #1c081c; }
 .footer_data_social a { color: transparent; }

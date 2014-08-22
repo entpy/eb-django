@@ -3,7 +3,7 @@
 /* common element style {{{ */
 .display_only_mobile { display: block!important; }
 .display_only_pc { display: none!important; }
-.content .page_wrapper { margin-top: 10px; }
+/*.content .page_wrapper { margin-top: 10px; }*/
 /* common element style }}} */
 
 /* header style {{{ */
