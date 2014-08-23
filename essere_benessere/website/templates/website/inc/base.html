@@ -36,12 +36,12 @@
 		<link rel="stylesheet" href="{% static "website/css/common.css" %}">
 		<link rel="stylesheet" href="{% static "website/css/main.css" %}">
 		<!--[if lt IE 9]>
-			<link rel="stylesheet" type="text/css" href="css/big_css.css" />
+			<link rel="stylesheet" type="text/css" href="{% static "website/css/big_css.css" %}" />
 		<![endif]-->
 
 		<!-- CSS fix style sheets -->
 		<!--[if lt IE 8]>
-			<link rel="stylesheet" type="text/css" href="css/ie7_fix.css" />
+			<link rel="stylesheet" type="text/css" href="{% static "website/css/big_css.css" %}" />
 		<![endif]-->
 		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" >
 		{% endblock loaded_css %}
@@ -78,16 +78,18 @@
 						</span>
 					</div>
 					<div class="nav_container">
-						<nav>
-							<ul class="navigation_desktop">
-								<li><a href="/chi-siamo"><span class="nav_element">Chi siamo</span></a></li>
-								<li><a href="/i-nostri-servizi"><span class="nav_element">Servizi</span></a></li>
-								<li><a href="/luce-pulsata"><span class="nav_element">Luce pulsata</span></a></li>
-								<li><a href="/sbiancamento-dentale"><span class="nav_element">Sbiancamento dentale</span></a></li>
-								<li><a href="/contatti"><span class="nav_element">Contatti</span></a></li>
-								<li><a href="/le-nostre-offerte"><span class="nav_element">Le nostre offerte</span></a></li>
-							</ul>
-						</nav>
+						{% block nav %}
+							<nav>
+								<ul class="navigation_desktop">
+									<li class="{% block about_us_active %}{% endblock %}"><a href="/chi-siamo"><span class="nav_element">Chi siamo</span></a></li>
+									<li class="{% block our_services_active %}{% endblock %}"><a href="/i-nostri-servizi"><span class="nav_element">Servizi</span></a></li>
+									<li class="{% block pulsed_light_active %}{% endblock %}"><a href="/luce-pulsata"><span class="nav_element">Luce pulsata</span></a></li>
+									<li class="{% block dental_whitening_active %}{% endblock %}"><a href="/sbiancamento-dentale"><span class="nav_element">Sbiancamento dentale</span></a></li>
+									<li class="{% block contacts_active %}{% endblock %}"><a href="/contatti"><span class="nav_element">Contatti</span></a></li>
+									<li class="{% block our_offers_active %}{% endblock %}"><a href="/le-nostre-offerte"><span class="nav_element">Le nostre offerte</span></a></li>
+								</ul>
+							</nav>
+						{% endblock %}
 					</div>
 				</div>
 			</div>

@@ -13,6 +13,7 @@
 /* header style }}} */
 
 /* main content style {{{ */
+.content .page_wrapper { margin-top: 0px; margin-bottom: 0px; }
 .widescreen_slider_block { margin-top: 0px; }
 
 /* our services page {{{ */

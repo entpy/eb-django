@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
-import Image
-import ImageDraw
+from PIL import Image
+from PIL import ImageDraw
 import re
 
 class CustomImagePIL:

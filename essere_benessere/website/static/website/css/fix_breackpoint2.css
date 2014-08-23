@@ -3,7 +3,7 @@
 /* common element style {{{ */
 .display_only_mobile { display: block!important; }
 .display_only_pc { display: none!important; }
-.content .page_wrapper { margin-top: 10px; }
+/*.content .page_wrapper { margin-top: 10px; }*/
 /* common element style }}} */
 
 /* header style {{{ */
@@ -42,8 +42,8 @@
 .offert_data_container .content { float: left; margin-top: 5px; width: 70%; }
 .offert_data_container .content > .offer_single_details { margin-bottom: 10px; }
 .offert_data_container .image_container { float: left; text-align: center; width: 30%; }
-.offert_data_container .image_container > .offer_image_wrapper_container { display: table-cell; height: 100px; vertical-align: middle; }
-.offert_data_container .image_container img { width: 100%; max-height: 100px; }
+.offert_data_container .image_container > .offer_image_wrapper_container { display: inline-block; height: 100px; vertical-align: middle; }
+.offert_data_container .image_container img { display: inline-block; float: left; max-height: 100px; width: 100%; }
 .offert_wrapper .offer_details_container .section_title { display: block; }
 .offer_single_details .label { display: block; margin-right: 0px; min-width: 1px; text-align: center; }
 .offer_single_details .value { display: block; text-align: center; }
