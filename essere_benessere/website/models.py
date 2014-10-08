@@ -87,7 +87,7 @@ class Promotion(models.Model):
 
         def save(self, *args, **kwargs):
                 """
-                Overrding save method to handle uploaded image
+                Overriding save method to handle uploaded image
                 """
 
                 # saving model
