@@ -20,3 +20,19 @@ Essere &amp; Benessere django project
 == Su ambiente ==
 - installare django_cron con pip ed eseguire python manage.py runcrons ogni tot di minuti da crontab
 """
+
+Dipendenze
+----------
+Django==1.6.5
+PIL==1.1.7
+Pillow==2.4.0
+South==1.0
+argparse==1.2.1
+distribute==0.6.24
+django-common-helpers==0.6.1
+django-cron==0.3.4
+psycopg2==2.5.3
+wsgiref==0.1.2
+
+pip install django-cron
+pip install pil

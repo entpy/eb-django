@@ -18,6 +18,9 @@ from essere_benessere.CustomImagePIL import CustomImagePIL
 import datetime, string, random, logging, sys
 from datetime import datetime
 
+# TODO: delete also model image with post_delete signal
+# more info here: https://docs.djangoproject.com/en/1.6/topics/signals/
+
 # force utf8 read data
 reload(sys);
 sys.setdefaultencoding("utf8")
@@ -87,7 +90,7 @@ class Promotion(models.Model):
 
         def save(self, *args, **kwargs):
                 """
-                Overrding save method to handle uploaded image
+                Overriding save method to handle uploaded image
                 """
 
                 # saving model
