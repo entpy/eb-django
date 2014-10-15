@@ -70,7 +70,7 @@ class Promotion(models.Model):
 	id_promotion = models.AutoField(primary_key=True)
 	name = models.CharField("Titolo promozione", max_length=50)
 	description = models.TextField("Contenuto")
-        promo_image = models.ImageField("Immagine della promozione", upload_to="/")
+        promo_image = models.ImageField("Immagine della promozione", upload_to="promo_images/")
 	expiring_date = models.DateField("Scadenza", null=True)
 	promo_type = models.CharField(max_length=30, choices=PROMOTION_TYPES_SELECTOR)
 	status = models.BooleanField(default=0)
