@@ -45,12 +45,13 @@
 /* contact us page {{{ */
 /* }}} */
 /* our services page {{{ */
-.our_services_structure { width: 800px; }
-.our_services_structure > .left { width: 200px; }
+.our_services_structure { width: 860px; }
+.our_services_structure > .left { width: 260px; }
 .our_services_structure > .right { width: 560px; }
-.service_html_container > .description_block_1_container > .left { width: 345px; }
-.service_html_container > .description_block_1_container > .right { width: 200px; }
-.service_html_container > .description_block_1_container > .right img { max-width: 100%; }
+/*.service_html_container > .description_block_1_container > .left { width: 345px; }
+.service_html_container > .description_block_1_container > .right { width: 200px; }*/
+.service_html_container > .description_block_1_container > .right { text-align: center; }
+.service_html_container > .description_block_1_container > .right img { max-width: 100%; width: 50% }
 /* }}} */
 /* main content style }}} */
 
