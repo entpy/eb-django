@@ -90,10 +90,10 @@
 								<ul class="navigation_desktop">
 									<li class="{% block about_us_active %}{% endblock %}"><a href="/chi-siamo"><span class="nav_element">Chi siamo</span></a></li>
 									<li class="{% block our_services_active %}{% endblock %}"><a href="/i-nostri-servizi"><span class="nav_element">Servizi</span></a></li>
-									<li class="{% block pulsed_light_active %}{% endblock %}"><a href="/luce-pulsata"><span class="nav_element">Luce pulsata</span></a></li>
 									<li class="{% block dental_whitening_active %}{% endblock %}"><a href="/sbiancamento-dentale"><span class="nav_element">Sbiancamento dentale</span></a></li>
 									<li class="{% block contacts_active %}{% endblock %}"><a href="/contatti"><span class="nav_element">Contatti</span></a></li>
-									<li class="{% block our_offers_active %}{% endblock %}"><a href="/le-nostre-offerte"><span class="nav_element">Le nostre offerte</span></a></li>
+									<li class="{% block our_offers_active %}{% endblock %}"><a href="/le-nostre-offerte"><span class="nav_element">Offerte rapide</span></a></li>
+									<li class="{% block get_offers_active %}{% endblock %}"><a href="/ricevi-offerte"><span class="nav_element">Ricevi offerte</span></a></li>
 								</ul>
 							</nav>
 						{% endblock %}
@@ -130,20 +130,20 @@
 									<div class="image">
 										<img src="{% static "website/img/email_image.png" %}" alt="Email">
 									</div>
-									<div class="data">info@esserebenesserebeauty.it</div>
+									<div class="data">&#105;&#110;&#102;&#111;&#064;&#101;&#115;&#115;&#101;&#114;&#101;&#098;&#101;&#110;&#101;&#115;&#115;&#101;&#114;&#101;&#098;&#101;&#097;&#117;&#116;&#121;&#046;&#105;&#116;</div>
 								</div>
 								<div class="footer_data_container">
 									<div class="image">
 										<img src="{% static "website/img/mobile_image.png" %}" alt="Telefono">
 									</div>
-									<div class="data">011.985.71.00</div>
+									<div class="data">011.985.71.00 - <span style="display: none;">3</span>3<span style="display: none;">3</span>3<span style="display: none;">3</span>3.<span style="display: none;">9</span>9<span style="display: none;">1</span>1<span style="display: none;">9</span>9.<span style="display: none;">3</span>3<span style="display: none;">9</span>9.<span style="display: none;">5</span>5<span style="display: none;">3</span>3</div>
 								</div>
 							</div>
 							<div class="footer_block font_color1">
 								<div>
 									<img src="{% static "website/img/footer_separator.png" %}" alt="Essere & Benessere">
 								</div>
-								<div class="footer_caption">Contatti</div>
+								<div class="footer_caption">Social</div>
 								<div class="footer_data_social">
 									<div class="footer_data_social_wrapper">
 										<div>
@@ -158,7 +158,7 @@
 						</div>
 					</div>
 					<div class="copyright_container font_color1">
-						<span>Essere &amp; Benessere, Via Bainotti 2a, Volvera (TO) P.IVA 1111111111 | 2015 Powered By Entpy Software</span>
+						<span>Essere &amp; Benessere, Via Bainotti 2a, Volvera (TO) P.IVA 1111111111 | {% now "Y" %} Entpy Software</span>
 					</div>
 				</div>
 			</div>

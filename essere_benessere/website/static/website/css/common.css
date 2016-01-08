@@ -104,7 +104,7 @@ ul.messages li.error i { color: red; }
 	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#1c081cff, endColorstr=#1c081cec)";
 }
 .widescreen_slider_block .slider_data_block .title { border-bottom: 1px solid #000; color: #ff93f8; font-size: 1.5em; margin-bottom: 4px; padding: 0 15px 4px; }
-.widescreen_slider_block .slider_data_block .content { line-height: 1.4em; margin-top: 0.9em; }
+.widescreen_slider_block .slider_data_block .content { line-height: 1.4em; font-style: oblique; }
 /* slider data blocks }}} */
 /* superslides }}} */
 

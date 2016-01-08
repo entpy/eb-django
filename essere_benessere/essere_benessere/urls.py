@@ -13,8 +13,8 @@ urlpatterns = patterns('',
 	url(r'^contatti/', 'website.views.contacts', name='contacts'),
 	url(r'^le-nostre-offerte/', 'website.views.our_offers', name='our_offers'),
 	url(r'^ricevi-offerte/', 'website.views.get_offers', name='get_offers'),
-	url(r'^luce-pulsata/', 'website.views.pulsed_light', name='pulsed_light'),
 	url(r'^sbiancamento-dentale/', 'website.views.dental_whitening', name='dental_whitening'),
+	url(r'^termini-di-utilizzo/', 'website.views.terms_of_use', name='terms_of_use'),
 
 	# admin URLs
 	url(r'^admin/', include(admin.site.urls)),

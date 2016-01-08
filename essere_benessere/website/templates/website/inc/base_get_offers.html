@@ -9,14 +9,20 @@
 <meta name="description" content="Ricevi offerte">
 {% endblock description %}
 
-{% block loaded_script %}
-{{ block.super }}
-<script src="{% static "website/js/form-validator.010.js" %}"></script>
-{% endblock loaded_script %}
-
-{% block our_offers_active %}
+{% block get_offers_active %}
 active_menu
 {% endblock %}
+
+{% block loaded_css %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static "website/js/fancybox/jquery.fancybox.css" %}?v=2.1.5" >
+{% endblock loaded_css %}
+
+{% block loaded_script %}
+{{ block.super }}
+<script src="{% static "website/js/fancybox/jquery.fancybox.pack.js" %}?v=2.1.5"></script>
+<script src="{% static "website/js/form-validator.010.js" %}"></script>
+{% endblock loaded_script %}
 
 {% block main_content %}
 <div class="page_title_container">

@@ -64,7 +64,7 @@
 				</div>
 			</div>
 			<div class="disclaimer_container">
-				<label for="disclaimer_checkbox">Acconsento al trattamento dei dati personali *</label>
+				<label for="disclaimer_checkbox">Acconsento al <a class="fancybox.ajax fancybox_terms" href="/termini-di-utilizzo/">trattamento dei dati personali</a> *</label>
 				<input class="elementToCheck mandatoryCheck" id="disclaimer_checkbox" type="checkbox" name="disclaimer" value="1" >
 			</div>
 			<div class="submit_container">
@@ -73,4 +73,16 @@
 		</form>
 	</div>
 </div>
+<script>
+	$(document).ready(function() {
+	    $(".fancybox_terms").fancybox({
+		maxWidth	: 600,
+		fitToView	: true,
+		autoSize	: true,
+		closeClick	: false,
+		openEffect	: 'none',
+		closeEffect	: 'none'
+	    });
+	});
+</script>
 {% endblock main_content %}

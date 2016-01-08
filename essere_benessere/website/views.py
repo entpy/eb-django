@@ -29,11 +29,11 @@ def our_services(request):
 def contacts(request):
         return render(request, 'website/contacts.html')
 
-def pulsed_light(request):
-        return render(request, 'website/pulsed_light.html')
-
 def dental_whitening(request):
         return render(request, 'website/dental_whitening.html')
+
+def terms_of_use(request):
+        return render(request, 'website/terms_of_use.html')
 
 def our_offers(request):
 
@@ -102,7 +102,7 @@ def get_offers(request):
 				messages.add_message(request, messages.ERROR, "Attenzione utente già esistente")
 				# logger.debug("Utente gia' esistente in db")
 		else:
-			messages.add_message(request, messages.ERROR, 'Per continuare è necessario inserire una mail e confermare la privacy.')
+			messages.add_message(request, messages.ERROR, 'Per continuare è necessario inserire una mail e confermare il trattamento dei dati personali.')
 			# logger.debug('Attenzione: inserire email e/o confermare disclaimer')
 	else:
 		# logger.debug('Attenzione: submit del form non ancora eseguito')
