@@ -452,7 +452,7 @@ class Campaign(models.Model):
                                 # building email html
                                 html_body = campaign_obj.build_email_html(campaign_details_dict=campaign_details)
 
-                                msg = EmailMessage(campaign_details["name"], html_body, 'from@example.com', [campaign_details["receiver_email"]])
+                                msg = EmailMessage(campaign_details["name"], html_body, 'info@esserebenesserebeauty.it', [campaign_details["receiver_email"]])
                                 msg.content_subtype = "html"  # Main content is now text/html
                                 msg.send()
 

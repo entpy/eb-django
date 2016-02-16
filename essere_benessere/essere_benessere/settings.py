@@ -85,8 +85,6 @@ STATICFILES_FINDERS = (
 #	os.path.join(BASE_DIR, "static"), #inside project
 #)
 
-SITE_ID = 1
-
 # loading local settings
 try:
     LOCAL_SETTINGS
