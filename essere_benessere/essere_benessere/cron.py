@@ -4,6 +4,8 @@ from website.models import Account, Promotion, Campaign
 from django_cron import CronJobBase, Schedule
 import logging
 
+logger = logging.getLogger('django.request')
+
 class BirthdayPromoCron(CronJobBase):
         RUN_EVERY_MINS = 1 # every 2 hours
 
@@ -12,7 +14,6 @@ class BirthdayPromoCron(CronJobBase):
 
         def do(self):
                 # Get an instance of a logger
-                logger = logging.getLogger('django.request')
                 logger.debug("sending birthday promo...")
 
                 # sending birth
