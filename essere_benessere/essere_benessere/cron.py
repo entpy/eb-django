@@ -2,8 +2,10 @@
 
 from website.models import Account, Promotion, Campaign
 from django_cron import CronJobBase, Schedule
+from django.conf import settings
 import logging
 
+# Get an instance of a logger
 logger = logging.getLogger('django.request')
 
 class BirthdayPromoCron(CronJobBase):
@@ -13,7 +15,6 @@ class BirthdayPromoCron(CronJobBase):
         code = 'essere_benessere.birthday_promo_cron'    # a unique code
 
         def do(self):
-                # Get an instance of a logger
                 logger.debug("sending birthday promo...")
 
                 # sending birth
