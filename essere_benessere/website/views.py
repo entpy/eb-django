@@ -12,10 +12,7 @@ from essere_benessere.functions import CommonUtils
 import logging
 
 # Get an instance of a logger
-logger = logging.getLogger('django.request')
-
-# Get an instance of a logger
-logger = logging.getLogger('django.request')
+logger = logging.getLogger(__name__)
 
 def index(request):
         return render(request, 'website/index.html')
@@ -73,7 +70,7 @@ def get_offers(request):
 			try:
 				account_obj = Account.objects.get(email=request.POST['email'])
 			except (KeyError, Account.DoesNotExist):
-				# logger.debug('new user')
+				logger.debug('nuovo utente registrato: ' + str(request.POST['email']))
 				account_obj = Account(
 					first_name = request.POST['first_name'],
 					last_name = request.POST['last_name'],
@@ -89,7 +86,7 @@ def get_offers(request):
 					)
 					account_obj.birthday_date = birthday
 				except:
-					# logger.error("Errore con il salvataggio della data o data non inserita")
+					logger.debug("Errore con il salvataggio della data o data non inserita")
 					pass
 
 				# saving account information
@@ -100,12 +97,12 @@ def get_offers(request):
 				return HttpResponseRedirect(reverse(get_offers))
 			else:
 				messages.add_message(request, messages.ERROR, "Attenzione utente già esistente")
-				# logger.debug("Utente gia' esistente in db")
+				logger.debug("Utente gia' esistente in db")
 		else:
 			messages.add_message(request, messages.ERROR, 'Per continuare è necessario inserire una mail e confermare il trattamento dei dati personali.')
-			# logger.debug('Attenzione: inserire email e/o confermare disclaimer')
+			logger.debug('Attenzione: inserire email e/o confermare disclaimer')
 	else:
-		# logger.debug('Attenzione: submit del form non ancora eseguito')
+		logger.debug('Attenzione: submit del form non ancora eseguito')
 		pass
 
 	return render(request, 'website/get_offers.html', context)

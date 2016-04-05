@@ -11,7 +11,7 @@ from django.template import RequestContext, loader
 import logging
 
 # Get an instance of a logger
-logger = logging.getLogger('django.request')
+logger = logging.getLogger(__name__)
 
 class AccountAdmin(admin.ModelAdmin):
 
@@ -48,6 +48,7 @@ class AccountAdmin(admin.ModelAdmin):
                         if request.POST.get("delete"):
                                 promotion_obj.delete_birthday_promotion()
                                 messages.add_message(request, messages.SUCCESS, 'Promozione compleanno eliminata correttamente')
+				logger.info('Promozione compleanno eliminata correttamente')
                                 return HttpResponseRedirect('/admin/website/account/birthday_promo') # Redirect after POST
 
                         form = BirthdayPromotionForm(request.POST, request.FILES, instance=promotion_obj.get_birthday_promotion_instance())
@@ -59,6 +60,7 @@ class AccountAdmin(admin.ModelAdmin):
                                 birthday_promo_obj.promo_type = Promotion.PROMOTION_TYPE_BIRTHDAY["key"]
                                 # saving instance into db
                                 birthday_promo_obj.save()
+				logger.info('Promozione compleanno modificata correttamente')
 
                                 messages.add_message(request, messages.SUCCESS, 'Promozione compleanno modificata correttamente')
                                 return HttpResponseRedirect('/admin/website/account/birthday_promo') # Redirect after POST
@@ -159,6 +161,7 @@ class AccountAdmin(admin.ModelAdmin):
                         formset = PromotionForm(request.POST, request.FILES, instance=promotion_obj)
                         if formset.is_valid():
                                 promo = formset.save()
+				logger.debug("nuova promozione (#" + str(promo.id_promotion) + ") salvata con successo")
 
                                 # saving created promotion id into session
                                 request.session['promotion_id'] = promo.id_promotion
@@ -263,6 +266,7 @@ class AccountAdmin(admin.ModelAdmin):
                                 # checking if user choose to send the promotion
                                 if (request.POST.get("send_promotion", "")):
                                         campaign_obj = Campaign()
+					logger.debug("invio la promozione #" + str(id_promotion))
                                         campaign_obj.send_campaign(id_promotion=id_promotion)
 
                                         # redirect to success page

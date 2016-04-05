@@ -26,7 +26,7 @@ reload(sys);
 sys.setdefaultencoding("utf8")
 
 # Get an instance of a logger
-logger = logging.getLogger('django.request')
+logger = logging.getLogger(__name__)
 
 class Account(models.Model):
 	id_account = models.AutoField(primary_key=True)
@@ -574,6 +574,7 @@ class Campaign(models.Model):
                         campaign_obj.status = 1
                         campaign_obj.save()
                         return_var = True
+			logger.info("codice " + str(code) + " validato con successo")
 
                 except(KeyError, Campaign.DoesNotExist):
                         # code not exists
@@ -610,9 +611,9 @@ class Campaign(models.Model):
 
                 # for everyone sending a promotional email
                 if (account_list and birthday_promo):
+			logger.info("birthday promo can be sent (birthday promo id #" + str(birthday_promo.id_promotion) + ")")
                         for single_account in account_list:
-                                # logger.error("single account: " + str(single_account.id_account))
-                                # logger.error("promo: " + str(birthday_promo.id_promotion))
+                                logger.info("send birthday promo to account id #" + str(single_account.id_account))
                                 campaign_obj.add_campaign_user(id_account=single_account.id_account, id_promotion=birthday_promo.id_promotion)
                                 campaign_obj.send_campaign(id_promotion=birthday_promo.id_promotion)
 

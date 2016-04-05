@@ -6,7 +6,7 @@ from django.conf import settings
 import logging
 
 # Get an instance of a logger
-logger = logging.getLogger('django.request')
+logger = logging.getLogger(__name__)
 
 class BirthdayPromoCron(CronJobBase):
         RUN_EVERY_MINS = 1 # every 2 hours
