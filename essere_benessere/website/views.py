@@ -2,6 +2,7 @@
 
 from website.models import Account, Promotion, Campaign
 from django.shortcuts import render
+from django.views.decorators.csrf import ensure_csrf_cookie
 from django.http import HttpResponseRedirect, HttpResponse, HttpRequest
 from django.core.urlresolvers import reverse
 from django.contrib import messages
@@ -45,6 +46,7 @@ def our_offers(request):
 
         return render(request, 'website/our_offers.html', context)
 
+@ensure_csrf_cookie
 def get_offers(request):
 
 	CommonUtilsInstance = CommonUtils()
