@@ -72,7 +72,7 @@ def get_offers(request):
 			try:
 				account_obj = Account.objects.get(email=request.POST['email'])
 			except (KeyError, Account.DoesNotExist):
-				logger.debug('nuovo utente registrato: ' + str(request.POST['email']))
+				logger.debug('Nuovo utente registrato: ' + str(request.POST['email']))
 				account_obj = Account(
 					first_name = request.POST['first_name'],
 					last_name = request.POST['last_name'],
@@ -88,14 +88,14 @@ def get_offers(request):
 					)
 					account_obj.birthday_date = birthday
 				except:
-					logger.debug("Errore con il salvataggio della data o data non inserita")
+					logger.debug("Data di nascita non inserita")
 					pass
 
 				# saving account information
 				account_obj.save()
 
 				# if user successfully inserted, than showing a success message
-				messages.add_message(request, messages.SUCCESS, 'Grazie per esserti registrato!')
+				messages.add_message(request, messages.SUCCESS, 'Grazie per la tua registrazione!')
 				return HttpResponseRedirect(reverse(get_offers))
 			else:
 				messages.add_message(request, messages.ERROR, "Attenzione utente già esistente")
@@ -104,7 +104,7 @@ def get_offers(request):
 			messages.add_message(request, messages.ERROR, 'Per continuare è necessario inserire una mail e confermare il trattamento dei dati personali.')
 			logger.debug('Attenzione: inserire email e/o confermare disclaimer')
 	else:
-		logger.debug('Attenzione: submit del form non ancora eseguito')
+		# logger.debug('Attenzione: submit del form non ancora eseguito')
 		pass
 
 	return render(request, 'website/get_offers.html', context)
