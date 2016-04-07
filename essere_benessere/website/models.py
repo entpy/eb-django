@@ -48,13 +48,12 @@ class Account(models.Model):
 		return str(self.email)
 
         def get_birthday_account(self):
-                """
-                list of all users who make birthday today
-                """
-
+                """ List of all users who make birthday today """
                 return_var = None
-
-                return_var = Account.objects.filter(birthday_date__month=(datetime.now().date().month)).filter(birthday_date__day=(datetime.now().date().day))
+                return_var = Account.objects.filter(
+                    birthday_date__month=datetime.now().date().month,
+                    birthday_date__day=datetime.now().date().day
+                )
 
                 return return_var
 
