@@ -9,6 +9,7 @@ Account -> Campaign <- Promotion
 
 aggiungo 'sent' in Campaign, default a 0
 genero il codice in 'add_campaign_user' e non in 'send_campaign'
+per questo tipo di promozione, forzo l'inserimento in campagne
 in 'send_campaign' filtro solo gli utenti di quella campagna con sent = 0
 (ancora da inviare) e setto 'sent=1'
 """
@@ -213,23 +214,19 @@ class Campaign(models.Model):
                 """
                 Function to add a campaign for frontend_post campaign
                 """
-
+                campaign_obj = Campaign()
                 return_var = False
 
-                if (id_promotion):
-                    campaign_obj = Campaign()
-
-                    campaing_query_set = Campaign.objects.filter(id_promotion__id_promotion=id_promotion)
-                    # if a campaign code does not exists yet, then creating a new ones
-                    if (not campaing_query_set.exists()):
-                            campaign_obj = Campaign(
-                                                id_promotion = Promotion(id_promotion=id_promotion),
-                                                code = campaign_obj.generate_random_code(),
-                                                status = 0
-                                            )
-
-                            campaign_obj.save()
-                            return_var = True
+                if id_promotion:
+                    if not Campaign.objects.filter(id_promotion__id_promotion=id_promotion).exists():
+                        # if a campaign code does not exists yet, then creating a new ones
+                        campaign_obj = Campaign(
+                            id_promotion = Promotion(id_promotion=id_promotion),
+                            code = campaign_obj.generate_random_code(),
+                            sent = 1
+                        )
+                        campaign_obj.save()
+                        return_var = True
 
                 return return_var
 
