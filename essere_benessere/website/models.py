@@ -241,7 +241,7 @@ class Campaign(models.Model):
 
                 create_campaign = False
                 try:
-                    campaign_obj = Campaign.objects.get(id_account=id_account, id_promotion=id_promotion)
+                    campaign_obj = Campaign.objects.filter(id_account=id_account, id_promotion=id_promotion).exists()
                 except (KeyError, Campaign.DoesNotExist):
                     # creo la campagna e genero un codice random
                     create_campaign = True
@@ -257,30 +257,19 @@ class Campaign(models.Model):
 
                 return True
 
+        # TODO: testare rimozione/inserimento utenti nel flow della promozione
         def remove_campaign_user(self, id_account=False, id_promotion=False):
                 """
-                Function to delete a row from db, starting from "id_account" and "id_promotion"
+                Function to delete rows from db, starting from "id_account" and "id_promotion"
                 Return true on success
                 """
+                # delete all row about this account and promotion
+                campaign_obj = Campaign.objects.filter(
+                    id_account=id_account,
+                    id_promotion=id_promotion,
+                ).delete()
 
-                return_var = False
-
-                try:
-                        # retrieve campaign row
-                        campaign_obj = Campaign.objects.get(
-                                id_account=id_account,
-                                id_promotion=id_promotion,
-                        )
-
-                        # delete retrieved row from db
-                        campaign_obj.delete()
-
-                        return_var = True
-                except (KeyError, Campaign.DoesNotExist):
-                        # this senders already not exists
-                        pass
-
-                return return_var
+                return True
 
         def set_campaign_user(self, senders_dictionary = False, id_promotion = False):
                 """
