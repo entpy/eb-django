@@ -449,7 +449,7 @@ class Campaign(models.Model):
                                 msg.content_subtype = "html"  # Main content is now text/html
                                 msg.send()
 
-                logger.error("EMAIL SENT TO: " + campaign_details["receiver_email"])
+                logger.info("EMAIL SENT TO: " + campaign_details["receiver_email"])
 
                 return return_var
 
@@ -480,7 +480,7 @@ class Campaign(models.Model):
                             {7} = site_url
                         """
 
-                        logger.error("image URL: " + str(common_utils_obj.get_site_url() + str(campaign_details_dict["image_relative_path"])))
+                        logger.info("image URL: " + str(common_utils_obj.get_site_url() + str(campaign_details_dict["image_relative_path"])))
                         # sobstitute var inside html template
                         return_var = format_html (
                                 html_template,
