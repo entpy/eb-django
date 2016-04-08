@@ -177,7 +177,7 @@ class Campaign(models.Model):
 	id_promotion = models.ForeignKey(Promotion, db_column="id_promotion")
 	code = models.CharField(max_length=10)
 	status = models.BooleanField(default=0)
-	sent = models.BooleanField(default=0)
+	#sent = models.BooleanField(default=0)
 
 	# On Python 3: def __str__(self):
 	def __unicode__(self):
@@ -235,11 +235,9 @@ class Campaign(models.Model):
                 Function to add a row from db, starting from "id_account" and "id_promotion"
                 Return true on success
                 """
-
                 create_campaign = False
-                try:
-                    campaign_obj = Campaign.objects.filter(id_account=id_account, id_promotion=id_promotion).exists()
-                except (KeyError, Campaign.DoesNotExist):
+
+                if not Campaign.objects.filter(id_account=id_account, id_promotion=id_promotion).exists():
                     # creo la campagna e genero un codice random
                     create_campaign = True
 
@@ -248,7 +246,7 @@ class Campaign(models.Model):
                     campaign_obj = Campaign(
                         id_account = Account(id_account=id_account),
                         id_promotion = Promotion(id_promotion=id_promotion),
-                        code = self.generate_random_code(),
+                        code = self.generate_random_code()
                     )
                     campaign_obj.save()
 
