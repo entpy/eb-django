@@ -190,7 +190,7 @@ class Campaign(models.Model):
                 """
 
                 # generating a random code
-                random_code = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(5))
+                random_code = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(8))
 
                 try:
                         # checking if code already exists
