@@ -64,3 +64,5 @@ website/website/local_settings.py
 
 # Socket directory
 run/
+
+migrations/
