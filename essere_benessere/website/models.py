@@ -6,6 +6,11 @@ Simple E/R scheme
 
         1-N         1-N
 Account -> Campaign <- Promotion
+
+aggiungo 'sent' in Campaign, default a 0
+genero il codice in 'add_campaign_user' e non in 'send_campaign'
+in 'send_campaign' filtro solo gli utenti di quella campagna con sent = 0
+(ancora da inviare) e setto 'sent=1'
 """
 
 from django.db import models
@@ -171,6 +176,7 @@ class Campaign(models.Model):
 	id_promotion = models.ForeignKey(Promotion, db_column="id_promotion")
 	code = models.CharField(max_length=10)
 	status = models.BooleanField(default=0)
+	sent = models.BooleanField(default=0)
 
 	# On Python 3: def __str__(self):
 	def __unicode__(self):
@@ -234,15 +240,16 @@ class Campaign(models.Model):
                 """
 
                 try:
-                        campaign_obj = Campaign.objects.get(id_account=id_account, id_promotion=id_promotion)
+                    campaign_obj = Campaign.objects.get(id_account=id_account, id_promotion=id_promotion)
                 except (KeyError, Campaign.DoesNotExist):
-                        campaign_obj = Campaign(
-                                            id_account = Account(id_account=id_account),
-                                            id_promotion = Promotion(id_promotion=id_promotion),
-                                            status = 0
-                                        )
-
-                        campaign_obj.save()
+                    # creo la campagna e genero un codice random
+                    campaign_obj = Campaign(
+                        id_account = Account(id_account=id_account),
+                        id_promotion = Promotion(id_promotion=id_promotion),
+                        code = self.generate_random_code(),
+                        status = 0
+                    )
+                    campaign_obj.save()
 
                 return True
 
@@ -353,7 +360,7 @@ class Campaign(models.Model):
 
                 return return_var
 
-        def send_campaign(self, id_promotion=None):
+        def send_campaign(self, id_promotion):
                 """
                 Function to send a campaing via email
                 for all promo sender:
@@ -363,27 +370,26 @@ class Campaign(models.Model):
 
                 return_var = False
 
-                if(id_promotion):
-                    senders_list = Campaign.objects.filter(id_promotion=id_promotion)
+                if id_promotion:
+                    # filtro gli utenti di questa campagna che possono ricevere la mail (sent=0)
+                    senders_list = Campaign.objects.filter(id_promotion=id_promotion, sent=0)
 
                     for sender in senders_list:
                             try:
-                                    campaign_obj = Campaign.objects.get(id_campaign=sender.id_campaign)
-
-                                    # generating unique random code
-                                    random_code = campaign_obj.generate_random_code()
-                                    campaign_obj.code = random_code
-                                    campaign_obj.status = 0
-                                    campaign_obj.save()
-
-                                    # sending campaign via mail
-                                    campaign_obj.send_promotional_email(id_campaign=campaign_obj.id_campaign)
-
-                                    return_var = True
+                                campaign_obj = Campaign.objects.get(id_campaign=sender.id_campaign)
                             except(KeyError, Campaign.DoesNotExist):
-                                    # id campaign doesn't exists
-                                    return_var = False
-                                    break
+                                # id campaign doesn't exist
+                                return_var = False
+                                break
+                            else:
+                                # setto la campagna come non utilizzata
+                                campaign_obj.status = 0
+                                # setto la campagna come inviata
+                                campaign_obj.sent = 1
+                                campaign_obj.save()
+                                # sending campaign via mail
+                                campaign_obj.send_promotional_email(id_campaign=campaign_obj.id_campaign)
+                                return_var = True
 
                 return return_var
 
