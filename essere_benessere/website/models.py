@@ -233,21 +233,25 @@ class Campaign(models.Model):
 
                 return return_var
 
-        def add_campaign_user(self, id_account=False, id_promotion=False):
+        def add_campaign_user(self, id_account=False, id_promotion=False, force_insert=False):
                 """
                 Function to add a row from db, starting from "id_account" and "id_promotion"
                 Return true on success
                 """
 
+                create_campaign = False
                 try:
                     campaign_obj = Campaign.objects.get(id_account=id_account, id_promotion=id_promotion)
                 except (KeyError, Campaign.DoesNotExist):
                     # creo la campagna e genero un codice random
+                    create_campaign = True
+
+                if create_campaign or force_insert:
+                    # l'inserimento forzato è per le promozioni compleanno
                     campaign_obj = Campaign(
                         id_account = Account(id_account=id_account),
                         id_promotion = Promotion(id_promotion=id_promotion),
                         code = self.generate_random_code(),
-                        status = 0
                     )
                     campaign_obj.save()
 
@@ -619,7 +623,7 @@ class Campaign(models.Model):
 			logger.info("birthday promo can be sent (birthday promo id #" + str(birthday_promo.id_promotion) + ")")
                         for single_account in account_list:
                                 logger.info("send birthday promo to account id #" + str(single_account.id_account))
-                                campaign_obj.add_campaign_user(id_account=single_account.id_account, id_promotion=birthday_promo.id_promotion)
+                                campaign_obj.add_campaign_user(id_account=single_account.id_account, id_promotion=birthday_promo.id_promotion, force_insert=True)
                                 campaign_obj.send_campaign(id_promotion=birthday_promo.id_promotion)
 
                 return True
