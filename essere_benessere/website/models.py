@@ -177,7 +177,7 @@ class Campaign(models.Model):
 	id_promotion = models.ForeignKey(Promotion, db_column="id_promotion")
 	code = models.CharField(max_length=10)
 	status = models.BooleanField(default=0)
-	#sent = models.BooleanField(default=0)
+	sent = models.BooleanField(default=0)
 
 	# On Python 3: def __str__(self):
 	def __unicode__(self):
