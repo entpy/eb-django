@@ -33,6 +33,9 @@ def dental_whitening(request):
 def terms_of_use(request):
         return render(request, 'website/terms_of_use.html')
 
+def cookie_policy(request):
+        return render(request, 'website/cookie_policy.html')
+
 def our_offers(request):
 
         promotion_obj = Promotion()

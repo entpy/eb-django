@@ -15,6 +15,7 @@ urlpatterns = patterns('',
 	url(r'^ricevi-offerte/', 'website.views.get_offers', name='get_offers'),
 	url(r'^sbiancamento-dentale/', 'website.views.dental_whitening', name='dental_whitening'),
 	url(r'^termini-di-utilizzo/', 'website.views.terms_of_use', name='terms_of_use'),
+	url(r'^cookie-policy/', 'website.views.cookie_policy', name='cookie_policy'),
 
 	# admin URLs
 	url(r'^admin/', include(admin.site.urls)),
