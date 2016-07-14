@@ -294,7 +294,7 @@ h1 { font-size: 30px; }
 h1,
 .navigation_desktop > li a,
 .page_title_container .description,
-.footer .copyright_container {
+.footer .copyright_container, #cookie-law {
 	font-family: helveticaneue-light, Helvetica, Arial, sans-serif;
 }
 .footer a, #cookie-law a { color: #420042; text-decoration: none; }
