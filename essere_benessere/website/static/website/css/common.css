@@ -296,7 +296,7 @@ h1,
 .footer .copyright_container {
 	font-family: helveticaneue-light, Helvetica, Arial, sans-serif;
 }
-.footer a, #cookie-law a { color: #420042; }
+.footer a, #cookie-law a { color: #420042; text-decoration: none; }
 /* font-family style }}} */
 
 /* cookie law {{{ */
