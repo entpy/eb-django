@@ -76,7 +76,7 @@ ul.messages li.success i { color: green; }
 ul.messages li.error { background-color: #FFF9F2; color: #FF5555; border: 1px solid #ffa6a6; }
 ul.messages li.error i { color: red; }
 /* message framework }}} */
-ul.default_ul li { list-style: inside none disc; }
+ul.default_ul li { list-style: outside none disc; margin-left: 15px; }
 /* common element style }}} */
 
 /* header style {{{ */
